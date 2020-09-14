@@ -13,9 +13,9 @@ namespace MagicTheGatheringFinal.Context
         DbSet<DeckTable> decksTable { get; set; }
         DbSet<QuizTable> quizTable { get; set; }
 
-        public MagicDbContext(DbContextOptions options) : base(options)
+        public MagicDbContext(DbContextOptions<MagicDbContext>options) : base(options)
         {
-            
+           
         }
     }
 }

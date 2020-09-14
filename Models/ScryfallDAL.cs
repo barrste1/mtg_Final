@@ -11,27 +11,27 @@ namespace MagicTheGatheringFinal.Models
 {
     public class ScryfallDAL
     {
-        public HttpClient GetClient()
-        {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("https://api.scryfall.com");
-            //URI - uniform resource identifier
-            return client;
-        }
+        //public HttpClient GetClient()
+        //{
+        //    HttpClient client = new HttpClient();
+        //    client.BaseAddress = new Uri("https://api.scryfall.com");
+        //    //URI - uniform resource identifier
+        //    return client;
+        //}
 
-        public async Task<Cardobject> GetCard(string input)
-        {
-            var client = GetClient(); //calls the method that gives the API the general information needed to 
-            //receive data from the API 
-            var inputQuery = MakeQuery(input);
-            var response = await client.GetAsync($"/named?fuzzy={inputQuery}"); //uses the client (HTTPClient) to receive 
-            //data from the API based off of a certain endpoint.
-            Cardobject card = await response.Content.ReadAsAsync<Cardobject>();
-            //install-package Microsoft.AspNet.WebAPI.Client
-            //response has a property called Content and Content has a method that reads the JSON and plugs it into a specified
-            //obect. If the JSON does not fit within the object we get an Internal Deserialization error
-            return card;
-        }
+        //public async Task<Cardobject> GetCard(string input)
+        //{
+        //    var client = GetClient(); //calls the method that gives the API the general information needed to 
+        //    //receive data from the API 
+        //    var inputQuery = MakeQuery(input);
+        //    var response = await client.GetAsync($"/named?fuzzy={inputQuery}"); //uses the client (HTTPClient) to receive 
+        //    //data from the API based off of a certain endpoint.
+        //    Cardobject card = await response.Content.ReadAsAsync<Cardobject>();
+        //    //install-package Microsoft.AspNet.WebAPI.Client
+        //    //response has a property called Content and Content has a method that reads the JSON and plugs it into a specified
+        //    //obect. If the JSON does not fit within the object we get an Internal Deserialization error
+        //    return card;
+        //}
 
         public string MakeQuery(string input)
         {
@@ -64,13 +64,13 @@ namespace MagicTheGatheringFinal.Models
 
             return ret;
         }
-        public static async Task<List<T>> GetApiResponseList<T>(string controller, string action, string baseUrl, string name,
+        public static async Task<List<T>> GetApiResponseList<T>(string controller, string action, string baseUrl, string CardName,
     params KeyValuePair<string, string>[] options) where T : new()
         {
             string url = $"{baseUrl}/" +
                          $"{controller}/" +
                          $"{action}/" +
-                         $"{name}";
+                         $"{CardName}";
 
             bool first = true;
             foreach (KeyValuePair<string, string> argument in options)
@@ -112,10 +112,22 @@ namespace MagicTheGatheringFinal.Models
 
             return ret;
         }
-        public static async Task<T> GetApiResponse<T>(string controller, string action, string baseUrl, string name)
+        public static async Task<List<T>> GetApiResponseList<T>(string controller, string action, string baseUrl, string CardName, params string[] options)
+            where T : new()
+        {
+            var keyValuePairs = ScryfallDAL.BuildApiArguments(options);
+            if (keyValuePairs == null && options.Length > 0)
+            {
+                return new List<T>();
+            }
+
+            return await GetApiResponseList<T>(controller, action, baseUrl, CardName,
+                (keyValuePairs ?? new List<KeyValuePair<string, string>>()).ToArray());
+        }
+        public static async Task<T> GetApiResponse<T>(string controller, string action, string baseUrl, string CardName)
     where T : new()
         {
-            return (await GetApiResponseList<T>(controller, action, baseUrl, name,
+            return (await GetApiResponseList<T>(controller, action, baseUrl, CardName,
                 (new List<KeyValuePair<string, string>>()).ToArray())).FirstOrDefault();
         }
 
