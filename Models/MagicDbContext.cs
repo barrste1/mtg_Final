@@ -6,6 +6,7 @@ namespace MagicTheGatheringFinal.Models
 {
     public partial class MagicDbContext : DbContext
     {
+        
         public MagicDbContext()
         {
         }
