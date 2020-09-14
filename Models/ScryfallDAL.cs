@@ -112,10 +112,10 @@ namespace MagicTheGatheringFinal.Models
 
             return ret;
         }
-        public static async Task<T> GetApiResponse<T>(string controller, string action, string baseUrl, string SpeciesName)
+        public static async Task<T> GetApiResponse<T>(string controller, string action, string baseUrl, string name)
     where T : new()
         {
-            return (await GetApiResponseList<T>(controller, action, baseUrl, SpeciesName,
+            return (await GetApiResponseList<T>(controller, action, baseUrl, name,
                 (new List<KeyValuePair<string, string>>()).ToArray())).FirstOrDefault();
         }
 

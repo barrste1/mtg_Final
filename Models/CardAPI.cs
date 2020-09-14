@@ -42,9 +42,9 @@ namespace MagicTheGatheringFinal.Models
         public bool reprint { get; set; }
         public bool variation { get; set; }
         public string set { get; set; }
-        //public string set_name { get; set; }
-        //public string set_type { get; set; }
-        //public string set_uri { get; set; }
+        public string name_of_set { get; set; }
+        public string type_of_set { get; set; }
+        public string uri_of_set { get; set; }
         public string set_search_uri { get; set; }
         public string scryfall_set_uri { get; set; }
         public string rulings_uri { get; set; }
