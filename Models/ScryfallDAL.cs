@@ -64,6 +64,7 @@ namespace MagicTheGatheringFinal.Models
 
             return ret;
         }
+        //allows a generic Type(T) to be input then will print out data based on the input of the object being referenced in the type
         public static async Task<List<T>> GetApiResponseList<T>(string controller, string action, string baseUrl, string CardName,
     params KeyValuePair<string, string>[] options) where T : new()
         {

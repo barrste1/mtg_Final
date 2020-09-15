@@ -26,6 +26,31 @@ namespace MagicTheGatheringFinal.Controllers
 
             return View(cardItem);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> CardColorList(string cardColor)
+        {
+            Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", "search?order=", "https://api.scryfall.com/", cardColor);
+
+            return View(cardItem);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CardPricing(string money)
+        {
+            Prices cardItem = await ScryfallDAL.GetApiResponse<Prices>("cards", "order?usd=", "https://api.scryfall.com/", money);
+
+            return View(cardItem);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CardManaCost(string manaCost)
+        {
+            Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", "order?cmc=", "https://api.scryfall.com/", manaCost);
+
+            return View(cardItem);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] string order)
         {
@@ -35,35 +60,68 @@ namespace MagicTheGatheringFinal.Controllers
             var results = await response.Content.ReadAsAsync<Cardobject>();
             return View(results);
         }
-        public IActionResult CardSearch()
+        [HttpGet]
+        public async Task<IActionResult> CardColorIndex([FromQuery] string order)
         {
-            return View();
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("https://api.scryfall.com/cards/search?order=color");
+            var response = await client.GetAsync("cards.json");
+            var results = await response.Content.ReadAsAsync<Prices>();
+            return View(results);
         }
-        public IActionResult AddCard(string id)
+        [HttpGet]
+        public async Task<IActionResult> PriceIndex([FromQuery] string order)
         {
-            string userId = FindUserId();
-
-            DecksTable dId = new DecksTable();
-
-            //dId.CardId = id;
-            //dId.UserTableId = userId;
-
-            _context.DecksTable.Add(dId);
-            _context.SaveChanges();
-            
-
-            return RedirectToAction("DeckList");
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("https://api.scryfall.com/cards/search?order=usd");
+            var response = await client.GetAsync("cards.json");
+            var results = await response.Content.ReadAsAsync<Prices>();
+            return View(results);
         }
+
+
+
+        //[HttpPost]
+        //public IActionResult AddCard(string id)
+        //{
+        //    var userId = FindUserId();
+        //    if (id != null)
+        //    {
+        //        DecksTable dId = new DecksTable();
+        //        dId.CardId = int.Parse(id);
+        //        dId.UserTableId = int.Parse(FindUserId());
+        //        _context.DecksTable.Add(dId);
+        //        _context.SaveChanges();
+        //    }
+        //    return RedirectToAction("DeckList");
+        //}
+
+        //[HttpPost]
+        //public IActionResult AddCard()
+        //{
+        //    string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        //    DecksTable dId = new DecksTable();
+        //    try
+        //    {
+        //        dId = _context.DecksTable.Where(x => x.Id == id).First();
+        //    }
+        //    catch
+        //    {
+        //        _context.CardsTable = id;
+        //        _context. = id;
+        //        _musicDb.ArtistT.Add(foundArtist);
+        //        _musicDb.SaveChanges();
+        //        return RedirectToAction("DeckList");
+        //    }
+        //    return View("DeckList");
+        //}
 
         public IActionResult DeckList()
         {
             string id = FindUserId();
-
-            //var deckList = _context.DecksTable.Where(x => x.UserTableId == id).ToList();
-
-            return View();
+            var deckList = _context.DecksTable.Where(x => x.Id == int.Parse(id)).ToList();
+            return View(deckList);
         }
-
         public string FindUserId()
         {
             if (User.Identity.Name == null)
@@ -74,7 +132,8 @@ namespace MagicTheGatheringFinal.Controllers
             {
                 return _context.AspNetUsers.Where(s => s.UserName == User.Identity.Name).FirstOrDefault().Id;
             }
-
         }
     }
+
+
 }
