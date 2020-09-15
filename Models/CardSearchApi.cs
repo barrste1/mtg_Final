@@ -6,15 +6,21 @@ using System.Threading.Tasks;
 namespace MagicTheGatheringFinal.Models
 {
 
+    public class CardSearchObject
+    {
+        public string _object { get; set; }
+        public int total_cards { get; set; }
+        public bool has_more { get; set; }
+        public string next_page { get; set; }
+        public Datum[] data { get; set; }
+    }
 
-    public class Cardobject
+    public class Datum
     {
         public string _object { get; set; }
         public string id { get; set; }
         public string oracle_id { get; set; }
-        public int[] multiverse_ids { get; set; }
-        public int mtgo_id { get; set; }
-        public int arena_id { get; set; }
+        public int?[] multiverse_ids { get; set; }
         public int tcgplayer_id { get; set; }
         public string name { get; set; }
         public string lang { get; set; }
@@ -31,6 +37,7 @@ namespace MagicTheGatheringFinal.Models
         public string power { get; set; }
         public string toughness { get; set; }
         public string[] colors { get; set; }
+        public string[] color_indicator { get; set; }
         public string[] color_identity { get; set; }
         public string[] keywords { get; set; }
         public Legalities legalities { get; set; }
@@ -43,11 +50,11 @@ namespace MagicTheGatheringFinal.Models
         public bool reprint { get; set; }
         public bool variation { get; set; }
         public string set { get; set; }
-        public string name_of_set { get; set; }
-        public string type_of_set { get; set; }
-        public string uri_of_set { get; set; }
-        public string set_search_uri { get; set; }
-        public string scryfall_set_uri { get; set; }
+        public string Name_OfSet { get; set; }
+        public string Type_ofset { get; set; }
+        public string Uri_of_set { get; set; }
+        public string search_uri_of_set { get; set; }
+        //public string scryfall_set_uri { get; set; }
         public string rulings_uri { get; set; }
         public string prints_search_uri { get; set; }
         public string collector_number { get; set; }
@@ -59,19 +66,28 @@ namespace MagicTheGatheringFinal.Models
         public string illustration_id { get; set; }
         public string border_color { get; set; }
         public string frame { get; set; }
-        public string[] frame_effects { get; set; }
         public bool full_art { get; set; }
         public bool textless { get; set; }
         public bool booster { get; set; }
         public bool story_spotlight { get; set; }
-        public int edhrec_rank { get; set; }
-        public Preview preview { get; set; }
         public Prices prices { get; set; }
         public Related_Uris related_uris { get; set; }
         public Purchase_Uris purchase_uris { get; set; }
+        public string flavor_text { get; set; }
+        public int edhrec_rank { get; set; }
+        public int mtgo_id { get; set; }
+        public int mtgo_foil_id { get; set; }
+        public Card_Faces[] card_faces { get; set; }
+        public string[] frame_effects { get; set; }
+        public Preview preview { get; set; }
+        public int arena_id { get; set; }
+        public string watermark { get; set; }
+        public string[] produced_mana { get; set; }
+        public string[] promo_types { get; set; }
+        public All_Parts[] all_parts { get; set; }
     }
 
-    public class Image_Uris
+    public class SearchImage_Uris
     {
         public string small { get; set; }
         public string normal { get; set; }
@@ -81,7 +97,7 @@ namespace MagicTheGatheringFinal.Models
         public string border_crop { get; set; }
     }
 
-    public class Legalities
+    public class SearchLegalities
     {
         public string standard { get; set; }
         public string future { get; set; }
@@ -98,14 +114,7 @@ namespace MagicTheGatheringFinal.Models
         public string oldschool { get; set; }
     }
 
-    public class Preview
-    {
-        public string source { get; set; }
-        public string source_uri { get; set; }
-        public string previewed_at { get; set; }
-    }
-
-    public class Prices
+    public class SearchPrices
     {
         public string usd { get; set; }
         public string usd_foil { get; set; }
@@ -113,7 +122,7 @@ namespace MagicTheGatheringFinal.Models
         public string tix { get; set; }
     }
 
-    public class Related_Uris
+    public class SearchRelated_Uris
     {
         public string gatherer { get; set; }
         public string tcgplayer_decks { get; set; }
@@ -121,11 +130,56 @@ namespace MagicTheGatheringFinal.Models
         public string mtgtop8 { get; set; }
     }
 
-    public class Purchase_Uris
+    public class SearchPurchase_Uris
     {
         public string tcgplayer { get; set; }
         public string cardmarket { get; set; }
         public string cardhoarder { get; set; }
+    }
+
+    public class SearchPreview
+    {
+        public string source { get; set; }
+        public string source_uri { get; set; }
+        public string previewed_at { get; set; }
+    }
+
+    public class Card_Faces
+    {
+        public string _object { get; set; }
+        public string name { get; set; }
+        public string mana_cost { get; set; }
+        public string type_line { get; set; }
+        public string oracle_text { get; set; }
+        public string[] colors { get; set; }
+        public string power { get; set; }
+        public string toughness { get; set; }
+        public string flavor_text { get; set; }
+        public string artist { get; set; }
+        public string artist_id { get; set; }
+        public string illustration_id { get; set; }
+        public Image_Uris1 image_uris { get; set; }
+        public string[] color_indicator { get; set; }
+    }
+
+    public class Image_Uris1
+    {
+        public string small { get; set; }
+        public string normal { get; set; }
+        public string large { get; set; }
+        public string png { get; set; }
+        public string art_crop { get; set; }
+        public string border_crop { get; set; }
+    }
+
+    public class All_Parts
+    {
+        public string _object { get; set; }
+        public string id { get; set; }
+        public string component { get; set; }
+        public string name { get; set; }
+        public string type_line { get; set; }
+        public string uri { get; set; }
     }
 
 }

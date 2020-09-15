@@ -14,6 +14,7 @@ namespace MagicTheGatheringFinal.Controllers
         {
             context = _context;
         }
+
         public IActionResult AssistedDeckBuilder()
         {
             return View();
@@ -23,6 +24,69 @@ namespace MagicTheGatheringFinal.Controllers
         {
             return View();
         }
+
+
+        public async Task<IActionResult> FindSingleRemoval()
+        {
+            string identity = "plurbus_database";
+            ScryfallDAL dl = new ScryfallDAL();
+            CardSearchObject removal = await dl.GetSearch("identity:rakdos+o:\"destroy\"+t:\"instant\"");
+
+            return View(removal);
+        }
+        public async Task<IActionResult> FindMultiRemoval()
+        {
+            string identity = "plurbus_database";
+            ScryfallDAL dl = new ScryfallDAL();
+            CardSearchObject removal = await dl.GetSearch("identity:rakdos+o:\"destroy all\"+t:\"sorcery\"");
+
+            return View(removal);
+        }
+
+        public async Task<IActionResult> FindRamp()
+        {
+            string identity = "plurbus_database";
+            ScryfallDAL dl = new ScryfallDAL();
+            CardSearchObject removal = await dl.GetSearch("identity:rakdos+produces:br+t:\"artifact\"");
+
+            return View("FindSingleRemoval",removal);
+        }
+
+        public async Task<IActionResult> FindDraw()
+        {
+            string identity = "plurbus_database";
+            ScryfallDAL dl = new ScryfallDAL();
+            CardSearchObject removal = await dl.GetSearch("identity:rakdos+o:draw");
+
+            return View("FindSingleRemoval",removal);
+        }
+
+        //[HttpPost]
+        //public IActionResult AddCardsToDeck()
+        //{
+        //    var userId = FindUserId();
+        //    if (userId != null)
+        //    {
+        //        DecksTable deckId = new DecksTable();
+        //        deckId.UserTableId = int.Parse(FindUserId());
+        //        _context.DecksTable.Add(deckId);
+        //        _context.SaveChanges();
+        //    }
+        //    return RedirectToAction("DeckList");
+        //}
+
+        public string FindUserId()
+        {
+            if (User.Identity.Name == null)
+            {
+                return null;
+            }
+            else
+            {
+                return _context.AspNetUsers.Where(s => s.UserName == User.Identity.Name).FirstOrDefault().Id;
+            }
+        }
+
 
         [HttpGet]
         public IActionResult Quiz()

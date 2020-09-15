@@ -11,27 +11,39 @@ namespace MagicTheGatheringFinal.Models
 {
     public class ScryfallDAL
     {
-        //public HttpClient GetClient()
-        //{
-        //    HttpClient client = new HttpClient();
-        //    client.BaseAddress = new Uri("https://api.scryfall.com");
-        //    //URI - uniform resource identifier
-        //    return client;
-        //}
-
-        //public async Task<Cardobject> GetCard(string input)
-        //{
-        //    var client = GetClient(); //calls the method that gives the API the general information needed to 
-        //    //receive data from the API 
-        //    var inputQuery = MakeQuery(input);
-        //    var response = await client.GetAsync($"/named?fuzzy={inputQuery}"); //uses the client (HTTPClient) to receive 
-        //    //data from the API based off of a certain endpoint.
-        //    Cardobject card = await response.Content.ReadAsAsync<Cardobject>();
-        //    //install-package Microsoft.AspNet.WebAPI.Client
-        //    //response has a property called Content and Content has a method that reads the JSON and plugs it into a specified
-        //    //obect. If the JSON does not fit within the object we get an Internal Deserialization error
-        //    return card;
-        //}
+        public HttpClient GetClient()
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("https://api.scryfall.com");
+            //URI - uniform resource identifier
+            return client;
+        }
+        public async Task<CardSearchObject> GetSearch(string input)
+        {
+            var client = GetClient(); //calls the method that gives the API the general information needed to 
+            //receive data from the API 
+            var inputQuery = MakeQuery(input);
+            var response = await client.GetAsync($"/cards/search?q={input}"); //uses the client (HTTPClient) to receive 
+            //data from the API based off of a certain endpoint.
+            CardSearchObject card = await response.Content.ReadAsAsync<CardSearchObject>();
+            //install-package Microsoft.AspNet.WebAPI.Client
+            //response has a property called Content and Content has a method that reads the JSON and plugs it into a specified
+            //obect. If the JSON does not fit within the object we get an Internal Deserialization error
+            return card;
+        }
+        public async Task<Cardobject> GetCard(string input)
+        {
+            var client = GetClient(); //calls the method that gives the API the general information needed to 
+            //receive data from the API 
+            var inputQuery = MakeQuery(input);
+            var response = await client.GetAsync($"/named?fuzzy={inputQuery}"); //uses the client (HTTPClient) to receive 
+            //data from the API based off of a certain endpoint.
+            Cardobject card = await response.Content.ReadAsAsync<Cardobject>();
+            //install-package Microsoft.AspNet.WebAPI.Client
+            //response has a property called Content and Content has a method that reads the JSON and plugs it into a specified
+            //obect. If the JSON does not fit within the object we get an Internal Deserialization error
+            return card;
+        }
 
         public string MakeQuery(string input)
         {
