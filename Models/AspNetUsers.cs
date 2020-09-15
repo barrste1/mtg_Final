@@ -11,7 +11,8 @@ namespace MagicTheGatheringFinal.Models
             AspNetUserLogins = new HashSet<AspNetUserLogins>();
             AspNetUserRoles = new HashSet<AspNetUserRoles>();
             AspNetUserTokens = new HashSet<AspNetUserTokens>();
-            UsersTable = new HashSet<UsersTable>();
+            DecksTable = new HashSet<DecksTable>();
+            InverseAspUser = new HashSet<AspNetUsers>();
         }
 
         public string Id { get; set; }
@@ -29,11 +30,15 @@ namespace MagicTheGatheringFinal.Models
         public DateTimeOffset? LockoutEnd { get; set; }
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
+        public string Playertype { get; set; }
+        public string AspUserId { get; set; }
 
+        public virtual AspNetUsers AspUser { get; set; }
         public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserTokens> AspNetUserTokens { get; set; }
-        public virtual ICollection<UsersTable> UsersTable { get; set; }
+        public virtual ICollection<DecksTable> DecksTable { get; set; }
+        public virtual ICollection<AspNetUsers> InverseAspUser { get; set; }
     }
 }

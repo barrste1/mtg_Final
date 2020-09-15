@@ -25,7 +25,6 @@ namespace MagicTheGatheringFinal.Models
         public virtual DbSet<CardsTable> CardsTable { get; set; }
         public virtual DbSet<DecksTable> DecksTable { get; set; }
         public virtual DbSet<QuizTable> QuizTable { get; set; }
-        public virtual DbSet<UsersTable> UsersTable { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -119,6 +118,8 @@ namespace MagicTheGatheringFinal.Models
 
             modelBuilder.Entity<AspNetUsers>(entity =>
             {
+                entity.HasIndex(e => e.AspUserId);
+
                 entity.HasIndex(e => e.NormalizedEmail)
                     .HasName("EmailIndex");
 
@@ -134,6 +135,10 @@ namespace MagicTheGatheringFinal.Models
                 entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
 
                 entity.Property(e => e.UserName).HasMaxLength(256);
+
+                entity.HasOne(d => d.AspUser)
+                    .WithMany(p => p.InverseAspUser)
+                    .HasForeignKey(d => d.AspUserId);
             });
 
             modelBuilder.Entity<CardsTable>(entity =>
@@ -141,27 +146,62 @@ namespace MagicTheGatheringFinal.Models
                 entity.ToTable("cardsTable");
 
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Black).HasColumnName("black");
+
+                entity.Property(e => e.Blue).HasColumnName("blue");
+
+                entity.Property(e => e.CardArtUrl).HasColumnName("cardArtUrl");
+
+                entity.Property(e => e.CardId).HasColumnName("cardId");
+
+                entity.Property(e => e.Cmc).HasColumnName("cmc");
+
+                entity.Property(e => e.DecksTableKey).HasColumnName("decksTableKey");
+
+                entity.Property(e => e.Green).HasColumnName("green");
+
+                entity.Property(e => e.IsCommander).HasColumnName("isCommander");
+
+                entity.Property(e => e.ManaCost).HasColumnName("mana_cost");
+
+                entity.Property(e => e.Name).HasColumnName("name");
+
+                entity.Property(e => e.OracleText).HasColumnName("oracleText");
+
+                entity.Property(e => e.Power).HasColumnName("power");
+
+                entity.Property(e => e.Red).HasColumnName("red");
+
+                entity.Property(e => e.Toughness).HasColumnName("toughness");
+
+                entity.Property(e => e.TypeLine).HasColumnName("type_line");
+
+                entity.Property(e => e.White).HasColumnName("white");
+
+                entity.HasOne(d => d.DecksTableKeyNavigation)
+                    .WithMany(p => p.CardsTable)
+                    .HasForeignKey(d => d.DecksTableKey)
+                    .HasConstraintName("FK__cardsTabl__decks__787EE5A0");
             });
 
             modelBuilder.Entity<DecksTable>(entity =>
             {
                 entity.ToTable("decksTable");
 
-                entity.HasIndex(e => e.CardId);
+                entity.HasIndex(e => e.AspUserId);
 
-                entity.HasIndex(e => e.UserTableId);
+                entity.HasIndex(e => e.CardId);
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CardId).HasColumnName("cardId");
+                entity.HasOne(d => d.AspUser)
+                    .WithMany(p => p.DecksTable)
+                    .HasForeignKey(d => d.AspUserId);
 
                 entity.HasOne(d => d.Card)
                     .WithMany(p => p.DecksTable)
                     .HasForeignKey(d => d.CardId);
-
-                entity.HasOne(d => d.UserTable)
-                    .WithMany(p => p.DecksTable)
-                    .HasForeignKey(d => d.UserTableId);
             });
 
             modelBuilder.Entity<QuizTable>(entity =>
@@ -173,24 +213,6 @@ namespace MagicTheGatheringFinal.Models
                 entity.Property(e => e.Color).HasColumnName("color");
 
                 entity.Property(e => e.Word).HasColumnName("word");
-            });
-
-            modelBuilder.Entity<UsersTable>(entity =>
-            {
-                entity.ToTable("usersTable");
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.AspUserId)
-                    .HasColumnName("aspUserId")
-                    .HasMaxLength(450);
-
-                entity.Property(e => e.Playertype).HasColumnName("playertype");
-
-                entity.HasOne(d => d.AspUser)
-                    .WithMany(p => p.UsersTable)
-                    .HasForeignKey(d => d.AspUserId)
-                    .HasConstraintName("FK__usersTabl__aspUs__7A672E12");
             });
 
             OnModelCreatingPartial(modelBuilder);

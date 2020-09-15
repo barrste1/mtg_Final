@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MagicTheGatheringFinal.Context;
+using MagicTheGatheringFinal.Models;
 
 namespace MagicTheGatheringFinal
 {

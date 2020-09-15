@@ -12,9 +12,9 @@ namespace MagicTheGatheringFinal.Controllers
 {
     public class CardController : Controller
     {
-        private readonly Context.MagicDbContext _context;
+        private readonly MagicDbContext _context;
 
-        public CardController(Context.MagicDbContext context)
+        public CardController(MagicDbContext context)
         {
             _context = context;
         }
@@ -35,7 +35,46 @@ namespace MagicTheGatheringFinal.Controllers
             var results = await response.Content.ReadAsAsync<Cardobject>();
             return View(results);
         }
-    }
+        public IActionResult CardSearch()
+        {
+            return View();
+        }
+        public IActionResult AddCard(string id)
+        {
+            string userId = FindUserId();
 
-    
+            DecksTable dId = new DecksTable();
+
+            //dId.CardId = id;
+            //dId.UserTableId = userId;
+
+            _context.DecksTable.Add(dId);
+            _context.SaveChanges();
+            
+
+            return RedirectToAction("DeckList");
+        }
+
+        public IActionResult DeckList()
+        {
+            string id = FindUserId();
+
+            //var deckList = _context.DecksTable.Where(x => x.UserTableId == id).ToList();
+
+            return View();
+        }
+
+        public string FindUserId()
+        {
+            if (User.Identity.Name == null)
+            {
+                return null;
+            }
+            else
+            {
+                return _context.AspNetUsers.Where(s => s.UserName == User.Identity.Name).FirstOrDefault().Id;
+            }
+
+        }
+    }
 }
