@@ -18,32 +18,52 @@ namespace MagicTheGatheringFinal.Controllers
         {
             return View();
         }
+
+        public IActionResult QuizIntro()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Quiz()
+        {
+            QuizViewModel quizObject = new QuizViewModel();
+            quizObject.ColorScore = "W0|U0|B0|R0|G0";
+            quizObject.QuizTable = (QuizTable)_context.QuizTable.Where(x => x.Id == 1);
+            quizObject.Counter = 1;
+
+            return View(quizObject);
+        }
+
+        [HttpPost]
         public IActionResult Quiz(QuizViewModel response)
         {
             string[] colors = response.ColorScore.Split('|');
             string serializeColors = "";
-            if (response.Counter==0 || response.Counter % 5==0)
+            if(response.Counter==1 || response.Counter == 6|| response.Counter == 11||response.Counter == 16|| response.Counter == 21)
             {
-                colors[0] = $"W{(int.Parse(colors[0].Substring(1))+ response.Answer)}";
-            }
-            else if(response.Counter==1 || response.Counter == 6|| response.Counter == 11||response.Counter == 16|| response.Counter == 21)
-            {
-                colors[1] = $"U{(int.Parse(colors[1].Substring(1)) + response.Answer)}";
+                colors[0] = $"W{(int.Parse(colors[0].Substring(1)) + response.Answer)}";
             }
             else if(response.Counter == 2 || response.Counter == 7 || response.Counter == 12 || response.Counter == 17 || response.Counter == 22)
             {
-                colors[2] = $"B{(int.Parse(colors[2].Substring(1)) + response.Answer)}";
+                colors[1] = $"U{(int.Parse(colors[1].Substring(1)) + response.Answer)}";
             }
             else if (response.Counter == 3 || response.Counter == 8 || response.Counter == 13 || response.Counter == 18 || response.Counter == 23)
             {
-                colors[3] = $"R{(int.Parse(colors[3].Substring(1)) + response.Answer)}";
+                colors[2] = $"B{(int.Parse(colors[2].Substring(1)) + response.Answer)}";
+
             }
-            else 
+            else if (response.Counter == 4 || response.Counter == 9 || response.Counter == 14 || response.Counter == 19 || response.Counter == 24)
+            {
+            
+                 colors[3] = $"R{(int.Parse(colors[3].Substring(1)) + response.Answer)}";
+            }
+            else
             {
                 colors[4] = $"G{(int.Parse(colors[4].Substring(1)) + response.Answer)}";
             }
 
-            if (response.Counter < 24)
+            if (response.Counter <= 24)
             {
 
                 response.Counter++;
@@ -64,6 +84,7 @@ namespace MagicTheGatheringFinal.Controllers
 
         public IActionResult QuizResult(string result)
         {
+
             return View();
         }
         public IActionResult BasicMagicConcepts()

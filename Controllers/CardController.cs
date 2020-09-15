@@ -12,9 +12,9 @@ namespace MagicTheGatheringFinal.Controllers
 {
     public class CardController : Controller
     {
-        private readonly Context.MagicDbContext _context;
+        private readonly MagicDbContext _context;
 
-        public CardController(Context.MagicDbContext context)
+        public CardController(MagicDbContext context)
         {
             _context = context;
         }

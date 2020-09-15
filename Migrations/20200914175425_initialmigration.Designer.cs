@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MagicTheGatheringFinal.Migrations
 {
-    [DbContext(typeof(MagicDbContext))]
+    //[DbContext(typeof(MagicDbContext))]
     [Migration("20200914175425_initialmigration")]
     partial class initialmigration
     {

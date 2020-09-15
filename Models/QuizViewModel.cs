@@ -9,7 +9,9 @@ namespace MagicTheGatheringFinal.Models
     {
         public string ColorScore { get; set; }
         public QuizTable QuizTable { get; set; }
+        public string QuizWord { get; set; }
         public int Counter { get; set; }
         public int Answer { get; set; }
     }
+
 }
