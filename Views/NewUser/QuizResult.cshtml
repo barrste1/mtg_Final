@@ -1,0 +1,57 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model QuizResultViewModel
+
+@if (Model.ThirdiaryColor == null)
+{
+    <h2>The colors that most define you are @Model.PrimaryColor and @Model.SecondaryColor!</h2>
+}
+@*else
+    {
+        <h2>The colors that most define you are @Model.PrimaryColor, @Model.SecondaryColor! and @Model.ThirdiaryColor!</h2>
+    }*@
+<br />
+<h3>Your overall Colorscore is: White: @Model.ColorScore["W"] | Blue: @Model.ColorScore["U"] | Black: @Model.ColorScore["B"] | Red: @Model.ColorScore["R"] | Green: @Model.ColorScore["G"]</h3>
+@if (Model.PrimaryColor == "W")
+{
+    <p>placeholder white</p>
+}
+else if (Model.PrimaryColor == "U")
+{
+    <p>placeholder blue</p>
+}
+else if (Model.PrimaryColor == "B")
+{
+    <p>placeholder black</p>
+}
+else if (Model.PrimaryColor == "R")
+{
+    <p>placeholder red</p>
+}
+else
+{ <p>placeholder green</p>}
+<br />
+@if (Model.SecondaryColor == "W")
+{
+    <p>placeholder white</p>
+}
+else if (Model.SecondaryColor == "U")
+{
+    <p>placeholder blue</p>
+}
+else if (Model.SecondaryColor == "B")
+{
+    <p>placeholder black</p>
+}
+else if (Model.SecondaryColor == "R")
+{
+    <p>placeholder red</p>
+}
+else
+{ <p>placeholder green</p>}
+
+<br />

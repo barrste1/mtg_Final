@@ -120,7 +120,7 @@ namespace MagicTheGatheringFinal.Controllers
             List<int> colorInteger = new List<int>();
             Dictionary<string, int> colorScore = new Dictionary<string, int>();
             List<string> colors = new List<string>();
-
+            QuizResultViewModel quizResult = new QuizResultViewModel();
 
             string[] desserializeResult = result.ColorScore.Split('|');
             foreach(string color in desserializeResult)
@@ -130,8 +130,21 @@ namespace MagicTheGatheringFinal.Controllers
 
             var sortedDict = from entry in colorScore orderby entry.Value descending select entry;
 
-            return View();
+
+            quizResult.PrimaryColor = colorScore.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
+            quizResult.SecondaryColor = sortedDict.Skip(1).Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
+
+
+            quizResult.ColorScore = colorScore;
+            AspNetUsers user = _context.AspNetUsers.Find(FindUserId());
+            user.Playertype = quizResult.PrimaryColor + quizResult.SecondaryColor;
+            _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Update(user);
+            _context.SaveChanges();
+
+            return View(quizResult);
         }
+
         public IActionResult BasicMagicConcepts()
         {
             return View();
