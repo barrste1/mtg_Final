@@ -9,43 +9,73 @@ namespace MagicTheGatheringFinal.Controllers
 {
     public class AssistedDeckBuilder : Controller
     {
-        public IActionResult Index()
+        private readonly MagicDbContext _context;
+
+        public AssistedDeckBuilder(MagicDbContext context)
         {
-            return View();
+            _context = context;
+        }
+        public async Task<IActionResult> Index()
+        {
+            string identity = FindPlayerType();
+            ScryfallDAL dl = new ScryfallDAL();
+            CardSearchObject removal = await dl.GetSearch($"id:{identity.ToLower()}+o:draw");
+
+            return View(removal);
+
         }
         public async Task<IActionResult> FindSingleRemoval()
         {
-            string identity = "plurbus_database";
+            string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
-            CardSearchObject removal = await dl.GetSearch("identity:rakdos+o:\"destroy\"+t:\"instant\"");
+            CardSearchObject removal = await dl.GetSearch($"id:{identity.ToLower()}+o:\"destroy\"+t:\"instant\"ort:\"sorcery\"");
 
             return View(removal);
         }
         public async Task<IActionResult> FindMultiRemoval()
         {
-            string identity = "plurbus_database";
+            string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
-            CardSearchObject removal = await dl.GetSearch("identity:rakdos+o:\"destroy all\"+t:\"sorcery\"");
+            CardSearchObject removal = await dl.GetSearch($"id:{identity.ToLower()}+o:\"destroy all\"+t:\"sorcery\"ort:\"instant\"");
 
             return View(removal);
         }
 
         public async Task<IActionResult> FindRamp()
         {
-            string identity = "plurbus_database";
+            string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
-            CardSearchObject removal = await dl.GetSearch("identity:rakdos+produces:br+t:\"artifact\"");
+            CardSearchObject removal = await dl.GetSearch($"id:{identity.ToLower()}+produces:br+t:\"artifact\"");
 
             return View("FindSingleRemoval", removal);
         }
 
         public async Task<IActionResult> FindDraw()
         {
-            string identity = "plurbus_database";
+            string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
-            CardSearchObject removal = await dl.GetSearch("identity:rakdos+o:draw");
+            CardSearchObject removal = await dl.GetSearch($"id:{identity.ToLower()}+o:draw");
 
             return View("FindSingleRemoval", removal);
+        }
+        public string FindPlayerType()
+        {
+            string userId = FindUserId();
+
+            var playerType = (from p in _context.AspNetUsers where p.Id == userId select p.Playertype).Single();
+
+            return playerType;
+        }
+        public string FindUserId()
+        {
+            if (User.Identity.Name == null)
+            {
+                return null;
+            }
+            else
+            {
+                return _context.AspNetUsers.Where(s => s.UserName == User.Identity.Name).FirstOrDefault().Id;
+            }
         }
 
     }

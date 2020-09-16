@@ -11,16 +11,6 @@
 
             @for (int i = 0; i < Model.data.Count(); i++)
             {
-                string image = "";
-                if (Model.data[i].image_uris.png != null)
-                {
-                     image = Model.data[i].image_uris.normal;
-                }
-                else
-                {
-                    image = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
-                }
-
                 <tr>
                 <td>@(i+1).</td>
                 <td>@Model.data[i].name</td>
