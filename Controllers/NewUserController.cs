@@ -10,9 +10,10 @@ namespace MagicTheGatheringFinal.Controllers
     public class NewUserController : Controller
     {
         private readonly MagicDbContext _context;
+
         public NewUserController(MagicDbContext context)
         {
-            context = _context;
+            _context = context;
         }
 
         public IActionResult AssistedDeckBuilder()
@@ -26,40 +27,7 @@ namespace MagicTheGatheringFinal.Controllers
         }
 
 
-        public async Task<IActionResult> FindSingleRemoval()
-        {
-            string identity = "plurbus_database";
-            ScryfallDAL dl = new ScryfallDAL();
-            CardSearchObject removal = await dl.GetSearch("identity:rakdos+o:\"destroy\"+t:\"instant\"");
 
-            return View(removal);
-        }
-        public async Task<IActionResult> FindMultiRemoval()
-        {
-            string identity = "plurbus_database";
-            ScryfallDAL dl = new ScryfallDAL();
-            CardSearchObject removal = await dl.GetSearch("identity:rakdos+o:\"destroy all\"+t:\"sorcery\"");
-
-            return View(removal);
-        }
-
-        public async Task<IActionResult> FindRamp()
-        {
-            string identity = "plurbus_database";
-            ScryfallDAL dl = new ScryfallDAL();
-            CardSearchObject removal = await dl.GetSearch("identity:rakdos+produces:br+t:\"artifact\"");
-
-            return View("FindSingleRemoval",removal);
-        }
-
-        public async Task<IActionResult> FindDraw()
-        {
-            string identity = "plurbus_database";
-            ScryfallDAL dl = new ScryfallDAL();
-            CardSearchObject removal = await dl.GetSearch("identity:rakdos+o:draw");
-
-            return View("FindSingleRemoval",removal);
-        }
 
         //[HttpPost]
         //public IActionResult AddCardsToDeck()
@@ -89,14 +57,14 @@ namespace MagicTheGatheringFinal.Controllers
 
 
         [HttpGet]
-        public IActionResult Quiz()
+        public IActionResult StartQuiz()
         {
             QuizViewModel quizObject = new QuizViewModel();
             quizObject.ColorScore = "W0|U0|B0|R0|G0";
-            quizObject.QuizTable = (QuizTable)_context.QuizTable.Where(x => x.Id == 1);
+            var startQuiz = _context.QuizTable.Where(x => x.Id == 1).FirstOrDefault();
             quizObject.Counter = 1;
-
-            return View(quizObject);
+            quizObject.QuizTable = startQuiz;
+            return View("Quiz",quizObject);
         }
 
         [HttpPost]
@@ -126,28 +94,41 @@ namespace MagicTheGatheringFinal.Controllers
             {
                 colors[4] = $"G{(int.Parse(colors[4].Substring(1)) + response.Answer)}";
             }
+            response.Counter++;
 
-            if (response.Counter <= 24)
+            for (int i = 0; i < colors.Length; i++)
             {
-
-                response.Counter++;
-                for(int i =0; i< colors.Length; i++)
-                {
-                    serializeColors += colors[i] + '|';
-                }
-                response.ColorScore = serializeColors.Substring(0,serializeColors.Length-1);
-                response.QuizTable = (QuizTable)_context.QuizTable.Where(x=>x.Id==response.Counter);
+                serializeColors += colors[i] + '|';
+            }
+            response.ColorScore = serializeColors.Substring(0, serializeColors.Length - 1);
+            response.QuizTable = (QuizTable)_context.QuizTable.Where(x => x.Id == response.Counter).FirstOrDefault();
+            if (response.Counter <= 25)
+            {
                 return View(response);
             }
             else
             {
-                RedirectToAction("QuizResult");
+               return RedirectToAction("QuizResult",response);
             }
-            return View();
+
         }
 
-        public IActionResult QuizResult(string result)
+        public IActionResult QuizResult(QuizViewModel result)
         {
+
+
+            List<int> colorInteger = new List<int>();
+            Dictionary<string, int> colorScore = new Dictionary<string, int>();
+            List<string> colors = new List<string>();
+
+
+            string[] desserializeResult = result.ColorScore.Split('|');
+            foreach(string color in desserializeResult)
+            {
+                colorScore.Add(color.Substring(0, 1), int.Parse(color.Substring(1)));
+            }
+
+            var sortedDict = from entry in colorScore orderby entry.Value descending select entry;
 
             return View();
         }
