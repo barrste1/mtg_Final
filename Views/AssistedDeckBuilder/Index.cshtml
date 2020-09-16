@@ -7,14 +7,15 @@
             <th>Name</th>
             <th>Description</th>
             <th>Mana</th>
+            <th>Image</th>
         </tr>
 
-            @for (int i = 0; i < Model.data.Count(); i++)
-            {
+            @for (int i = 0, count = 1; i < Model.data.Count(); i++, count++)
+            {        
                 string image = "";
-                if (Model.data[i].image_uris.png != null)
+                if (Model.data[i].image_uris != null)
                 {
-                     image = Model.data[i].image_uris.normal;
+                    image = Model.data[i].image_uris.small;
                 }
                 else
                 {
@@ -22,12 +23,19 @@
                 }
 
                 <tr>
-                <td>@(i+1).</td>
+                <td>@count.</td>
                 <td>@Model.data[i].name</td>
-                <td>@Model.data[i].oracle_text</td>
+                    @if (Model.data[i].oracle_text == null)
+                    {
+                        <td>Ah, ah, ah, you didn't say the <b>*magic*</b> word</td>
+                    }
+                    else 
+                    { 
+                        <td>@Model.data[i].oracle_text</td>            
+                    }
                 <td>@Model.data[i].mana_cost</td>
-
-                    </tr>
+                <td><img src="@image" /></td>
+                </tr>
             }
 
 
