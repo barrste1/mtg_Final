@@ -6,7 +6,6 @@ namespace MagicTheGatheringFinal.Models
 {
     public partial class MagicDbContext : DbContext
     {
-        
         public MagicDbContext()
         {
         }
@@ -195,6 +194,10 @@ namespace MagicTheGatheringFinal.Models
                 entity.HasIndex(e => e.CardId);
 
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.DeckName)
+                    .HasColumnName("DECK_NAME")
+                    .HasMaxLength(50);
 
                 entity.HasOne(d => d.AspUser)
                     .WithMany(p => p.DecksTable)

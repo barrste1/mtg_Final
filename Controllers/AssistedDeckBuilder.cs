@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime;
 using System.Threading.Tasks;
 using MagicTheGatheringFinal.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -76,6 +77,30 @@ namespace MagicTheGatheringFinal.Controllers
             {
                 return _context.AspNetUsers.Where(s => s.UserName == User.Identity.Name).FirstOrDefault().Id;
             }
+        }
+        //this method will create a deck name when the user finishes the assisted deck building tool
+        public string CreateDeckName(int commanderId)
+        {
+            string assistedDeckName = "";
+            DecksTable deckTable = new DecksTable();
+
+            //string format:
+            //username_assistedDeck_deckNumber
+
+            string userName = FindUserId();
+
+            int deckNumber = (from n in _context.DecksTable where n.AspUserId == userName select n.DeckName).Count();
+
+            assistedDeckName = ($"{userName}_assistedDeck_{deckNumber}");
+
+            deckTable.DeckName = assistedDeckName;
+            deckTable.CardId = commanderId;
+            deckTable.AspUserId = userName;
+
+            _context.DecksTable.Add(deckTable);
+            _context.SaveChanges();
+
+            return assistedDeckName;
         }
 
     }
