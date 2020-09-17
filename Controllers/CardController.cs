@@ -85,41 +85,6 @@ namespace MagicTheGatheringFinal.Controllers
 
 
 
-        //[HttpPost]
-        //public IActionResult AddCard(string id)
-        //{
-        //    var userId = FindUserId();
-        //    if (id != null)
-        //    {
-        //        DecksTable dId = new DecksTable();
-        //        dId.CardId = int.Parse(id);
-        //        dId.UserTableId = int.Parse(FindUserId());
-        //        _context.DecksTable.Add(dId);
-        //        _context.SaveChanges();
-        //    }
-        //    return RedirectToAction("DeckList");
-        //}
-
-        //[HttpPost]
-        //public IActionResult AddCard()
-        //{
-        //    string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        //    DecksTable dId = new DecksTable();
-        //    try
-        //    {
-        //        dId = _context.DecksTable.Where(x => x.Id == id).First();
-        //    }
-        //    catch
-        //    {
-        //        _context.CardsTable = id;
-        //        _context. = id;
-        //        _musicDb.ArtistT.Add(foundArtist);
-        //        _musicDb.SaveChanges();
-        //        return RedirectToAction("DeckList");
-        //    }
-        //    return View("DeckList");
-        //}
-
         public IActionResult DeckList()
         {
             CardsTable cd = new CardsTable();
