@@ -55,6 +55,49 @@ namespace MagicTheGatheringFinal.Controllers
             }
         }
 
+        public IActionResult Commander(string quizIdentity)
+        {
+            List<string> colors = new List<string>() { quizIdentity.Substring(0, 1), quizIdentity.Substring(1, 1) };
+            colors.Sort();
+            quizIdentity = colors[0] + colors[1];
+
+
+            List<CardsTable> viableCommanders = new List<CardsTable>();
+            List<CardsTable> commanders = _context.CardsTable.Where(s => s.IsCommander == true).ToList();
+
+            for(int i = 0; i < commanders.Count(); i++)
+            {
+                string commandersColors = "";
+
+                if (commanders[i].Black != null)
+                {
+                    commandersColors += "B";
+                }
+                if (commanders[i].Green != null)
+                {
+                    commandersColors += "G";
+                }
+                if (commanders[i].Red != null)
+                {
+                    commandersColors += "R";
+                }
+                if (commanders[i].Blue != null)
+                {
+                    commandersColors += "U";
+                }
+                if (commanders[i].White != null)
+                {
+                    commandersColors += "W";
+                }
+
+                if (quizIdentity == commandersColors)
+                {
+                    viableCommanders.Add(commanders[i]);
+                }
+            }
+
+            return View(viableCommanders);
+        }
 
         [HttpGet]
         public IActionResult StartQuiz()
