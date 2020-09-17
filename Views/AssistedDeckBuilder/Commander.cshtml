@@ -9,6 +9,6 @@
 
 @for (int i = 0; i < 5; i++)
 {
-    <img src="@Model[i].CardArtUrl" />
-    <a href="../AssistedDeckBuilder/FindSingleRemoval?id=@Model[i].Id"> Click for this to be your commander!</a>
+    <img style="width:20%; height:20%"  src="@Model[i].CardArtUrl" />
+    <a href="../AssistedDeckBuilder/FindSingleRemoval?id=@Model[i].Id"> Make @Model[i].Name your commander!</a>
 }
