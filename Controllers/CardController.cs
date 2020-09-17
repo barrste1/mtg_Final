@@ -5,11 +5,15 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using MagicTheGatheringFinal.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
+
 namespace MagicTheGatheringFinal.Controllers
 {
+    [Authorize]
     public class CardController : Controller
     {
         private readonly MagicDbContext _context;
@@ -81,51 +85,17 @@ namespace MagicTheGatheringFinal.Controllers
 
 
 
-        //[HttpPost]
-        //public IActionResult AddCard(string id)
-        //{
-        //    var userId = FindUserId();
-        //    if (id != null)
-        //    {
-        //        DecksTable dId = new DecksTable();
-        //        dId.CardId = int.Parse(id);
-        //        dId.UserTableId = int.Parse(FindUserId());
-        //        _context.DecksTable.Add(dId);
-        //        _context.SaveChanges();
-        //    }
-        //    return RedirectToAction("DeckList");
-        //}
-
-        //[HttpPost]
-        //public IActionResult AddCard()
-        //{
-        //    string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        //    DecksTable dId = new DecksTable();
-        //    try
-        //    {
-        //        dId = _context.DecksTable.Where(x => x.Id == id).First();
-        //    }
-        //    catch
-        //    {
-        //        _context.CardsTable = id;
-        //        _context. = id;
-        //        _musicDb.ArtistT.Add(foundArtist);
-        //        _musicDb.SaveChanges();
-        //        return RedirectToAction("DeckList");
-        //    }
-        //    return View("DeckList");
-        //}
-
         public IActionResult DeckList()
         {
             CardsTable cd = new CardsTable();
             DecksTable dt = new DecksTable();
             string id = FindUserId();
-
+            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
 
             //get all columns in the db where card id of the decks table matches the card id of the cards table
             var userCards = (from d in _context.DecksTable
                              join c in _context.CardsTable on d.CardId equals c.Id
+                             where d.AspUserId == id && d.DeckName == lastEntry.DeckName
                              select new
                              {
                                  c.Name,
