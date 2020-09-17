@@ -18,6 +18,18 @@ namespace MagicTheGatheringFinal.Models
             //URI - uniform resource identifier
             return client;
         }
+
+        public async Task<CardSearchObject> GetCommandersAsync(string page)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri($"{page}");
+            var response = await client.GetAsync("");
+            CardSearchObject card = await response.Content.ReadAsAsync<CardSearchObject>();
+
+
+            return card;
+        }
+
         public async Task<CardSearchObject> GetSearch(string input)
         {
             var client = GetClient(); //calls the method that gives the API the general information needed to 
@@ -31,6 +43,7 @@ namespace MagicTheGatheringFinal.Models
             //obect. If the JSON does not fit within the object we get an Internal Deserialization error
             return card;
         }
+
         public async Task<Cardobject> GetCard(string input)
         {
             var client = GetClient(); //calls the method that gives the API the general information needed to 
