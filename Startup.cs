@@ -68,7 +68,7 @@ namespace MagicTheGatheringFinal
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=NewUser}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
