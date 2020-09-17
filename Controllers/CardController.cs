@@ -118,9 +118,30 @@ namespace MagicTheGatheringFinal.Controllers
 
         public IActionResult DeckList()
         {
+            CardsTable cd = new CardsTable();
+            DecksTable dt = new DecksTable();
             string id = FindUserId();
-            var deckList = _context.DecksTable.Where(x => x.Id == int.Parse(id)).ToList();
-            return View(deckList);
+
+
+            //get all columns in the db where card id of the decks table matches the card id of the cards table
+            var userCards = (from d in _context.DecksTable
+                             join c in _context.CardsTable on d.CardId equals c.Id
+                             select new
+                             {
+                                 c.Name,
+                                 c.CardArtUrl
+                             }).ToList();
+
+            List<string> cardList = new List<string>();
+
+            for (int i = 0; i < userCards.Count; i++)
+            {
+                cardList.Add(userCards[i].Name);
+                cardList.Add(userCards[i].CardArtUrl);
+            }
+            //ViewBag.userCards = userCards;
+
+            return View(cardList);
         }
         public string FindUserId()
         {
