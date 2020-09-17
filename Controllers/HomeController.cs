@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MagicTheGatheringFinal.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MagicTheGatheringFinal.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly MagicDbContext _context;

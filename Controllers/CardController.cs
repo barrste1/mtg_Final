@@ -5,11 +5,15 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using MagicTheGatheringFinal.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
+
 namespace MagicTheGatheringFinal.Controllers
 {
+    [Authorize]
     public class CardController : Controller
     {
         private readonly MagicDbContext _context;

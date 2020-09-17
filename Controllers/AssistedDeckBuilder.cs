@@ -4,10 +4,16 @@ using System.Linq;
 using System.Runtime;
 using System.Threading.Tasks;
 using MagicTheGatheringFinal.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+
+
+
 
 namespace MagicTheGatheringFinal.Controllers
 {
+    [Authorize]
     public class AssistedDeckBuilder : Controller
     {
         private readonly MagicDbContext _context;
