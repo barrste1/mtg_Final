@@ -121,11 +121,12 @@ namespace MagicTheGatheringFinal.Controllers
             CardsTable cd = new CardsTable();
             DecksTable dt = new DecksTable();
             string id = FindUserId();
-
+            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
 
             //get all columns in the db where card id of the decks table matches the card id of the cards table
             var userCards = (from d in _context.DecksTable
                              join c in _context.CardsTable on d.CardId equals c.Id
+                             where d.AspUserId == id && d.DeckName == lastEntry.DeckName
                              select new
                              {
                                  c.Name,

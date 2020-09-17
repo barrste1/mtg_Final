@@ -96,7 +96,7 @@ namespace MagicTheGatheringFinal.Controllers
                 }
             }
 
-            return View(viableCommanders);
+            return View("../AssistedDeckBuilder/Commander",viableCommanders);
         }
 
         [HttpGet]

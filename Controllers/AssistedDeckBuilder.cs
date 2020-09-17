@@ -25,21 +25,152 @@ namespace MagicTheGatheringFinal.Controllers
             return View(removal);
 
         }
-        public async Task<IActionResult> FindSingleRemoval()
+        public async Task<IActionResult> FindSingleRemoval(int id)
         {
+
+            
+
+            DecksTable newdeck = new DecksTable();
+            CardsTable newCard = new CardsTable();
+            CardSearchObject scryFallSearch = new CardSearchObject();
+
+            newdeck.AspUserId = FindUserId();
+            newdeck.CardId = id;
+            newdeck.DeckName = CreateDeckName(id);
+
+
             string identity = FindPlayerType();
+
+            List<string> colorId = new List<string>() { identity.Substring(0, 1), identity.Substring(1, 1) };
+
+
+            for (int i = 0; i < colorId.Count(); i++)
+            {
+                newdeck.Id = 0;
+                if (colorId[i] == "W")
+                {
+                    newCard = _context.CardsTable.Where(x => x.CardId == "ae92e656-6c9d-48c3-a238-5a11c2c62ec8").FirstOrDefault();
+                    newdeck.CardId = newCard.Id;
+                    _context.DecksTable.Add(newdeck);
+                    _context.SaveChanges();
+                }
+                if (colorId[i] == "U")
+                {
+                    newCard = _context.CardsTable.Where(x => x.CardId == "589a324f-4466-4d4a-8cfb-806a041d7c1f").FirstOrDefault();
+                    newdeck.CardId = newCard.Id;
+                    _context.DecksTable.Add(newdeck);
+                    _context.SaveChanges();
+                }
+                if (colorId[i] == "B")
+                {
+                    newCard = _context.CardsTable.Where(x => x.CardId == "1967d4a8-6cc4-4a4d-9d24-93257de35e6d").FirstOrDefault();
+                    newdeck.CardId = newCard.Id;
+                    _context.DecksTable.Add(newdeck);
+                    _context.SaveChanges();
+                }
+                if (colorId[i] == "R")
+                {
+                    newCard = _context.CardsTable.Where(x => x.CardId == "3c6a38dd-e8f5-420f-9576-66937c71286b").FirstOrDefault();
+                    newdeck.CardId = newCard.Id;
+                    _context.DecksTable.Add(newdeck);
+                    _context.SaveChanges();
+                }
+                if (colorId[i] == "G")
+                {
+                    newCard = _context.CardsTable.Where(x => x.CardId == "2b90e88b-60a3-4d1d-bb8c-14633e5005a5").FirstOrDefault();
+                    newdeck.CardId = newCard.Id;
+                    _context.DecksTable.Add(newdeck);
+                    _context.SaveChanges();
+                }
+            }
+
+            List<int> cardCurveData = new List<int>()
+            {
+                5,
+                6,
+                6,
+                7,
+                5,
+                2
+            };
+
             ScryfallDAL dl = new ScryfallDAL();
+
+            for (int i = 0, j = 2; i < cardCurveData.Count(); i++, j++)
+            {
+                scryFallSearch = await dl.GetSearch($"id:{identity}+cmc={j}+t:\"Creature\"");
+                for (int k = 0; k < cardCurveData[i]; k++)
+                {
+
+                    CardsTable addCreature = new CardsTable();
+                    if (_context.CardsTable.Where(x => x.CardId == scryFallSearch.data[k].id).FirstOrDefault() == null)
+                    {
+                        if (scryFallSearch.data[k].image_uris != null)
+                        {
+                            addCreature.CardArtUrl = scryFallSearch.data[k].image_uris.normal;
+                        }
+                        else
+                        {
+                            addCreature.CardArtUrl = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
+                        }
+
+                        addCreature.CardId = scryFallSearch.data[k].id;
+                        addCreature.Cmc = scryFallSearch.data[k].cmc;
+                        addCreature.ManaCost = scryFallSearch.data[k].mana_cost;
+                        addCreature.Name = scryFallSearch.data[k].name;
+                        addCreature.OracleText = scryFallSearch.data[k].oracle_text;
+                        addCreature.TypeLine = scryFallSearch.data[k].type_line;
+                        if (scryFallSearch.data[k].color_identity.Contains("B"))
+                        {
+                            addCreature.Black = "B";
+                        }
+                        if (scryFallSearch.data[k].color_identity.Contains("U"))
+                        {
+                            addCreature.Blue = "U";
+                        }
+                        if (scryFallSearch.data[k].color_identity.Contains("W"))
+                        {
+                            addCreature.White = "W";
+                        }
+                        if (scryFallSearch.data[k].color_identity.Contains("G"))
+                        {
+                            addCreature.Green = "G";
+                        }
+                        if (scryFallSearch.data[k].color_identity.Contains("R"))
+                        {
+                            addCreature.Red = "R";
+                        }
+                        _context.CardsTable.Add(addCreature);
+                        _context.SaveChanges();
+                    }
+                    var idCollection = (from x in _context.CardsTable where scryFallSearch.data[k].id == x.CardId select x.Id).FirstOrDefault();
+                    newdeck.CardId = idCollection;
+
+                    newdeck.Id = 0;
+
+                    _context.DecksTable.Add(newdeck);
+                    _context.SaveChanges();
+                }
+            }
+
             CardSearchObject removal = await dl.GetSearch($"id:{identity.ToLower()}+o:\"destroy\"+t:\"instant\"ort:\"sorcery\"");
 
+
+            //single chaind to multi from the view
             return View(removal);
         }
+
+
+
         public async Task<IActionResult> FindMultiRemoval(List<string> SelectedCard)
         {
-            CardsTable cardTable = new CardsTable();
-            DecksTable deckTable = new DecksTable();
+            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
 
+          
             foreach (string assistedCardId in SelectedCard)
             {
+                CardsTable cardTable = new CardsTable();
+                DecksTable deckTable = new DecksTable();
                 var userId = FindUserId();
                 cardTable.Id = 0;
 
@@ -92,7 +223,7 @@ namespace MagicTheGatheringFinal.Controllers
                 }
 
                 deckTable.Id = 0;
-
+                deckTable.DeckName = lastEntry.DeckName;
                 _context.DecksTable.Add(deckTable);
                 _context.SaveChanges();
             }
@@ -102,16 +233,17 @@ namespace MagicTheGatheringFinal.Controllers
             ScryfallDAL dl = new ScryfallDAL();
             CardSearchObject removal = await dl.GetSearch($"id:{identity.ToLower()}+o:\"destroy all\"+t:\"sorcery\"ort:\"instant\"");
 
+            //multitarget goes to ramp from the view
             return View(removal);
         }
 
         public async Task<IActionResult> FindRamp(List<string> SelectedCard)
         {
-            CardsTable cardTable = new CardsTable();
-            DecksTable deckTable = new DecksTable();
-
+            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
             foreach (string assistedCardId in SelectedCard)
             {
+                CardsTable cardTable = new CardsTable();
+                DecksTable deckTable = new DecksTable();
                 var userId = FindUserId();
                 cardTable.Id = 0;
 
@@ -164,7 +296,7 @@ namespace MagicTheGatheringFinal.Controllers
                 }
 
                 deckTable.Id = 0;
-
+                deckTable.DeckName = lastEntry.DeckName;
                 _context.DecksTable.Add(deckTable);
                 _context.SaveChanges();
             }
@@ -173,16 +305,17 @@ namespace MagicTheGatheringFinal.Controllers
             ScryfallDAL dl = new ScryfallDAL();
             CardSearchObject removal = await dl.GetSearch($"id:{identity.ToLower()}+produces:br+t:\"artifact\"");
 
+            //ramp goes to draw from the view
             return View(removal);
         }
 
         public async Task<IActionResult> FindDraw(List<string> SelectedCard)
         {
-            CardsTable cardTable = new CardsTable();
-            DecksTable deckTable = new DecksTable();
-
+            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
             foreach (string assistedCardId in SelectedCard)
             {
+                CardsTable cardTable = new CardsTable();
+                DecksTable deckTable = new DecksTable();
                 var userId = FindUserId();
                 cardTable.Id = 0;
 
@@ -235,7 +368,7 @@ namespace MagicTheGatheringFinal.Controllers
                 }
 
                 deckTable.Id = 0;
-
+                deckTable.DeckName = lastEntry.DeckName;
                 _context.DecksTable.Add(deckTable);
                 _context.SaveChanges();
             }
@@ -249,11 +382,12 @@ namespace MagicTheGatheringFinal.Controllers
 
         public async Task<IActionResult> CompleteAssistedDeck(List<string> SelectedCard)
         {
-            CardsTable cardTable = new CardsTable();
-            DecksTable deckTable = new DecksTable();
 
+            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
             foreach (string assistedCardId in SelectedCard)
             {
+                CardsTable cardTable = new CardsTable();
+                DecksTable deckTable = new DecksTable();
                 var userId = FindUserId();
                 cardTable.Id = 0;
 
@@ -306,7 +440,7 @@ namespace MagicTheGatheringFinal.Controllers
                 }
 
                 deckTable.Id = 0;
-
+                deckTable.DeckName = lastEntry.DeckName;
                 _context.DecksTable.Add(deckTable);
                 _context.SaveChanges();
             }
@@ -347,7 +481,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             int deckNumber = (from n in _context.DecksTable where n.AspUserId == userName select n.DeckName).Count();
 
-            assistedDeckName = ($"{userName}_assistedDeck_{deckNumber}");
+            assistedDeckName = ($"{userName}_assistedDeck_{deckNumber+1}");
 
             deckTable.DeckName = assistedDeckName;
             deckTable.CardId = commanderId;
