@@ -4,9 +4,11 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using MagicTheGatheringFinal.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace MagicTheGatheringFinal.Controllers
 {
+    [Authorize]
     public class NewUserController : Controller
     {
         private readonly MagicDbContext _context;
@@ -25,23 +27,6 @@ namespace MagicTheGatheringFinal.Controllers
         {
             return View();
         }
-
-
-
-
-        //[HttpPost]
-        //public IActionResult AddCardsToDeck()
-        //{
-        //    var userId = FindUserId();
-        //    if (userId != null)
-        //    {
-        //        DecksTable deckId = new DecksTable();
-        //        deckId.UserTableId = int.Parse(FindUserId());
-        //        _context.DecksTable.Add(deckId);
-        //        _context.SaveChanges();
-        //    }
-        //    return RedirectToAction("DeckList");
-        //}
 
         public string FindUserId()
         {
@@ -96,7 +81,7 @@ namespace MagicTheGatheringFinal.Controllers
                 }
             }
 
-            return View(viableCommanders);
+            return View("../AssistedDeckBuilder/Commander",viableCommanders);
         }
 
         [HttpGet]
@@ -143,8 +128,10 @@ namespace MagicTheGatheringFinal.Controllers
             {
                 serializeColors += colors[i] + '|';
             }
+
             response.ColorScore = serializeColors.Substring(0, serializeColors.Length - 1);
             response.QuizTable = (QuizTable)_context.QuizTable.Where(x => x.Id == response.Counter).FirstOrDefault();
+            
             if (response.Counter <= 25)
             {
                 return View(response);
@@ -175,8 +162,16 @@ namespace MagicTheGatheringFinal.Controllers
 
 
             quizResult.PrimaryColor = colorScore.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
+
+            
+
             quizResult.SecondaryColor = sortedDict.Skip(1).Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
 
+            if (quizResult.PrimaryColor==quizResult.SecondaryColor) 
+            {
+                quizResult.PrimaryColor = sortedDict.OrderByDescending(i => i.Value).FirstOrDefault().Key;
+
+            }
 
             quizResult.ColorScore = colorScore;
             AspNetUsers user = _context.AspNetUsers.Find(FindUserId());
