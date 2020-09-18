@@ -27,6 +27,8 @@ namespace MagicTheGatheringFinal.Models
         public string Green { get; set; }
         public string Blue { get; set; }
         public int? DecksTableKey { get; set; }
+        public int? EdhrecRank { get; set; }
+        public decimal? CardPrice { get; set; }
 
         public virtual DecksTable DecksTableKeyNavigation { get; set; }
         public virtual ICollection<DecksTable> DecksTable { get; set; }
