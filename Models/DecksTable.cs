@@ -14,6 +14,7 @@ namespace MagicTheGatheringFinal.Models
         public int? CardId { get; set; }
         public string AspUserId { get; set; }
         public string DeckName { get; set; }
+        public int? Quantity { get; set; }
 
         public virtual AspNetUsers AspUser { get; set; }
         public virtual CardsTable Card { get; set; }
