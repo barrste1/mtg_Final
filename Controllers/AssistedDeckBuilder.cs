@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
@@ -38,7 +38,7 @@ namespace MagicTheGatheringFinal.Controllers
         {
 
             CardSearchObject scryFallSearch = new CardSearchObject();
-           
+
 
             //List<int> cardCurveData = new List<int>()
             //{
@@ -121,11 +121,12 @@ namespace MagicTheGatheringFinal.Controllers
             return View(removal);
         }
 
-        public async Task<IActionResult> FindMultiRemoval(List<string> SelectedCard,List<bool> Deck)
-        {   foreach(string card in SelectedCard)
+        public async Task<IActionResult> FindMultiRemoval(List<string> SelectedCard, List<bool> Deck)
+        {
+            foreach (string card in SelectedCard)
             {
                 AddCardsToCardsTable(card);
-                AddCardsToDecksTable(card,1);
+                AddCardsToDecksTable(card, 1);
             }
             string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
@@ -142,7 +143,7 @@ namespace MagicTheGatheringFinal.Controllers
             foreach (string assistedCardId in SelectedCard)
             {
                 AddCardsToCardsTable(assistedCardId);
-                AddCardsToDecksTable(assistedCardId,1);
+                AddCardsToDecksTable(assistedCardId, 1);
             }
 
             string identity = FindPlayerType();
@@ -159,7 +160,7 @@ namespace MagicTheGatheringFinal.Controllers
             foreach (string assistedCardId in SelectedCard)
             {
                 AddCardsToCardsTable(assistedCardId);
-                AddCardsToDecksTable(assistedCardId,1);
+                AddCardsToDecksTable(assistedCardId, 1);
             }
 
             string identity = FindPlayerType();
@@ -241,13 +242,13 @@ namespace MagicTheGatheringFinal.Controllers
         }
 
         //this method will create a deck name when the user finishes the assisted deck building tool
-      
+
         public async Task<IActionResult> StartDeck(int commanderId)
         {
             string identity = FindPlayerType();
-            
+
             List<string> colorId = new List<string>() { identity.Substring(0, 1), identity.Substring(1, 1) };
-           
+
             //This variale tracks the number lands needed to be added to a deck for a balanced mana base. More colors in an identity the larger spread of land used. Always want 36 lands in a deck.
             int commanderLandCount = 0;
 
@@ -266,30 +267,30 @@ namespace MagicTheGatheringFinal.Controllers
                 if (colorId[i] == "W")
                 {
                     //Card ID for Plains, which is connected to single color code "W"
-                    AddCardsToDecksTable("ae92e656-6c9d-48c3-a238-5a11c2c62ec8",commanderLandCount);
+                    AddCardsToDecksTable("ae92e656-6c9d-48c3-a238-5a11c2c62ec8", commanderLandCount);
 
                 }
                 if (colorId[i] == "U")
                 {
                     //Card ID for Island, which is connected to single color code "U"
-                    AddCardsToDecksTable("589a324f-4466-4d4a-8cfb-806a041d7c1f",commanderLandCount);
+                    AddCardsToDecksTable("589a324f-4466-4d4a-8cfb-806a041d7c1f", commanderLandCount);
 
                 }
                 if (colorId[i] == "B")
                 {
                     //Card ID for Swamps, which is connected to single color code "B"
-                    AddCardsToDecksTable("1967d4a8-6cc4-4a4d-9d24-93257de35e6d",commanderLandCount);
+                    AddCardsToDecksTable("1967d4a8-6cc4-4a4d-9d24-93257de35e6d", commanderLandCount);
 
                 }
                 if (colorId[i] == "R")
                 {
                     //Card ID for Swamps, which is connected to single color code "R"
-                    AddCardsToDecksTable("3c6a38dd-e8f5-420f-9576-66937c71286b",commanderLandCount);
+                    AddCardsToDecksTable("3c6a38dd-e8f5-420f-9576-66937c71286b", commanderLandCount);
                 }
                 if (colorId[i] == "G")
                 {
                     //Card ID for Swamps, which is connected to single color code "G"
-                    AddCardsToDecksTable("2b90e88b-60a3-4d1d-bb8c-14633e5005a5",commanderLandCount);
+                    AddCardsToDecksTable("2b90e88b-60a3-4d1d-bb8c-14633e5005a5", commanderLandCount);
                 }
             }
 
@@ -304,7 +305,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             int deckNumber = (from n in _context.DecksTable where n.AspUserId == userName select n.DeckName).Count();
 
-            assistedDeckName = ($"{userName}_assistedDeck_{deckNumber+1}");
+            assistedDeckName = ($"{userName}_assistedDeck_{deckNumber + 1}");
 
             deckTable.DeckName = assistedDeckName;
             deckTable.CardId = commanderId;
@@ -338,46 +339,46 @@ namespace MagicTheGatheringFinal.Controllers
 
         public async void AddCardsToCardsTable(string assistedCardId)
         {
-                CardsTable cardTable = new CardsTable();
-                if (_context.CardsTable.Where(x => x.CardId == assistedCardId).FirstOrDefault() == null)
-                {
-                    Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", assistedCardId, "https://api.scryfall.com/", "");
-                    cardTable.CardArtUrl = cardItem.image_uris.normal;
-                    cardTable.CardId = cardItem.id;
-                    cardTable.Cmc = cardItem.cmc;
-                    cardTable.ManaCost = cardItem.mana_cost;
-                    cardTable.Name = cardItem.name;
-                    cardTable.OracleText = cardItem.oracle_text;
-                    cardTable.TypeLine = cardItem.type_line;
-                    cardTable.EdhrecRank = cardItem.edhrec_rank;
-                    cardTable.CardPrice = decimal.Parse(cardItem.prices.usd);
+            CardsTable cardTable = new CardsTable();
+            if (_context.CardsTable.Where(x => x.CardId == assistedCardId).FirstOrDefault() == null)
+            {
+                Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", assistedCardId, "https://api.scryfall.com/", "");
+                cardTable.CardArtUrl = cardItem.image_uris.normal;
+                cardTable.CardId = cardItem.id;
+                cardTable.Cmc = cardItem.cmc;
+                cardTable.ManaCost = cardItem.mana_cost;
+                cardTable.Name = cardItem.name;
+                cardTable.OracleText = cardItem.oracle_text;
+                cardTable.TypeLine = cardItem.type_line;
+                cardTable.EdhrecRank = cardItem.edhrec_rank;
+                cardTable.CardPrice = decimal.Parse(cardItem.prices.usd);
 
-                    if (cardItem.color_identity.Contains("B"))
-                    {
-                        cardTable.Black = "B";
-                    }
-                    if (cardItem.color_identity.Contains("U"))
-                    {
-                        cardTable.Blue = "U";
-                    }
-                    if (cardItem.color_identity.Contains("W"))
-                    {
-                        cardTable.White = "W";
-                    }
-                    if (cardItem.color_identity.Contains("G"))
-                    {
-                        cardTable.Green = "G";
-                    }
-                    if (cardItem.color_identity.Contains("R"))
-                    {
-                        cardTable.Red = "R";
-                    }
-                    _context.CardsTable.Add(cardTable);
-                    _context.SaveChanges();
+                if (cardItem.color_identity.Contains("B"))
+                {
+                    cardTable.Black = "B";
+                }
+                if (cardItem.color_identity.Contains("U"))
+                {
+                    cardTable.Blue = "U";
+                }
+                if (cardItem.color_identity.Contains("W"))
+                {
+                    cardTable.White = "W";
+                }
+                if (cardItem.color_identity.Contains("G"))
+                {
+                    cardTable.Green = "G";
+                }
+                if (cardItem.color_identity.Contains("R"))
+                {
+                    cardTable.Red = "R";
+                }
+                _context.CardsTable.Add(cardTable);
+                _context.SaveChanges();
             }
         }
 
-        public async void AddCardsToDecksTable(string assistedCardId,int quantity)
+        public async void AddCardsToDecksTable(string assistedCardId, int quantity)
         {
             DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
             DecksTable deckTable = new DecksTable();

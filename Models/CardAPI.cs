@@ -66,7 +66,7 @@ namespace MagicTheGatheringFinal.Models
         public bool story_spotlight { get; set; }
         public int edhrec_rank { get; set; }
         public Preview preview { get; set; }
-        public Prices prices { get; set; }
+        public Prices? prices { get; set; }
         public Related_Uris related_uris { get; set; }
         public Purchase_Uris purchase_uris { get; set; }
     }
@@ -107,10 +107,10 @@ namespace MagicTheGatheringFinal.Models
 
     public class Prices
     {
-        public string usd { get; set; }
-        public string usd_foil { get; set; }
-        public string eur { get; set; }
-        public string tix { get; set; }
+        public string? usd { get; set; }
+        public string? usd_foil { get; set; }
+        public string? eur { get; set; }
+        public string? tix { get; set; }
     }
 
     public class Related_Uris

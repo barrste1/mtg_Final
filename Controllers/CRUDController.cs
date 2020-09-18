@@ -50,6 +50,8 @@ namespace MagicTheGatheringFinal.Controllers
                 cardTable.Name = cardItem.name;
                 cardTable.OracleText = cardItem.oracle_text;
                 cardTable.TypeLine = cardItem.type_line;
+                cardTable.EdhrecRank = cardItem.edhrec_rank;
+                cardTable.CardPrice = decimal.Parse(cardItem.prices.usd);
                 if (cardItem.color_identity.Contains("B"))
                 {
                     cardTable.Black = "B";
