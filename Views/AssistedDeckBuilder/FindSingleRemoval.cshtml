@@ -1,4 +1,4 @@
-﻿@model CardSearchObject
+﻿@model AssistedDeckViewModel
 
 <h1>Single Target Removal</h1>
 <br />
@@ -15,12 +15,12 @@
             <th>Add Card</th>
         </tr>
 
-        @for (int i = 0, count = 1; i < Model.data.Count(); i++, count++)
+        @for (int i = 0, count = 1; i < Model.CardSearch.data.Count(); i++, count++)
         {
             string image = "";
-            if (Model.data[i].image_uris != null)
+            if (Model.CardSearch.data[i].image_uris != null)
             {
-                image = Model.data[i].image_uris.small;
+                image = Model.CardSearch.data[i].image_uris.small;
             }
             else
             {
@@ -29,21 +29,23 @@
 
             <tr>
                 <td>@count.</td>
-                <td>@Model.data[i].name</td>
-                @if (Model.data[i].oracle_text == null)
+                <td>@Model.CardSearch.data[i].name</td>
+                @if (Model.CardSearch.data[i].oracle_text == null)
                 {
                     <td>Ah, ah, ah, you didn't say the <b>*magic*</b> word</td>
                 }
                 else
                 {
-                    <td>@Model.data[i].oracle_text</td>
+                    <td>@Model.CardSearch.data[i].oracle_text</td>
 
                 }
-                <td>@Model.data[i].mana_cost</td>
+                <td>@Model.CardSearch.data[i].mana_cost</td>
                 <td><img src="@image" /></td>
-                <td><input name="SelectedCard" type="checkbox" value="@Model.data[i].id" /></td>
+                <td><input name="SelectedCard" type="checkbox" value="@Model.CardSearch.data[i].id" /></td>
             </tr>
         }
+        <input name="Deck" value="@Model.Deck" hidden />
+        <input name="Deck" value="@Model.Deck" hidden />
         <input type="submit" />
 
     </table>
