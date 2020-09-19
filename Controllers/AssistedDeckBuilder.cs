@@ -236,8 +236,6 @@ namespace MagicTheGatheringFinal.Controllers
 
         }
 
-        //this method will create a deck name when the user finishes the assisted deck building tool
-
         public async Task<IActionResult> StartDeck(int commanderId)
         {
             string identity = FindPlayerType();
@@ -291,6 +289,8 @@ namespace MagicTheGatheringFinal.Controllers
 
             return RedirectToAction("SingleTargetRemoval");
         }
+
+        //creates deck name based on commander card ID
         public string CreateDeckName(int commanderId)
         {
             string assistedDeckName = "";

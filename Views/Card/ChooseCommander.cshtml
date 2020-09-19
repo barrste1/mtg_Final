@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "ChooseCommander";
+}
+
+@model List<CardsTable>
+
+<h1>ChooseCommander</h1>
+
+<p>Choose your commander!</p>
+
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    <img style="width:17.5%; height:17.5%" src="@Model[i].CardArtUrl" />
+    <a href="/Card/SaveCommander?cId=@Model[i].Id"> Make @Model[i].Name your commander!</a>
+
+}
+

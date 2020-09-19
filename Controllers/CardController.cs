@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MagicTheGatheringFinal.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -111,6 +112,50 @@ namespace MagicTheGatheringFinal.Controllers
             //ViewBag.userCards = userCards;
 
             return View(cardList);
+        }
+        //instead of creating a deck name based off the commander, we're going to allow the user to create a deck name on their own
+        //this page will also allow the user to set their deck name
+        public IActionResult DeckName()
+        {
+            return View();
+        }
+        public IActionResult SaveDeckName(string deckName)
+        {
+
+            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
+
+            lastEntry.Id = 0;
+
+            lastEntry.DeckName = deckName;
+            _context.DecksTable.Add(lastEntry);
+            _context.SaveChanges();
+
+            return RedirectToAction("DeckList");
+        }
+        public IActionResult ChooseCommander()
+        {
+
+            List<CardsTable> commanders = _context.CardsTable.Where(c => c.IsCommander == true).ToList();
+
+            return View(commanders);
+        }
+        public IActionResult SaveCommander(int cId)
+        {
+            //find the last deck this user made
+            //save the chosen commanderid to the deck table
+
+            string userName = FindUserId();
+            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
+            CardsTable commanderId = _context.CardsTable.Where(c => c.Id == cId).FirstOrDefault();
+
+            lastEntry.CardId = commanderId.Id;
+
+            lastEntry.Id = 0;
+
+            _context.DecksTable.Add(lastEntry);
+            _context.SaveChanges();
+
+            return RedirectToAction("DeckName");
         }
         public string FindUserId()
         {
