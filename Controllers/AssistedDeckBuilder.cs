@@ -26,10 +26,10 @@ namespace MagicTheGatheringFinal.Controllers
         #endregion
 
         #region Deckbuilding Actions
-        public async Task<IActionResult> StartDeck(int commanderId)
+        public IActionResult StartDeck(int commanderId)
         {
             string identity = FindPlayerType();
-            CreateDeckName(commanderId);
+            CreateDeckName(commanderId, identity);
 
             List<string> colorId = new List<string>() { identity.Substring(0, 1), identity.Substring(1, 1) };
 
@@ -78,7 +78,7 @@ namespace MagicTheGatheringFinal.Controllers
                 }
             }
 
-            return RedirectToAction("SingleTargetRemoval");
+            return RedirectToAction("FindSingleRemoval");
         }
 
         //This method adds the commander to the DecksTable, initializing a new deck whilst constructing a new deck name
@@ -205,7 +205,13 @@ namespace MagicTheGatheringFinal.Controllers
             if (_context.CardsTable.Where(x => x.CardId == assistedCardId).FirstOrDefault() == null)
             {
                 Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", assistedCardId, "https://api.scryfall.com/", "");
-                cardTable.CardArtUrl = cardItem.image_uris.normal;
+                if (cardItem.image_uris!=null) {
+                    cardTable.CardArtUrl = cardItem.image_uris.normal;
+                }
+                else
+                {
+                    cardTable.CardArtUrl = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
+                }
                 cardTable.CardId = cardItem.id;
                 cardTable.Cmc = cardItem.cmc;
                 cardTable.ManaCost = cardItem.mana_cost;
@@ -213,6 +219,10 @@ namespace MagicTheGatheringFinal.Controllers
                 cardTable.OracleText = cardItem.oracle_text;
                 cardTable.TypeLine = cardItem.type_line;
                 cardTable.EdhrecRank = cardItem.edhrec_rank;
+                if (cardItem.prices.usd==null) 
+                {
+                    cardItem.prices.usd = "0.00";
+                }
                 cardTable.CardPrice = decimal.Parse(cardItem.prices.usd);
 
                 if (cardItem.color_identity.Contains("B"))
@@ -241,7 +251,7 @@ namespace MagicTheGatheringFinal.Controllers
         }
         
         [HttpGet]
-        public async void CreateDeckName(int commanderId)
+        public async void CreateDeckName(int commanderId, string colorId)
         {
             string assistedDeckName = "";
             DecksTable deckTable = new DecksTable();
@@ -256,7 +266,7 @@ namespace MagicTheGatheringFinal.Controllers
             deckTable.CardId = commanderId;
             deckTable.AspUserId = userName;
             deckTable.Quantity = 1;
-
+            deckTable.ColorIdentity = colorId;
             _context.DecksTable.Add(deckTable);
             _context.SaveChanges();
         }
