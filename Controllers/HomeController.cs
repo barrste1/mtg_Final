@@ -31,6 +31,63 @@ namespace MagicTheGatheringFinal.Controllers
             return View();
         }
 
+        //public async Task<IActionResult> AddLands()
+        //{
+        //    ScryfallDAL scryfall = new ScryfallDAL();
+        //    CardSearchObject lands = new CardSearchObject();
+        //    lands = await scryfall.GetSearch("t:\"Basic+Land\"");
+        //    for(int i =0; i<lands.data.Count();i++)
+        //    {
+        //        CardsTable cardTable = new CardsTable();
+        //        if (lands.data[i].image_uris != null)
+        //        {
+        //            cardTable.CardArtUrl = lands.data[i].image_uris.normal;
+        //        }
+        //        else
+        //        {
+        //            cardTable.CardArtUrl = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
+        //        }
+
+        //        cardTable.CardId = lands.data[i].id;
+        //        cardTable.Cmc = lands.data[i].cmc;
+        //        cardTable.ManaCost = lands.data[i].mana_cost;
+        //        cardTable.Name = lands.data[i].name;
+        //        cardTable.OracleText = lands.data[i].oracle_text;
+        //        cardTable.TypeLine = lands.data[i].type_line;
+        //        if (lands.data[i].prices.usd == null)
+        //        {
+        //            lands.data[i].prices.usd = "0.00";
+        //        }
+        //        cardTable.CardPrice = decimal.Parse(lands.data[i].prices.usd);
+        //        cardTable.EdhrecRank = lands.data[i].edhrec_rank;
+        //        if (lands.data[i].color_identity.Contains("B"))
+        //        {
+        //            cardTable.Black = "B";
+        //        }
+        //        if (lands.data[i].color_identity.Contains("U"))
+        //        {
+        //            cardTable.Blue = "U";
+        //        }
+        //        if (lands.data[i].color_identity.Contains("W"))
+        //        {
+        //            cardTable.White = "W";
+        //        }
+        //        if (lands.data[i].color_identity.Contains("G"))
+        //        {
+        //            cardTable.Green = "G";
+        //        }
+        //        if (lands.data[i].color_identity.Contains("R"))
+        //        {
+        //            cardTable.Red = "R";
+        //        }
+        //        _context.CardsTable.Add(cardTable);
+        //        _context.SaveChanges();
+        //    }
+        //    return View("../Home/Index");
+        //}
+        
+        }
+
 
         //Delete below method once all commanders are added to DB.Final page crashed; will need to refacor
         //Will retry tomorrow(9/17/2020) to not overuse API
@@ -126,11 +183,11 @@ namespace MagicTheGatheringFinal.Controllers
         //            final.Red = "R";
         //        }
         //        _context.CardsTable.Add(final);
-        //        _context.SaveChanges();
+        //        _context.SaveChanges();}
 
 
-        //    }
-        //    return View("../Home/Index");
+
+        //            return View("../Home/Index");
         //}
     }
-}
+
