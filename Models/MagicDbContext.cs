@@ -30,6 +30,7 @@ namespace MagicTheGatheringFinal.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=tcp:weatherlight.database.windows.net,1433;Initial Catalog=MagicDb;Persist Security Info=False;User ID=Gideon;Password=5WUBRG2W!N;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
@@ -154,9 +155,13 @@ namespace MagicTheGatheringFinal.Models
 
                 entity.Property(e => e.CardId).HasColumnName("cardId");
 
+                entity.Property(e => e.CardPrice).HasColumnType("money");
+
                 entity.Property(e => e.Cmc).HasColumnName("cmc");
 
                 entity.Property(e => e.DecksTableKey).HasColumnName("decksTableKey");
+
+                entity.Property(e => e.EdhrecRank).HasColumnName("EDHRecRank");
 
                 entity.Property(e => e.Green).HasColumnName("green");
 
@@ -196,7 +201,7 @@ namespace MagicTheGatheringFinal.Models
 
                 entity.Property(e => e.DeckName)
                     .HasColumnName("DECK_NAME")
-                    .HasMaxLength(50);
+                    .HasMaxLength(450);
 
                 entity.HasOne(d => d.AspUser)
                     .WithMany(p => p.DecksTable)

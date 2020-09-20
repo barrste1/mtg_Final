@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MagicTheGatheringFinal.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Controller;
 
 namespace MagicTheGatheringFinal.Controllers
 {
@@ -31,8 +32,8 @@ namespace MagicTheGatheringFinal.Controllers
         }
 
 
-        //Delete below method once all commanders are added to DB. Final page crashed; will need to refacor
-        //Will retry tomorrow (9/17/2020) to not overuse API
+        //Delete below method once all commanders are added to DB.Final page crashed; will need to refacor
+        //Will retry tomorrow(9/17/2020) to not overuse API
 
 
         //public async Task<IActionResult> AddCommanders()
@@ -48,9 +49,9 @@ namespace MagicTheGatheringFinal.Controllers
         //        for (int i = 0; i < commanders.data.Length; i++)
         //        {
         //            CardsTable cardTable = new CardsTable();
-        //            if (commanders.data[i].image_uris != null) 
-        //            { 
-        //                cardTable.CardArtUrl = commanders.data[i].image_uris.normal; 
+        //            if (commanders.data[i].image_uris != null)
+        //            {
+        //                cardTable.CardArtUrl = commanders.data[i].image_uris.normal;
         //            }
         //            else
         //            {
@@ -63,6 +64,12 @@ namespace MagicTheGatheringFinal.Controllers
         //            cardTable.Name = commanders.data[i].name;
         //            cardTable.OracleText = commanders.data[i].oracle_text;
         //            cardTable.TypeLine = commanders.data[i].type_line;
+        //            if (commanders.data[i].prices.usd == null)
+        //            {
+        //                commanders.data[i].prices.usd = "0.00";
+        //            }
+        //            cardTable.CardPrice = decimal.Parse(commanders.data[i].prices.usd);
+        //            cardTable.EdhrecRank = commanders.data[i].edhrec_rank;
         //            if (commanders.data[i].color_identity.Contains("B"))
         //            {
         //                cardTable.Black = "B";
@@ -121,7 +128,7 @@ namespace MagicTheGatheringFinal.Controllers
         //        _context.CardsTable.Add(final);
         //        _context.SaveChanges();
 
-               
+
         //    }
         //    return View("../Home/Index");
         //}

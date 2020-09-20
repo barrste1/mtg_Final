@@ -7,6 +7,7 @@ namespace MagicTheGatheringFinal.Models
 {
     public class AssistedDeckTaskListViewModel
     {
+        public List<bool> MenuOptions { get; set; }
         public bool addSingleRemoval { get; set; }
         public bool addDraw { get; set; }
         public bool addMultiRemoval { get; set; }

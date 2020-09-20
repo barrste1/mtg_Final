@@ -11,19 +11,16 @@ namespace MagicTheGatheringFinal.Controllers
     [Authorize]
     public class NewUserController : Controller
     {
+        #region Context and Constructor
         private readonly MagicDbContext _context;
 
         public NewUserController(MagicDbContext context)
         {
             _context = context;
         }
+        #endregion
 
-        public IActionResult AssistedDeckBuilder()
-        {
-            return View();
-        }
-
-        public IActionResult QuizIntro()
+        public IActionResult Index()
         {
             return View();
         }
@@ -84,6 +81,7 @@ namespace MagicTheGatheringFinal.Controllers
             return View("../AssistedDeckBuilder/Commander",viableCommanders);
         }
 
+        #region Quiz Actions
         [HttpGet]
         public IActionResult StartQuiz()
         {
@@ -94,7 +92,10 @@ namespace MagicTheGatheringFinal.Controllers
             quizObject.QuizTable = startQuiz;
             return View("Quiz",quizObject);
         }
-
+        public IActionResult QuizIntro()
+        {
+            return View();
+        }
         [HttpPost]
         public IActionResult Quiz(QuizViewModel response)
         {
@@ -182,12 +183,9 @@ namespace MagicTheGatheringFinal.Controllers
 
             return View(quizResult);
         }
+        #endregion
 
         public IActionResult BasicMagicConcepts()
-        {
-            return View();
-        }
-        public IActionResult Index()
         {
             return View();
         }
