@@ -199,6 +199,8 @@ namespace MagicTheGatheringFinal.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.ColorIdentity).HasMaxLength(10);
+
                 entity.Property(e => e.DeckName)
                     .HasColumnName("DECK_NAME")
                     .HasMaxLength(450);
