@@ -43,7 +43,7 @@ namespace MagicTheGatheringFinal.Controllers
             colors.Sort();
             quizIdentity = colors[0] + colors[1];
 
-
+            //add playertype????
             List<CardsTable> viableCommanders = new List<CardsTable>();
             List<CardsTable> commanders = _context.CardsTable.Where(s => s.IsCommander == true).ToList();
 
@@ -188,6 +188,58 @@ namespace MagicTheGatheringFinal.Controllers
         public IActionResult BasicMagicConcepts()
         {
             return View();
+        }
+        public IActionResult SelectColorIdentity(List<string> SelectedColor)
+        {
+            if (SelectedColor.Count!=2)
+            {
+                return View("SelectColorIdentity");
+            }
+            SelectedColor.Sort();
+            string identity = SelectedColor[0] + SelectedColor[1];
+
+            List<CardsTable> viableCommanders = new List<CardsTable>();
+            List<CardsTable> commanders = _context.CardsTable.Where(s => s.IsCommander == true).ToList();
+
+            for (int i = 0; i < commanders.Count(); i++)
+            {
+                string commandersColors = "";
+
+                if (commanders[i].Black != null)
+                {
+                    commandersColors += "B";
+                }
+                if (commanders[i].Green != null)
+                {
+                    commandersColors += "G";
+                }
+                if (commanders[i].Red != null)
+                {
+                    commandersColors += "R";
+                }
+                if (commanders[i].Blue != null)
+                {
+                    commandersColors += "U";
+                }
+                if (commanders[i].White != null)
+                {
+                    commandersColors += "W";
+                }
+
+                if (identity == commandersColors)
+                {
+                    viableCommanders.Add(commanders[i]);
+                }
+            }
+           
+            AspNetUsers user = _context.AspNetUsers.Find(FindUserId());
+            user.Playertype = identity;
+            _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Update(user);
+            _context.SaveChanges();
+            return View("../AssistedDeckBuilder/Commander", viableCommanders);
+
+           // return RedirectToAction("SelectCommander", SelectedColor);
         }
     }
 }
