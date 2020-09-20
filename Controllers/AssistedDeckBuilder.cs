@@ -29,7 +29,7 @@ namespace MagicTheGatheringFinal.Controllers
         public async Task<IActionResult> StartDeck(int commanderId)
         {
             string identity = FindPlayerType();
-             CreateDeckName(commanderId);
+            CreateDeckName(commanderId);
 
             List<string> colorId = new List<string>() { identity.Substring(0, 1), identity.Substring(1, 1) };
 
@@ -167,7 +167,14 @@ namespace MagicTheGatheringFinal.Controllers
         }
         #endregion
 
+
         #region Find User Information Methods
+
+
+
+        //creates deck name based on commander card ID
+       
+
         public string FindUserId()
         {
             if (User.Identity.Name == null)
