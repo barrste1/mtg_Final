@@ -189,5 +189,52 @@ namespace MagicTheGatheringFinal.Controllers
         {
             return View();
         }
+        public IActionResult SelectColorIdentity(List<string> SelectedColor)
+        {
+            if (SelectedColor.Count!=2)
+            {
+                return View("SelectColorIdentity");
+            }
+            SelectedColor.Sort();
+            string identity = SelectedColor[0] + SelectedColor[1];
+
+            List<CardsTable> viableCommanders = new List<CardsTable>();
+            List<CardsTable> commanders = _context.CardsTable.Where(s => s.IsCommander == true).ToList();
+
+            for (int i = 0; i < commanders.Count(); i++)
+            {
+                string commandersColors = "";
+
+                if (commanders[i].Black != null)
+                {
+                    commandersColors += "B";
+                }
+                if (commanders[i].Green != null)
+                {
+                    commandersColors += "G";
+                }
+                if (commanders[i].Red != null)
+                {
+                    commandersColors += "R";
+                }
+                if (commanders[i].Blue != null)
+                {
+                    commandersColors += "U";
+                }
+                if (commanders[i].White != null)
+                {
+                    commandersColors += "W";
+                }
+
+                if (identity == commandersColors)
+                {
+                    viableCommanders.Add(commanders[i]);
+                }
+            }
+
+            return View("../AssistedDeckBuilder/Commander", viableCommanders);
+
+           // return RedirectToAction("SelectCommander", SelectedColor);
+        }
     }
 }
