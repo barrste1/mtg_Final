@@ -43,7 +43,7 @@ namespace MagicTheGatheringFinal.Controllers
             colors.Sort();
             quizIdentity = colors[0] + colors[1];
 
-
+            //add playertype????
             List<CardsTable> viableCommanders = new List<CardsTable>();
             List<CardsTable> commanders = _context.CardsTable.Where(s => s.IsCommander == true).ToList();
 
@@ -231,7 +231,12 @@ namespace MagicTheGatheringFinal.Controllers
                     viableCommanders.Add(commanders[i]);
                 }
             }
-
+           
+            AspNetUsers user = _context.AspNetUsers.Find(FindUserId());
+            user.Playertype = identity;
+            _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Update(user);
+            _context.SaveChanges();
             return View("../AssistedDeckBuilder/Commander", viableCommanders);
 
            // return RedirectToAction("SelectCommander", SelectedColor);
