@@ -124,10 +124,10 @@ namespace MagicTheGatheringFinal.Controllers
 
             DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
 
-            lastEntry.Id = 0;
+            //lastEntry.Id = 0;
 
             lastEntry.DeckName = deckName;
-            _context.DecksTable.Add(lastEntry);
+            _context.DecksTable.Update(lastEntry);
             _context.SaveChanges();
 
             return RedirectToAction("DeckList");
@@ -145,17 +145,106 @@ namespace MagicTheGatheringFinal.Controllers
             //save the chosen commanderid to the deck table
 
             string userName = FindUserId();
-            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
+
+            //DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
+            DecksTable lastEntry = new DecksTable();
             CardsTable commanderId = _context.CardsTable.Where(c => c.Id == cId).FirstOrDefault();
 
-            lastEntry.CardId = commanderId.Id;
+            string colorId = FindColorId(commanderId);
 
-            lastEntry.Id = 0;
+            lastEntry.CardId = commanderId.Id;
+            lastEntry.ColorIdentity = colorId;
+            lastEntry.AspUserId = userName;
+            lastEntry.Quantity = 1;
+
+            //lastEntry.Id = 0;
 
             _context.DecksTable.Add(lastEntry);
             _context.SaveChanges();
 
             return RedirectToAction("DeckName");
+        }
+        public async Task<IActionResult> AddCard(string id)
+        {
+            var userId = FindUserId();
+            CardsTable cardTable = new CardsTable();
+            DecksTable deckTable = new DecksTable();
+
+            if (_context.CardsTable.Where(x => x.CardId == id).FirstOrDefault() == null)
+            {
+                Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", id, "https://api.scryfall.com/", "");
+                cardTable.CardArtUrl = cardItem.image_uris.normal;
+                cardTable.CardId = cardItem.id;
+                cardTable.Cmc = cardItem.cmc;
+                cardTable.ManaCost = cardItem.mana_cost;
+                cardTable.Name = cardItem.name;
+                cardTable.OracleText = cardItem.oracle_text;
+                cardTable.TypeLine = cardItem.type_line;
+                cardTable.EdhrecRank = cardItem.edhrec_rank;
+                cardTable.CardPrice = decimal.Parse(cardItem.prices.usd);
+                if (cardItem.color_identity.Contains("B"))
+                {
+                    cardTable.Black = "B";
+                }
+                if (cardItem.color_identity.Contains("U"))
+                {
+                    cardTable.Blue = "U";
+                }
+                if (cardItem.color_identity.Contains("W"))
+                {
+                    cardTable.White = "W";
+                }
+                if (cardItem.color_identity.Contains("G"))
+                {
+                    cardTable.Green = "G";
+                }
+                if (cardItem.color_identity.Contains("R"))
+                {
+                    cardTable.Red = "R";
+                }
+                _context.CardsTable.Add(cardTable);
+                _context.SaveChanges();
+            }
+            var idCollection = (from x in _context.CardsTable where id == x.CardId select x.Id).FirstOrDefault();
+            deckTable.CardId = idCollection;
+            deckTable.DeckName = FindDeck();
+            deckTable.Quantity = 1;
+            if (userId != null)
+            {
+                deckTable.AspUserId = userId;
+            }
+
+            _context.DecksTable.Add(deckTable);
+            _context.SaveChanges();
+
+            return RedirectToAction("DeckList");
+        }
+        public string FindDeck()
+        {
+            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
+            string deckName = lastEntry.DeckName;
+
+            return deckName;
+        }
+        public string FindColorId(CardsTable commanderId)
+        {
+            string deckIdentity = commanderId.ManaCost;
+
+            string tempString = deckIdentity;
+            tempString += "|";
+
+            for (int i = 0; i < deckIdentity.Length; i++)
+            {
+                if (deckIdentity[i] == 'W' || deckIdentity[i] == 'U' || deckIdentity[i] == 'B' || deckIdentity[i] == 'R' || deckIdentity[i] == 'G')
+                {
+                    tempString += deckIdentity[i];
+                }
+            }
+
+            deckIdentity = tempString.Substring(tempString.IndexOf('|') + 1);
+
+            return (deckIdentity);
+
         }
         public string FindUserId()
         {
