@@ -1,0 +1,44 @@
+﻿@model List<CardsTable>
+
+<ul ondragstart="dragstart_handler(event)" style="float:left">
+    @foreach (var card in Model)
+    {
+        <li id="@card.CardId" draggable="true">@card.Name</li>
+    }
+
+</ul>
+<ul id="target" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
+    <li draggable="true">D</li>
+</ul>
+<img src="https://www.iconfinder.com/data/icons/glypho-generic-icons/64/garbage-can-recycle-bin-512.png" ondrop="trash_drop(event)" ondragover="dragover_handler(event)" />
+<script>
+    function dragover_handler(ev) {
+        ev.preventDefault();
+
+     ev.dataTransfer.dropEffect = "copy";
+    }
+    function drop_handler(ev) {
+        console.log(ev);
+        ev.preventDefault();
+     // Get the id of the target and add the moved element to the target's DOM
+        const data = ev.dataTransfer.getData("application/MagicTheGatheringFinal");
+        const view = document.getElementById(data).cloneNode(true);
+        view.id = data + 1;
+        ev.target.appendChild(view);
+        }
+        function dragstart_handler(ev) {
+            // Add the target element's id to the data transfer object
+            ev.dataTransfer.setData("application/MagicTheGatheringFinal", ev.target.id);
+            ev.dataTransfer.dropEffect = "copy";
+        }
+        function dragleave_handler(ev) {
+            console.log("dragLeave");
+        }
+        function trash_drop(trash) {
+
+            trash.preventDefault();
+            const data = trash.dataTransfer.getData("application/MagicTheGatheringFinal");
+            console.log(document.getElementById(data));
+            document.getElementById(data).remove();
+        }
+</script>

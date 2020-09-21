@@ -1,5 +1,21 @@
 ﻿@model CardSearchObject
+    <div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px">
+    <h1>Mana Ramp</h1>
+    <br />
+    <p>All those creatures and spells cost mana and only playing one mana per turn can be a bit slow. <b>Take 10 of these</b> with you to ensure you can pay for all of those cards you want to play!</p>
+    </div>
+    <form asp-action="FindDraw" asp-controller="AssistedDeckBuilder">
+        <table class="table">
+            <tr>
+                <th>Number</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Mana</th>
+                <th>Image</th>
+                <th>Add Card</th>
+            </tr>
 
+<<<<<<< HEAD
 <h1>Mana Ramp</h1>
 <br />
 <p>All those creatures and spells cost mana and only playing one mana per turn can be a bit slow. Take 10 of these with you to ensure you can pay for all of those cards you want to play!</p>
@@ -55,6 +71,38 @@
     </tr>
         }
         <input type="submit" />
+=======
+            @for (int i = 0, count = 1; i < Model.data.Count(); i++, count++)
+            {
+                string image = "";
+                if (Model.data[i].image_uris != null)
+                {
+                    image = Model.data[i].image_uris.small;
+                }
+                else
+                {
+                    image = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
+                }
+>>>>>>> fb576d5a76a905e9a235efd2f3f9eb32bdbb35f4
 
-    </table>
-</form>
+                <tr>
+                    <td>@count.</td>
+                    <td>@Model.data[i].name</td>
+                    @if (Model.data[i].oracle_text == null)
+                    {
+                        <td>Ah, ah, ah, you didn't say the <b>*magic*</b> word</td>
+                    }
+                    else
+                    {
+                        <td>@Model.data[i].oracle_text</td>
+
+                    }
+                    <td>@Model.data[i].mana_cost</td>
+                    <td><img src="@image" /></td>
+                    <td><input name="SelectedCard" type="checkbox" value="@Model.data[i].id" /></td>
+                </tr>
+            }
+            <input type="submit" />
+
+        </table>
+    </form>

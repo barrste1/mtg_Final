@@ -112,6 +112,9 @@ namespace MagicTheGatheringFinal.Controllers
                 assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
             }
 
+
+
+
             return View();
         }
 
