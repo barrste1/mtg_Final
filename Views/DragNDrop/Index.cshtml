@@ -1,44 +1,123 @@
 ﻿@model List<CardsTable>
+    <head>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #target {
+            border: solid;
+            width:500px;
+            height:150px;
+            background-color: gold;
+            text-align:center;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        
 
-<ul ondragstart="dragstart_handler(event)" style="float:left">
-    @foreach (var card in Model)
-    {
-        <li id="@card.CardId" draggable="true">@card.Name</li>
-    }
+        .top-container {
+            margin-right: auto;
+            margin-left: auto;
+            background-color: rgba(128, 128, 128, 0.21);
+            width: 15%;
+            padding: 30px;
+            text-align: right;
+            top: 0;
+            right: 500px;
+        }
 
-</ul>
-<ul id="target" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
-    <li draggable="true">D</li>
-</ul>
-<img src="https://www.iconfinder.com/data/icons/glypho-generic-icons/64/garbage-can-recycle-bin-512.png" ondrop="trash_drop(event)" ondragover="dragover_handler(event)" />
-<script>
-    function dragover_handler(ev) {
-        ev.preventDefault();
+       /* .header {
+            margin-right: auto;
+            margin-left: auto;
+            
+            background: #808080;
+            color: #000000;
+            width:15%;
+            right: 500px;
 
-     ev.dataTransfer.dropEffect = "copy";
-    }
-    function drop_handler(ev) {
-        console.log(ev);
-        ev.preventDefault();
-     // Get the id of the target and add the moved element to the target's DOM
-        const data = ev.dataTransfer.getData("application/MagicTheGatheringFinal");
-        const view = document.getElementById(data).cloneNode(true);
-        view.id = data + 1;
-        ev.target.appendChild(view);
+        }*/
+
+        .content {
+            margin-right: auto;
+            margin-left: auto;
+            padding: 10px;
+        }
+
+        .sticky {
+            margin-right: auto;
+            margin-left: auto;
+            position: fixed;
+            top: 70px;
+            right:397px;
+            width: 15%;
+        }
+
+            .sticky + .content {
+                margin-right: auto;
+                margin-left: auto;
+                padding-top: 102px;
+            }
+    </style>
+        </head>
+
+
+    <form ondragstart="dragstart_handler(event)" style="float:left">
+        
+        @foreach (var card in Model)
+        {
+            <li id="@card.CardId" draggable="true">@card.Name</li>
+        }
+    </form>
+    <body>
+        <div class="header" id="myHeader">
+            <form id="target" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
+                <emptybox class="d"></emptybox>
+                <img style="width:100px;height:100px; float:right" src="https://www.iconfinder.com/data/icons/glypho-generic-icons/64/garbage-can-recycle-bin-512.png" ondrop="trash_drop(event)" ondragover="dragover_handler(event)" />
+                <input type="submit" value="submit">
+            </form>
+        </div>
+    </body>
+   
+
+    
+    <script>
+        function dragover_handler(ev) {
+            ev.preventDefault();
+
+            ev.dataTransfer.dropEffect = "link";
+        }
+        function drop_handler(ev) {
+            console.log(ev);
+            ev.preventDefault();
+            // Get the id of the target and add the moved element to the target's DOM
+            const data = ev.dataTransfer.getData("application/MagicTheGatheringFinal");
+            const view = document.getElementById(data).cloneNode(true);
+            view.id = data + 1;
+            ev.target.appendChild(view);
         }
         function dragstart_handler(ev) {
             // Add the target element's id to the data transfer object
             ev.dataTransfer.setData("application/MagicTheGatheringFinal", ev.target.id);
-            ev.dataTransfer.dropEffect = "copy";
+            ev.dataTransfer.dropEffect = "link";
         }
-        function dragleave_handler(ev) {
-            console.log("dragLeave");
-        }
+    
         function trash_drop(trash) {
 
             trash.preventDefault();
             const data = trash.dataTransfer.getData("application/MagicTheGatheringFinal");
             console.log(document.getElementById(data));
-            document.getElementById(data).remove();
+                document.getElementById(data).remove();
         }
-</script>
+        window.onscroll = function () { myFunction() };
+
+        var header = document.getElementById("myHeader");
+        var sticky = header.offsetTop;
+
+        function myFunction() {
+            if (window.pageYOffset > sticky) {
+                header.classList.add("sticky");
+            } else {
+                header.classList.remove("sticky");
+            }
+        }
+    </script>
