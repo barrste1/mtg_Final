@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
-
-
+using Newtonsoft.Json;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace MagicTheGatheringFinal.Controllers
 {
@@ -24,11 +25,75 @@ namespace MagicTheGatheringFinal.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CardList(string cardName)
+        public async Task<IActionResult> CardList(string cardName, DecksTable dName)
         {
-            Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", "named?fuzzy=", "https://api.scryfall.com/", cardName);
+            CardsTable cardTable = new CardsTable();
 
-            return View(cardItem);
+            if (_context.CardsTable.Where(x => x.Name == cardName).FirstOrDefault() == null)
+            {
+                Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", "/named?fuzzy=", "https://api.scryfall.com/", cardName);
+
+                cardTable.CardArtUrl = cardItem.image_uris.normal;
+                cardTable.CardId = cardItem.id;
+                cardTable.Cmc = cardItem.cmc;
+                cardTable.ManaCost = cardItem.mana_cost;
+                cardTable.Name = cardItem.name;
+                cardTable.OracleText = cardItem.oracle_text;
+                cardTable.TypeLine = cardItem.type_line;
+                cardTable.EdhrecRank = cardItem.edhrec_rank;
+                if (cardItem.prices.usd == null)
+                {
+                    cardItem.prices.usd = "0.00";
+                }
+                cardTable.CardPrice = decimal.Parse(cardItem.prices.usd);
+                if (cardItem.color_identity.Contains("B"))
+                {
+                    cardTable.Black = "B";
+                }
+                if (cardItem.color_identity.Contains("U"))
+                {
+                    cardTable.Blue = "U";
+                }
+                if (cardItem.color_identity.Contains("W"))
+                {
+                    cardTable.White = "W";
+                }
+                if (cardItem.color_identity.Contains("G"))
+                {
+                    cardTable.Green = "G";
+                }
+                if (cardItem.color_identity.Contains("R"))
+                {
+                    cardTable.Red = "R";
+                }
+                _context.CardsTable.Add(cardTable);
+                _context.SaveChanges();
+            }
+
+            //now that the card exists in the card table
+            //we need to get the card from the cards table and save
+            //first to the cardList then to the combo
+
+            CombinedDeckViewModel combo = new CombinedDeckViewModel();
+            
+            List<DecksTable> deckList = new List<DecksTable>();
+            List<CardsTable> cardList = new List<CardsTable>();
+
+            combo.Search = cardList;
+            combo.deckObject = deckList;
+
+            cardList = (from c in _context.CardsTable where c.Name == cardName select c).ToList();
+
+            deckList.Add(dName);
+
+            for (int i = 0; i < cardList.Count; i++)
+            {
+                combo.Search.Add(cardList[i]);
+            }
+
+            combo.deckObject = deckList;
+
+            return View(combo);
         }
 
         [HttpGet]
@@ -83,35 +148,51 @@ namespace MagicTheGatheringFinal.Controllers
             return View(results);
         }
 
+        public IActionResult ChooseDeck()
+        {
+            CombinedDeckViewModel combo = new CombinedDeckViewModel();
+            string userName = FindUserId();
+
+            var deckList = (from d in _context.DecksTable where d.AspUserId == userName select d.DeckName).Distinct().ToList();
+
+            List<DecksTable> collection = new List<DecksTable>();
 
 
-        public IActionResult DeckList()
+            for (int i = 1; i < deckList.Count; i++)
+            {
+                collection[i].DeckName = deckList[i];
+            }
+
+            combo.deckObject = collection;
+
+            return View(combo);
+        }
+
+        public IActionResult DeckList(DecksTable dName)
         {
             CardsTable cd = new CardsTable();
-            DecksTable dt = new DecksTable();
             string id = FindUserId();
-            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
 
-            //get all columns in the db where card id of the decks table matches the card id of the cards table
-            var userCards = (from d in _context.DecksTable
-                             join c in _context.CardsTable on d.CardId equals c.Id
-                             where d.AspUserId == id && d.DeckName == lastEntry.DeckName
-                             select new
-                             {
-                                 c.Name,
-                                 c.CardArtUrl
-                             }).ToList();
+            CombinedDeckViewModel combo = new CombinedDeckViewModel();
 
-            List<string> cardList = new List<string>();
+            var deckList = (from d in _context.DecksTable
+                            where d.AspUserId == id && d.DeckName == dName.DeckName
+                            select d.CardId).ToList();
 
-            for (int i = 0; i < userCards.Count; i++)
+            List<CardsTable> cardlist = new List<CardsTable>();
+            List<DecksTable> userDecks = new List<DecksTable>();
+
+            for (int i = 0; i < deckList.Count; i++)
             {
-                cardList.Add(userCards[i].Name);
-                cardList.Add(userCards[i].CardArtUrl);
+                cardlist.Add(_context.CardsTable.Find(deckList[i]));
             }
-            //ViewBag.userCards = userCards;
 
-            return View(cardList);
+            userDecks.Add(dName);
+
+            combo.Search = cardlist;
+            combo.deckObject = userDecks;
+
+            return View(combo);
         }
         //instead of creating a deck name based off the commander, we're going to allow the user to create a deck name on their own
         //this page will also allow the user to set their deck name
@@ -130,7 +211,7 @@ namespace MagicTheGatheringFinal.Controllers
             _context.DecksTable.Update(lastEntry);
             _context.SaveChanges();
 
-            return RedirectToAction("DeckList");
+            return RedirectToAction("DeckList", lastEntry);
         }
         public IActionResult ChooseCommander()
         {
@@ -157,67 +238,70 @@ namespace MagicTheGatheringFinal.Controllers
             lastEntry.AspUserId = userName;
             lastEntry.Quantity = 1;
 
-            //lastEntry.Id = 0;
 
             _context.DecksTable.Add(lastEntry);
             _context.SaveChanges();
 
             return RedirectToAction("DeckName");
         }
-        public async Task<IActionResult> AddCard(string id)
+        public async Task<IActionResult> AddCard(CardsTable cId, DecksTable dName)
         {
             var userId = FindUserId();
-            CardsTable cardTable = new CardsTable();
-            DecksTable deckTable = new DecksTable();
+
+            string id = cId.CardId;
 
             if (_context.CardsTable.Where(x => x.CardId == id).FirstOrDefault() == null)
             {
                 Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", id, "https://api.scryfall.com/", "");
-                cardTable.CardArtUrl = cardItem.image_uris.normal;
-                cardTable.CardId = cardItem.id;
-                cardTable.Cmc = cardItem.cmc;
-                cardTable.ManaCost = cardItem.mana_cost;
-                cardTable.Name = cardItem.name;
-                cardTable.OracleText = cardItem.oracle_text;
-                cardTable.TypeLine = cardItem.type_line;
-                cardTable.EdhrecRank = cardItem.edhrec_rank;
-                cardTable.CardPrice = decimal.Parse(cardItem.prices.usd);
+
+                cId.CardArtUrl = cardItem.image_uris.normal;
+                cId.CardId = cardItem.id;
+                cId.Cmc = cardItem.cmc;
+                cId.ManaCost = cardItem.mana_cost;
+                cId.Name = cardItem.name;
+                cId.OracleText = cardItem.oracle_text;
+                cId.TypeLine = cardItem.type_line;
+                cId.EdhrecRank = cardItem.edhrec_rank;
+                if (cardItem.prices.usd == null)
+                {
+                    cardItem.prices.usd = "0.00";
+                }
+                cId.CardPrice = decimal.Parse(cardItem.prices.usd);
                 if (cardItem.color_identity.Contains("B"))
                 {
-                    cardTable.Black = "B";
+                    cId.Black = "B";
                 }
                 if (cardItem.color_identity.Contains("U"))
                 {
-                    cardTable.Blue = "U";
+                    cId.Blue = "U";
                 }
                 if (cardItem.color_identity.Contains("W"))
                 {
-                    cardTable.White = "W";
+                    cId.White = "W";
                 }
                 if (cardItem.color_identity.Contains("G"))
                 {
-                    cardTable.Green = "G";
+                    cId.Green = "G";
                 }
                 if (cardItem.color_identity.Contains("R"))
                 {
-                    cardTable.Red = "R";
+                    cId.Red = "R";
                 }
-                _context.CardsTable.Add(cardTable);
+                _context.CardsTable.Add(cId);
                 _context.SaveChanges();
             }
             var idCollection = (from x in _context.CardsTable where id == x.CardId select x.Id).FirstOrDefault();
-            deckTable.CardId = idCollection;
-            deckTable.DeckName = FindDeck();
-            deckTable.Quantity = 1;
+            dName.CardId = idCollection;
+            dName.Quantity = 1;
             if (userId != null)
             {
-                deckTable.AspUserId = userId;
+                dName.AspUserId = userId;
             }
 
-            _context.DecksTable.Add(deckTable);
+            _context.DecksTable.Add(dName);
             _context.SaveChanges();
 
-            return RedirectToAction("DeckList");
+            return RedirectToAction("DeckList", dName);
         }
         public string FindDeck()
         {
