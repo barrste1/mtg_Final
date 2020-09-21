@@ -10,6 +10,7 @@ namespace MagicTheGatheringFinal.Models
         public CardSearchObject CardSearch { get; set; }
         public int CurvePosition { get; set; }
         public string DeckStatus { get; set; }
+        public int Creatures { get; set; }
         public string ErrorMessage { get; set; }
     }
 }

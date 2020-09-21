@@ -27,6 +27,18 @@ namespace MagicTheGatheringFinal.Controllers
         }
         #endregion
 
+        public IActionResult Index()
+        {
+            AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
+            var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
+
+            if (deckStatus != null)
+            {
+                assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
+            }
+            return View(assistedDeck);
+        }
+
         #region Deckbuilding Actions
         public IActionResult StartDeck(int commanderId)
         {
@@ -82,8 +94,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
             assistedDeck.DeckStatus = "fffff";
-
-
+            assistedDeck.Creatures = 5;
             string assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
             HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
 
@@ -201,8 +212,29 @@ namespace MagicTheGatheringFinal.Controllers
         #endregion
 
         #region Find Card Types
-        public async Task<IActionResult> FindCreatures(List<string> SelectedCard, int curvePosition)
+
+        public async Task<IActionResult> StartCreatures()
         {
+            AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
+            var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
+
+            if (deckStatus != null)
+            {
+                assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
+            }
+
+
+            ScryfallDAL dl = new ScryfallDAL();
+            string identity = FindPlayerType();
+            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={assistedDeck.CurvePosition+2}", FindPlayerBudget());
+
+            return View("FindCreatures",assistedDeck);
+        }
+        public async Task<IActionResult> FindCreatures(List<string> SelectedCard)
+        {
+            ScryfallDAL dl = new ScryfallDAL();
+            string identity = FindPlayerType();
+
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
             var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
             string assistedDeckJSON = "";
@@ -210,8 +242,6 @@ namespace MagicTheGatheringFinal.Controllers
             {
                 assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
             }
-
-            assistedDeck.CurvePosition = curvePosition;
 
             List<int> cardCurveData = new List<int>()
             {
@@ -223,9 +253,11 @@ namespace MagicTheGatheringFinal.Controllers
                 2
             };
 
-            if (SelectedCard.Count() < cardCurveData[curvePosition])
+            if (SelectedCard.Count() < cardCurveData[assistedDeck.CurvePosition])
             {
-                assistedDeck.ErrorMessage = $"You need to select exactly {cardCurveData[curvePosition]} creatures of this mana level.";
+                assistedDeck.ErrorMessage = $"You need to select exactly {cardCurveData[assistedDeck.CurvePosition]} creatures of this mana level.";
+                assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={assistedDeck.CurvePosition+2}", FindPlayerBudget());
+
                 return View("FindCreatures", assistedDeck);
             }
 
@@ -235,20 +267,18 @@ namespace MagicTheGatheringFinal.Controllers
                 AddCardsToDecksTable(card, 1);
             }
 
-            curvePosition++;
+            assistedDeck.CurvePosition++;
 
-            if (curvePosition >= cardCurveData.Count())
+            if (assistedDeck.CurvePosition >= cardCurveData.Count())
             {
                 assistedDeck.DeckStatus = assistedDeck.DeckStatus.Substring(0, 4) + "t";
                 assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
                 HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
-                return View();
+                return View("Index",assistedDeck);
             };
 
-            ScryfallDAL dl = new ScryfallDAL();
-            string identity = FindPlayerType();
-            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={cardCurveData[curvePosition]}", FindPlayerBudget());
-            
+            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={assistedDeck.CurvePosition+2}", FindPlayerBudget());
+            assistedDeck.Creatures = cardCurveData[assistedDeck.CurvePosition];
             assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
             HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
 
@@ -317,7 +347,8 @@ namespace MagicTheGatheringFinal.Controllers
         public string FindPlayerBudget()
         {
             string userId = FindUserId();
-            string playerBudget = (from p in _context.AspNetUsers where p.Id == userId select p.Budget).ToString();
+            string playerBudget = (from p in _context.AspNetUsers where p.Id == userId select p.Budget).Single().ToString();
+            
             return playerBudget;
         }
         #endregion
