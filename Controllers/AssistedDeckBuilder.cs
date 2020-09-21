@@ -30,9 +30,6 @@ namespace MagicTheGatheringFinal.Controllers
         #region Deckbuilding Actions
         public IActionResult StartDeck(int commanderId)
         {
-
-
-
             string identity = FindPlayerType();
             CreateDeckName(commanderId, identity);
 
@@ -91,6 +88,36 @@ namespace MagicTheGatheringFinal.Controllers
             HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
 
             //return View(assistedDeck);
+            return View("Budget");
+        }
+
+        public IActionResult UpdateBudget(string budget)
+        {
+            decimal budgetParse = 0;
+            try
+            {
+                budgetParse = decimal.Parse(budget);
+            }
+            catch
+            {
+                return View("Budget", "Please enter a valid dollar amount.");
+            }
+
+            AspNetUsers user = _context.AspNetUsers.Find(FindUserId());
+            user.Budget = decimal.Parse(budget);
+            _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.Update(user);
+            _context.SaveChanges();
+
+            AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
+            var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
+
+            if (deckStatus != null)
+            {
+                assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
+            }
+
+
             return View("Index", assistedDeck);
         }
 
@@ -287,10 +314,10 @@ namespace MagicTheGatheringFinal.Controllers
 
             return playerType;
         }
-        public int FindPlayerBudget()
+        public string FindPlayerBudget()
         {
             string userId = FindUserId();
-            int playerBudget = /*(from p in _context.AspNetUsers where p.Id == userId select p.Playertype).Single()*/10;
+            string playerBudget = (from p in _context.AspNetUsers where p.Id == userId select p.Budget).ToString();
             return playerBudget;
         }
         #endregion
