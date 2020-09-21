@@ -32,6 +32,7 @@ namespace MagicTheGatheringFinal.Models
         public int AccessFailedCount { get; set; }
         public string Playertype { get; set; }
         public string AspUserId { get; set; }
+        public decimal? Budget { get; set; }
 
         public virtual AspNetUsers AspUser { get; set; }
         public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
