@@ -91,7 +91,7 @@ namespace MagicTheGatheringFinal.Controllers
             HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
 
             //return View(assistedDeck);
-            return RedirectToAction("FindSingleRemoval");
+            return View("Index",assistedDeck);
         }
 
   
@@ -112,7 +112,7 @@ namespace MagicTheGatheringFinal.Controllers
                 if (SelectedCard.Count() != 10)
                 {
                     assistedDeck.ErrorMessage = "You need to select exactly 10 card draw sources.";
-                    return View("FindDraw", assistedDeck);
+                    return RedirectToAction("FindDraw", assistedDeck);
                 }
                 assistedDeck.DeckStatus ="t"+assistedDeck.DeckStatus.Substring(1);
             }
@@ -225,13 +225,9 @@ namespace MagicTheGatheringFinal.Controllers
             return View(removal);
         }
 
-        public async Task<IActionResult> FindMultiRemoval(List<string> SelectedCard, List<bool> Deck)
+        public async Task<IActionResult> FindMultiRemoval()
         {
-            foreach (string card in SelectedCard)
-            {
-                AddCardsToCardsTable(card);
-                AddCardsToDecksTable(card, 1);
-            }
+
             string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
             CardSearchObject search = await dl.GetSearch($"id:{identity.ToLower()}+o:\"destroy all\"+t:\"sorcery\"ort:\"instant\"");
@@ -241,47 +237,40 @@ namespace MagicTheGatheringFinal.Controllers
             return View(removal);
         }
 
-        public async Task<IActionResult> FindRamp(List<string> SelectedCard)
+        public async Task<IActionResult> FindRamp(AssistedDeckViewModel assistedDeck)
         {
-            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
-            foreach (string assistedCardId in SelectedCard)
-            {
-                AddCardsToCardsTable(assistedCardId);
-                AddCardsToDecksTable(assistedCardId, 1);
-            }
+            //foreach (string assistedCardId in SelectedCard)
+            //{
+            //    AddCardsToCardsTable(assistedCardId);
+            //    AddCardsToDecksTable(assistedCardId, 1);
+            //}
 
             string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
-            CardSearchObject removal = await dl.GetSearch($"id:{identity.ToLower()}+produces:br+t:\"artifact\"");
+            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+produces:br+t:\"artifact\"");
 
             //ramp goes to draw from the view
-            return View(removal);
+            return View(assistedDeck);
         }
 
-        public async Task<IActionResult> FindDraw(List<string> SelectedCard)
+        public async Task<IActionResult> FindDraw(AssistedDeckViewModel assistedDeck)
         {
 
-            foreach (string assistedCardId in SelectedCard)
-            {
-                AddCardsToCardsTable(assistedCardId);
-                AddCardsToDecksTable(assistedCardId, 1);
-            }
+            //foreach (string assistedCardId in SelectedCard)
+            //{
+            //    AddCardsToCardsTable(assistedCardId);
+            //    AddCardsToDecksTable(assistedCardId, 1);
+            //}
 
             string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
-            CardSearchObject draw = await dl.GetSearch($"id:{identity.ToLower()}+o:draw");
+            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+o:draw");
 
-            return View(draw);
+            return View(assistedDeck);
         }
         #endregion
 
         #region Find User Information Methods
-
-
-
-        //creates deck name based on commander card ID
-       
-
         public string FindUserId()
         {
             if (User.Identity.Name == null)

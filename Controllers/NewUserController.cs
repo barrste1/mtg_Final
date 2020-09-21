@@ -77,7 +77,7 @@ namespace MagicTheGatheringFinal.Controllers
                     viableCommanders.Add(commanders[i]);
                 }
             }
-
+            viableCommanders.OrderByDescending(i => i.EdhrecRank);
             return View("../AssistedDeckBuilder/Commander",viableCommanders);
         }
 
