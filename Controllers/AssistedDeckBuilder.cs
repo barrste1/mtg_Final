@@ -18,15 +18,6 @@ namespace MagicTheGatheringFinal.Controllers
     [Authorize]
     public class AssistedDeckBuilder : Controller
     {
-        #region Context And Constructor
-        private readonly MagicDbContext _context;
-
-        public AssistedDeckBuilder(MagicDbContext context)
-        {
-            _context = context;
-        }
-        #endregion
-
         public IActionResult Index()
         {
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
@@ -38,6 +29,15 @@ namespace MagicTheGatheringFinal.Controllers
             }
             return View(assistedDeck);
         }
+
+        #region Context And Constructor
+        private readonly MagicDbContext _context;
+
+        public AssistedDeckBuilder(MagicDbContext context)
+        {
+            _context = context;
+        }
+        #endregion
 
         #region Deckbuilding Actions
         public IActionResult StartDeck(int commanderId)
