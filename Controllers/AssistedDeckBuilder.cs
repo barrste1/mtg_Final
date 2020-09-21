@@ -84,8 +84,8 @@ namespace MagicTheGatheringFinal.Controllers
             }
 
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
-            assistedDeck.CurvePosition = 1;
             assistedDeck.DeckStatus = "fffff";
+
 
             string assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
             HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
@@ -94,16 +94,11 @@ namespace MagicTheGatheringFinal.Controllers
             return RedirectToAction("FindSingleRemoval");
         }
 
-        //This method adds the commander to the DecksTable, initializing a new deck whilst constructing a new deck name
-
-        public IActionResult AddCards(List<string> SelectedCard,int menu)
+  
+        //This method validates the card amount, then adds them to the deck/cards table before returning to 
+        //index.
+        public IActionResult ValidateSelectedCards(List<string> SelectedCard,int menu)
         {
-            foreach (string card in SelectedCard)
-            {
-               AddCardsToCardsTable(card);
-                AddCardsToDecksTable(card, 1);
-            }
-
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
             var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
 
@@ -112,10 +107,62 @@ namespace MagicTheGatheringFinal.Controllers
                 assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
             }
 
- 
+            if (menu == 0)
+            {
+                if (SelectedCard.Count() != 10)
+                {
+                    assistedDeck.ErrorMessage = "You need to select exactly 10 card draw sources.";
+                    return View("FindDraw", assistedDeck);
+                }
+                assistedDeck.DeckStatus ="t"+assistedDeck.DeckStatus.Substring(1);
+            }
+            else if (menu == 1)
+            {
+                if (SelectedCard.Count() != 10)
+                {
+                    assistedDeck.ErrorMessage = "You need to select exactly 10 sources of ramp.";
+                    return View("FindRamp", assistedDeck);
+                }
+                assistedDeck.DeckStatus = assistedDeck.DeckStatus.Substring(0,1) + "t" + assistedDeck.DeckStatus.Substring(2);
+            }
+            else if (menu == 2)
+            {
+                if (SelectedCard.Count() != 5)
+                {
+                    assistedDeck.ErrorMessage = "You need to select exactly 5 single target removal.";
+                    return View("FindSingleRemoval", assistedDeck);
+                }
+                assistedDeck.DeckStatus = assistedDeck.DeckStatus.Substring(0, 2) + "t" + assistedDeck.DeckStatus.Substring(3);
+            }
+            else if (menu == 3)
+            {
+                if (SelectedCard.Count() != 5)
+                {
+                    assistedDeck.ErrorMessage = "You need to select exactly 5 Board Clears.";
+                    return View("FindMultiRemoval", assistedDeck);
+                }
+                assistedDeck.DeckStatus = assistedDeck.DeckStatus.Substring(0, 3) + "t" + assistedDeck.DeckStatus.Substring(4);
+            }
+            //else if (menu == 4)
+            //{
+            //    if (SelectedCard.Count() < requiredAmount)
+            //    {
+            //        assistedDeck.ErrorMessage = $"You need to select exactly {requiredAmount} creatures of this mana level.";
+            //        return View("FindCreatures", assistedDeck);
+            //    }
 
+            //}
 
-            return View();
+            foreach (string card in SelectedCard)
+            {
+               AddCardsToCardsTable(card);
+               AddCardsToDecksTable(card, 1);
+            }
+
+            string assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
+            HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
+
+            return View("Index",assistedDeck);
         }
 
         public IActionResult CompleteAssistedDeck(List<string> SelectedCard)
