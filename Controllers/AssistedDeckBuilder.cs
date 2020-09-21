@@ -90,8 +90,8 @@ namespace MagicTheGatheringFinal.Controllers
             string assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
             HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
 
-            return View(assistedDeck);
-           // return RedirectToAction("FindSingleRemoval");
+            //return View(assistedDeck);
+            return RedirectToAction("FindSingleRemoval");
         }
 
         //This method adds the commander to the DecksTable, initializing a new deck whilst constructing a new deck name
@@ -112,7 +112,7 @@ namespace MagicTheGatheringFinal.Controllers
                 assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
             }
 
-
+ 
 
 
             return View();
@@ -305,8 +305,8 @@ namespace MagicTheGatheringFinal.Controllers
                 {
                     cardTable.Red = "R";
                 }
-                _context.CardsTable.Add(cardTable);
-                _context.SaveChanges();
+                 _context.CardsTable.Add(cardTable);
+                 _context.SaveChanges();
             }
         }
         
