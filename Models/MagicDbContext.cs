@@ -31,7 +31,7 @@ namespace MagicTheGatheringFinal.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("DefaultConnection");
+                optionsBuilder.UseSqlServer("Server=tcp:weatherlight.database.windows.net,1433;Initial Catalog=MagicDb;Persist Security Info=False;User ID=Gideon;Password=5WUBRG2W!N;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
@@ -127,6 +127,8 @@ namespace MagicTheGatheringFinal.Models
                     .HasName("UserNameIndex")
                     .IsUnique()
                     .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+                entity.Property(e => e.Budget).HasColumnType("money");
 
                 entity.Property(e => e.Email).HasMaxLength(256);
 
