@@ -84,11 +84,11 @@
 </tr>
    
     <tr>
-        @if (Model.DeckStatus.Substring(4, 1) == "t")
+        @if (Model.DeckStatus.Substring(4, 1) == "f")
         {
 
             <td>
-                <a href="../AssistedDeckBuilder/FindCreatures" class="btn-danger">Add Creatures</a>
+                <a href="../AssistedDeckBuilder/StartCreatures" class="btn-danger">Add Creatures</a>
             </td>
         }
         else
