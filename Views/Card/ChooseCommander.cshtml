@@ -5,15 +5,19 @@
 
 @model List<CardsTable>
 
-<h1>ChooseCommander</h1>
+    <div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px">
+        <h1>Choose Commander</h1>
 
-<p>Choose your commander!</p>
+        <p>Choose your commander!</p>
+    </div>
 
 
-@for (int i = 0; i < Model.Count; i++)
-{
-    <img style="width:17.5%; height:17.5%" src="@Model[i].CardArtUrl" />
-    <a href="/Card/SaveCommander?cId=@Model[i].Id"> Make @Model[i].Name your commander!</a>
+<div style="display:flex; flex-direction:column">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <img style="width:17.5%; height:17.5%" src="@Model[i].CardArtUrl" />
+        <a style="margin-bottom:30px; text-decoration:underline" href="/Card/SaveCommander?cId=@Model[i].Id"> Make @Model[i].Name your commander!</a>
 
-}
+    }
+</div>
 
