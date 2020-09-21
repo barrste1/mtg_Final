@@ -30,7 +30,7 @@ namespace MagicTheGatheringFinal.Models
             return card;
         }
 
-        public async Task<CardSearchObject> GetSearch(string input,int budget)
+        public async Task<CardSearchObject> GetSearch(string input,string budget)
         {
             var client = GetClient(); //calls the method that gives the API the general information needed to 
             //receive data from the API 

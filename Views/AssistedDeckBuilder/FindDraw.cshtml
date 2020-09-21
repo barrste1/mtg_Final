@@ -2,13 +2,14 @@
     <div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px">
         <h1>Card Draw</h1>
         <br />
-        <p>If you want to win the game, you're going to have to draw more cards! Choose 10 draw spells so you can win your next game!</p>
+        <p>If you want to win the game, you're going to have to draw more cards! <b>Choose 10 draw spells</b> so you can win your next game!</p>
+    </div>
         <br />
         @if (Model.ErrorMessage != null)
         {
             <p>@Model.ErrorMessage</p>
         }
-    </div>
+    
 
     <form asp-action="ValidateSelectedCards" asp-controller="AssistedDeckBuilder">
         <table class="table">
