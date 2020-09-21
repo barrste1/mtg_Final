@@ -1,13 +1,16 @@
 ﻿@model AssistedDeckViewModel
 <div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px">
-<h1>Multi target removal</h1>
-<br />
-<p>Does your opponnet have an entire army causing you an issue? A constellation of enchantments preventing you from playing more than one card per turn? <b>Choose 5 of these to take with you!</b></p>
-<br />
-
-<br />
+    <h1>Multi target removal</h1>
+    <br />
+    <p>Does your opponnet have an entire army causing you an issue? A constellation of enchantments preventing you from playing more than one card per turn? <b>Choose 5 of these to take with you!</b></p>
+    <br />
+    @if (Model.ErrorMessage != null)
+    {
+        <p>@Model.ErrorMessage</p>
+    }
+    <br />
 </div>
-<form asp-action="FindRamp" asp-controller="AssistedDeckBuilder">
+<form asp-action="ValidateSelectedCards" asp-controller="AssistedDeckBuilder">
     <table class="table">
         <tr>
             <th>Number</th>
@@ -15,7 +18,9 @@
             <th>Description</th>
             <th>Mana</th>
             <th>Image</th>
+            <th>Pricing</th>
             <th>Add Card</th>
+
         </tr>
 
         @for (int i = 0, count = 1; i < Model.CardSearch.data.Count(); i++, count++)
@@ -44,9 +49,21 @@
                 }
                 <td>@Model.CardSearch.data[i].mana_cost</td>
                 <td><img src="@image" /></td>
+
+                @if (Model.CardSearch.data[i].prices.usd != null)
+                {
+                    <td>@Model.CardSearch.data[i].prices</td>
+                }
+                else
+                {
+                    <td>Could not find pricing information</td>
+                }
+
                 <td><input name="SelectedCard" type="checkbox" value="@Model.CardSearch.data[i].id" /></td>
             </tr>
+
         }
+        <input name="menu" value="3" hidden />
         <input type="submit" />
 
     </table>

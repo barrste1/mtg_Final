@@ -18,6 +18,7 @@
                 <th>Description</th>
                 <th>Mana</th>
                 <th>Image</th>
+                <th>Pricing</th>
                 <th>Add Card</th>
             </tr>
 
@@ -33,22 +34,30 @@
                     image = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
                 }
 
-                <tr>
-                    <td>@count.</td>
-                    <td>@Model.CardSearch.data[i].name</td>
-                    @if (Model.CardSearch.data[i].oracle_text == null)
-                    {
-                        <td>Ah, ah, ah, you didn't say the <b>*magic*</b> word</td>
-                    }
-                    else
-                    {
-                        <td>@Model.CardSearch.data[i].oracle_text</td>
+        <tr>
+            <td>@count.</td>
+            <td>@Model.CardSearch.data[i].name</td>
+            @if (Model.CardSearch.data[i].oracle_text == null)
+            {
+                <td>Ah, ah, ah, you didn't say the <b>*magic*</b> word</td>
+            }
+            else
+            {
+                <td>@Model.CardSearch.data[i].oracle_text</td>
 
-                    }
-                    <td>@Model.CardSearch.data[i].mana_cost</td>
-                    <td><img src="@image" /></td>
-                    <td><input name="SelectedCard" type="checkbox" value="@Model.CardSearch.data[i].id" /></td>
-                </tr>
+            }
+            <td>@Model.CardSearch.data[i].mana_cost</td>
+            <td><img src="@image" /></td>
+            @if (Model.CardSearch.data[i].prices.usd != null)
+            {
+                <td>@Model.CardSearch.data[i].prices</td>
+            }
+            else
+            {
+                <td>Could not find pricing information</td>
+            }
+            <td><input name="SelectedCard" type="checkbox" value="@Model.CardSearch.data[i].id" /></td>
+        </tr>
             }
             <input name="menu" value="0" hidden />
             <input type="submit" />

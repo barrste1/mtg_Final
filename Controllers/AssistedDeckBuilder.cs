@@ -94,7 +94,6 @@ namespace MagicTheGatheringFinal.Controllers
             return View("Index",assistedDeck);
         }
 
-  
         //This method validates the card amount, then adds them to the deck/cards table before returning to 
         //index.
         public IActionResult ValidateSelectedCards(List<string> SelectedCard,int menu)
@@ -213,38 +212,27 @@ namespace MagicTheGatheringFinal.Controllers
 
             return View();
         }
-        public async Task<IActionResult> FindSingleRemoval()
+        public async Task<IActionResult> FindSingleRemoval(AssistedDeckViewModel assistedDeck)
         {
             ScryfallDAL dl = new ScryfallDAL();
             string identity = FindPlayerType();
-            CardSearchObject search = await dl.GetSearch($"id:{identity.ToLower()}+o:\"destroy\"+t:\"instant\"ort:\"sorcery\"");
-            AssistedDeckViewModel removal = new AssistedDeckViewModel();
-            removal.CardSearch = search;
-            removal.DeckStatus = "This is a test";
-            //single chain to multi from the view
-            return View(removal);
+            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+o:\"destroy\"+t:\"instant\"ort:\"sorcery\"");
+
+            return View(assistedDeck);
         }
 
-        public async Task<IActionResult> FindMultiRemoval()
+        public async Task<IActionResult> FindMultiRemoval(AssistedDeckViewModel assistedDeck)
         {
 
             string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
-            CardSearchObject search = await dl.GetSearch($"id:{identity.ToLower()}+o:\"destroy all\"+t:\"sorcery\"ort:\"instant\"");
-            AssistedDeckViewModel removal = new AssistedDeckViewModel();
-            removal.CardSearch = search;
+            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+o:\"destroy all\"+t:\"sorcery\"ort:\"instant\"");
             //multitarget goes to ramp from the view
-            return View(removal);
+            return View(assistedDeck);
         }
 
         public async Task<IActionResult> FindRamp(AssistedDeckViewModel assistedDeck)
         {
-            //foreach (string assistedCardId in SelectedCard)
-            //{
-            //    AddCardsToCardsTable(assistedCardId);
-            //    AddCardsToDecksTable(assistedCardId, 1);
-            //}
-
             string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
             assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+produces:br+t:\"artifact\"");
@@ -255,13 +243,6 @@ namespace MagicTheGatheringFinal.Controllers
 
         public async Task<IActionResult> FindDraw(AssistedDeckViewModel assistedDeck)
         {
-
-            //foreach (string assistedCardId in SelectedCard)
-            //{
-            //    AddCardsToCardsTable(assistedCardId);
-            //    AddCardsToDecksTable(assistedCardId, 1);
-            //}
-
             string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
             assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+o:draw");
