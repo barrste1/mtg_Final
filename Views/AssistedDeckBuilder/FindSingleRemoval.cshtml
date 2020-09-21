@@ -1,50 +1,65 @@
 ﻿@model AssistedDeckViewModel
-<div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px">
-<h1>Single Target Removal</h1>
-<br />
-<p>Is there a bug on your opponents board you want to squash? These cards are your flyswatters. <b>Take 5 of these!</b></p>
-</div>
-<form asp-action="FindMultiRemoval" asp-controller="AssistedDeckBuilder">
-    <table class="table">
-        <tr>
-            <th>Number</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Mana</th>
-            <th>Image</th>
-            <th>Add Card</th>
-        </tr>
-
-        @for (int i = 0, count = 1; i < Model.CardSearch.data.Count(); i++, count++)
+    <div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px">
+        <h1>Single Target Removal</h1>
+        <br />
+        <p>Is there a bug on your opponents board you want to squash? These cards are your flyswatters. <b>Take 5 of these!</b></p>
+        <br />
+        @if (Model.ErrorMessage != null)
         {
-            string image = "";
-            if (Model.CardSearch.data[i].image_uris != null)
-            {
-                image = Model.CardSearch.data[i].image_uris.small;
-            }
-            else
-            {
-                image = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
-            }
-
+            <p>@Model.ErrorMessage</p>
+        }
+    </div>
+    <form asp-action="ValidateSelectedCards" asp-controller="AssistedDeckBuilder">
+        <table class="table">
             <tr>
-                <td>@count.</td>
-                <td>@Model.CardSearch.data[i].name</td>
-                @if (Model.CardSearch.data[i].oracle_text == null)
+                <th>Number</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Mana</th>
+                <th>Image</th>
+                <th>Pricing</th>
+                <th>Add Card</th>
+            </tr>
+
+            @for (int i = 0, count = 1; i < Model.CardSearch.data.Count(); i++, count++)
+            {
+                string image = "";
+                if (Model.CardSearch.data[i].image_uris != null)
                 {
-                    <td>Ah, ah, ah, you didn't say the <b>*magic*</b> word</td>
+                    image = Model.CardSearch.data[i].image_uris.small;
                 }
                 else
                 {
-                    <td>@Model.CardSearch.data[i].oracle_text</td>
-
+                    image = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
                 }
-                <td>@Model.CardSearch.data[i].mana_cost</td>
-                <td><img src="@image" /></td>
-                <td><input name="SelectedCard" type="checkbox" value="@Model.CardSearch.data[i].id" /></td>
-            </tr>
-        }
-        <input type="submit" />
 
-    </table>
-</form>
+                <tr>
+                    <td>@count.</td>
+                    <td>@Model.CardSearch.data[i].name</td>
+                    @if (Model.CardSearch.data[i].oracle_text == null)
+                    {
+                        <td>Ah, ah, ah, you didn't say the <b>*magic*</b> word</td>
+                    }
+                    else
+                    {
+                        <td>@Model.CardSearch.data[i].oracle_text</td>
+
+                    }
+                    <td>@Model.CardSearch.data[i].mana_cost</td>
+                    <td><img src="@image" /></td>
+                    @if (Model.CardSearch.data[i].prices.usd != null)
+                    {
+                        <td>@Model.CardSearch.data[i].prices</td>
+                    }
+                    else
+                    {
+                        <td>Could not find pricing information</td>
+                    }
+                    <td><input name="SelectedCard" type="checkbox" value="@Model.CardSearch.data[i].id" /></td>
+                </tr>
+            }
+            <input name="menu" value="2" hidden />
+            <input type="submit" />
+
+        </table>
+    </form>
