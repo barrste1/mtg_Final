@@ -35,7 +35,7 @@ namespace MagicTheGatheringFinal.Models
             var client = GetClient(); //calls the method that gives the API the general information needed to 
             //receive data from the API 
             var inputQuery = MakeQuery(input);
-            var response = await client.GetAsync($"/cards/search?q={input}"); //uses the client (HTTPClient) to receive 
+            var response = await client.GetAsync($"/cards/search?order=edhrec&q={input}"); //uses the client (HTTPClient) to receive 
             //data from the API based off of a certain endpoint.
             CardSearchObject card = await response.Content.ReadAsAsync<CardSearchObject>();
             //install-package Microsoft.AspNet.WebAPI.Client

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
+using System.Text.Json;
 using System.Threading.Tasks;
 using MagicTheGatheringFinal.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -28,6 +30,9 @@ namespace MagicTheGatheringFinal.Controllers
         #region Deckbuilding Actions
         public IActionResult StartDeck(int commanderId)
         {
+
+
+
             string identity = FindPlayerType();
             CreateDeckName(commanderId, identity);
 
@@ -78,12 +83,39 @@ namespace MagicTheGatheringFinal.Controllers
                 }
             }
 
-            return RedirectToAction("FindSingleRemoval");
+            AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
+            assistedDeck.CurvePosition = 1;
+            assistedDeck.DeckStatus = "fffff";
+
+            string assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
+            HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
+
+            return View(assistedDeck);
+           // return RedirectToAction("FindSingleRemoval");
         }
 
         //This method adds the commander to the DecksTable, initializing a new deck whilst constructing a new deck name
 
-        public async Task<IActionResult> CompleteAssistedDeck(List<string> SelectedCard)
+        public IActionResult AddCards(List<string> SelectedCard,int menu)
+        {
+            foreach (string card in SelectedCard)
+            {
+               AddCardsToCardsTable(card);
+                AddCardsToDecksTable(card, 1);
+            }
+
+            AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
+            var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
+
+            if (deckStatus != null)
+            {
+                assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
+            }
+
+            return View();
+        }
+
+        public IActionResult CompleteAssistedDeck(List<string> SelectedCard)
         {
 
             
@@ -100,9 +132,35 @@ namespace MagicTheGatheringFinal.Controllers
         #endregion
 
         #region Find Card Types
-        public async Task<IActionResult> FindCreatures(List<string> SelectedCard)
+        public async Task<IActionResult> FindCreatures(List<string> SelectedCard, int curvePosition)
         {
-            
+            curvePosition++;
+
+            List<int> cardCurveData = new List<int>()
+            {
+                5,
+                8,
+                7,
+                5,
+                4,
+                2
+            };
+
+            if (curvePosition >= cardCurveData.Count())
+            {
+                return View();
+            };
+
+            for (int i = 0; i<0;i++)
+            {
+                ScryfallDAL dl = new ScryfallDAL();
+                string identity = FindPlayerType();
+                CardSearchObject search = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={cardCurveData[curvePosition]}");
+                AssistedDeckViewModel removal = new AssistedDeckViewModel();
+                removal.CardSearch = search;
+            };
+
+
             return View();
         }
         public async Task<IActionResult> FindSingleRemoval()
@@ -112,7 +170,7 @@ namespace MagicTheGatheringFinal.Controllers
             CardSearchObject search = await dl.GetSearch($"id:{identity.ToLower()}+o:\"destroy\"+t:\"instant\"ort:\"sorcery\"");
             AssistedDeckViewModel removal = new AssistedDeckViewModel();
             removal.CardSearch = search;
-            removal.Deck = "This is a test";
+            removal.DeckStatus = "This is a test";
             //single chain to multi from the view
             return View(removal);
         }
@@ -161,12 +219,11 @@ namespace MagicTheGatheringFinal.Controllers
 
             string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
-            CardSearchObject removal = await dl.GetSearch($"id:{identity.ToLower()}+o:draw");
+            CardSearchObject draw = await dl.GetSearch($"id:{identity.ToLower()}+o:draw");
 
-            return View(removal);
+            return View(draw);
         }
         #endregion
-
 
         #region Find User Information Methods
 
@@ -251,7 +308,7 @@ namespace MagicTheGatheringFinal.Controllers
         }
         
         [HttpGet]
-        public async void CreateDeckName(int commanderId, string colorId)
+        public void CreateDeckName(int commanderId, string colorId)
         {
             string assistedDeckName = "";
             DecksTable deckTable = new DecksTable();
@@ -272,7 +329,7 @@ namespace MagicTheGatheringFinal.Controllers
         }
         
         [HttpPost]
-        public async void AddCardsToDecksTable(string assistedCardId, int quantity)
+        public void AddCardsToDecksTable(string assistedCardId, int quantity)
         {
             DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
             DecksTable deckTable = new DecksTable();

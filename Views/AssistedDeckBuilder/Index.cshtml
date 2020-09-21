@@ -1,47 +1,120 @@
 ﻿
-@model CardSearchObject
+@model AssistedDeckViewModel
 
-<form asp-action="ProcessCards" asp-controller="AssistedDeckBuilder">
-    <table class="table">
-        <tr>
-            <th>Number</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Mana</th>
-            <th>Image</th>
-            <th>Add Card</th>
-        </tr>
 
-        @for (int i = 0, count = 1; i < Model.data.Count(); i++, count++)
+@{
+    ViewData["Title"] = "AssistedDeckTaskListViewModel";
+}
+
+
+<h1>Assisted Deck Task Manager</h1>
+
+
+<table>
+    <tr>
+        <th>Task Name</th>
+    </tr>
+    <tr>
+        @if (Model.DeckStatus.Substring(0, 1) == "f")
         {
-            string image = "";
-            if (Model.data[i].image_uris != null)
-            {
-                image = Model.data[i].image_uris.small;
-            }
-            else
-            {
-                image = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
-            }
 
-            <tr>
-                <td>@count.</td>
-                <td>@Model.data[i].name</td>
-                @if (Model.data[i].oracle_text == null)
-                {
-                    <td>Ah, ah, ah, you didn't say the <b>*magic*</b> word</td>
-                }
-                else
-                {
-                    <td>@Model.data[i].oracle_text</td>
+            <td>
+                <a href="../AssistedDeck/FindDraw" class="btn-danger">Add Draw</a>
+            </td>
 
-                }
-                <td>@Model.data[i].mana_cost</td>
-                <td><img src="@image" /></td>
-                <td><input name="SelectedCard" type="checkbox" value="@Model.data[i].id" /></td>
-            </tr>
         }
-        <input type="submit" />
+        else
+        {
 
-    </table>
-    </form>
+            <td class="btn-success">Card Draw Looking Good!</td>
+
+        }
+    </tr>
+
+<tr>
+    @if (Model.DeckStatus.Substring(1, 1) == "f")
+    {
+
+        <td>
+            <a href="" class="btn-danger">Add Ramp</a>
+        </td>
+
+    }
+    else
+    {
+
+        <td class="btn-success">Ready to keep up with opponents with your ramp!</td>
+
+    }
+</tr>
+
+<tr>
+    @if (Model.DeckStatus.Substring(2, 1) == "f")
+    {
+
+        <td>
+            <a href="" class="btn-danger">Add Single Target Removal</a>
+        </td>
+
+    }
+    else
+    {
+
+        <td class="btn-success">Ready to answer your opponents threats!</td>
+
+    }
+</tr>
+   
+
+<tr>
+    @if (Model.DeckStatus.Substring(3, 1) == "f")
+    {
+
+        <td>
+            <a href="" class="btn-danger">Add Board Clears</a>
+        </td>
+
+    }
+    else
+    {
+
+        <td class="btn-success">Ready to reset the board!</td>
+
+    }
+</tr>
+   
+    <tr>
+        @if (Model.DeckStatus.Substring(4, 1) == "t")
+        {
+
+            <td>
+                <a href="" class="btn-danger">Add Creatures</a>
+            </td>
+        }
+        else
+        {
+
+            <td class="btn-success">Your Army is Ready!</td>
+
+        }
+
+    </tr>
+
+    <tr>
+        @if (Model.DeckStatus == "ttttt")
+        {
+            <td>
+                <a href="" class="btn">View Finished Deck</a>
+            </td>
+        }
+        else
+        {
+            <td>
+                <a href="" class="btn">View Current Deck</a>
+            </td>
+        }
+    </tr>
+
+</table>
+
+

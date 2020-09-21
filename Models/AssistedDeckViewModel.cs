@@ -8,6 +8,8 @@ namespace MagicTheGatheringFinal.Models
     public class AssistedDeckViewModel
     {
         public CardSearchObject CardSearch { get; set; }
-        public string Deck { get; set; }
+        public int CurvePosition { get; set; }
+        public string DeckStatus { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }
