@@ -6,11 +6,22 @@
 @model CombinedDeckViewModel
 
 <h1>ChooseDeck</h1>
-<form action="/card/DeckList" method="post">
-    @for (int d = 0; d < Model.deckObject.Count; d++)
-    {
-        @Model.deckObject[d].DeckName
-        <input type="checkbox" name="DeckName" value="@Model.deckObject[d].DeckName" />
-    }
-    <input type="submit" value="Select this deck" />
-</form>
+<table>
+    <tr>
+        <th>Deck Name</th>
+        <th>Deck Selector</th>
+    </tr>
+    <tr>
+        <form action="/card/DeckList" method="post">
+            @for (int d = 0; d < Model.deckObject.Count; d++)
+            {
+                <td>@Model.deckObject[d].DeckName</td>
+                <td><input type="checkbox" name="DeckName" value="@Model.deckObject[d].DeckName" /></td>
+            }
+            <input type="submit" value="Select this deck" />
+        </form>
+    </tr>
+    <form action="/card/ChooseCommander" method="post">
+        <input type="submit" value="Create a new deck" />
+    </form>
+</table>
