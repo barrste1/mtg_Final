@@ -24,13 +24,14 @@
         <form action="/card/GetDeckData" method="post">
             @for (int d = 0; d < Model.Count; d++)
             {
-                <td>@Model[d]</td>
-                <td><input type="checkbox" name="DeckName" value="@Model[d]" /></td>
+
+            <td>@Model[d]</td>
+            <td><input type="checkbox" name="DeckName" value="@Model[d]" /></td>
             }
             <input type="submit" value="Select this deck" />
-        </form>
+            </form>
     </tr>
-    <form action="/card/ChooseCommander" method="post">
-        <input type="submit" value="Create a new deck" />
-    </form>
-</table>
+        <form action="/card/ChooseCommander" method="post">
+            <input type="submit" value="Create a new deck" />
+        </form>
+    </table>
