@@ -2,12 +2,19 @@
 @{
     ViewData["Title"] = "DeckName";
 }
-
-<h1>DeckName</h1>
-<br />
-<br />
-
-<form action="SaveDeckName" method="post">
-    <input type="text" name="deckName" placeholder="What's your deck name?" />
-    <input type="submit" value="Start Building Your Deck!" />
-</form>
+    <div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; margin-left:5px">
+        <h1 style="text-align:center;">DeckName</h1>
+        <br />
+        <br />
+        </div>
+        <style>
+            body {
+                background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+                background-size: cover;
+                background-attachment: fixed;
+            }
+        </style>
+        <form action="SaveDeckName" method="post">
+            <input type="text" name="deckName" placeholder="What's your deck name?" style=" />
+            <input type="submit" value="Start Building Your Deck!" />
+        </form>

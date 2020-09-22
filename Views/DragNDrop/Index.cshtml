@@ -8,24 +8,24 @@
         #target {
 
             border: solid;
-            width:300px;
             height:auto;
             background-color: gold;
+            width:auto;
+            height:auto;
             text-align:left;
             margin-right: auto;
             margin-left: auto;
         }
         
 
-        .top-container {
+        #top-container {
             margin-right: auto;
             margin-left: auto;
-            background-color: rgba(128, 128, 128, 0.21);
-            width: 30%;
+            background-color: rgba(128, 128, 128, 0.80) ;
+            width: 1000px;
             padding: 30px;
             text-align: right;
-            top: 0;
-            right: 500px;
+
         }
 
         /*.header {
@@ -45,14 +45,12 @@
             padding: 10px;
         }
 
-        .sticky {
+/*        .sticky {
             margin-right: auto;
             margin-left: auto;
             position: fixed;
-            top: 70px;
-            right:397px;
             width: 50%;
-        }
+        }*/
 
             .sticky + .content {
                 margin-right: auto;
@@ -63,18 +61,31 @@
     </head>
 
 
-    <form ondragstart="dragstart_handler(event)" style="float:left">
-        
-        @foreach (var card in Model)
-        {
-            <p id="@card.CardId" draggable="true">@card.Name</p>
-        }
+    <form ondragstart="dragstart_handler(event)">
+        <div class="container">
+            <div  style="width:20%;height:auto" class="row sticky-top" id="top-container" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" ondragstart="dragstart_handler(event)">
+                <div class="col-md-12">
+                    <img style="width:100px;height:100px; float:left" src="https://www.iconfinder.com/data/icons/glypho-generic-icons/64/garbage-can-recycle-bin-512.png" ondrop="trash_drop(event)" ondragover="dragover_handler(event)" />
+                    <input style="float:left" onclick="loadProducts()" id="target" type="submit" value="submit">
+                </div>
+            </div>
+
+            <div class="row">
+
+                @foreach (var card in Model)
+                {
+                    <div class="col-md-2">
+                        <img src="@card.CardArtUrl" draggable="true" style="width:180px;height:auto" id="@card.Id" />
+                        <p>Price: @card.CardPrice?.ToString("C2")</p>
+                    </div>
+                    @*<p id="@card.CardId" draggable="true">@card.Name</p>*@
+
+                }
+            </div>
+        </div>
     </form>
     <body>
-        <div class="header" id="target"  ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
-                <img style="width:100px;height:100px; float:right;" src="https://www.iconfinder.com/data/icons/glypho-generic-icons/64/garbage-can-recycle-bin-512.png" ondrop="trash_drop(event)" ondragover="dragover_handler(event)" />
-                <input class="todo" onclick="loadProducts()" id="target" type="submit" value="submit">
-        </div>
+
     </body>
 
     <script>
@@ -108,18 +119,18 @@
             let pos = cards.indexOf(data);
             cards.splice(pos, 1);
         }
-        window.onscroll = function () { myFunction() };
+        //window.onscroll = function () { myFunction() };
 
-        var header = document.getElementById("target");
-        var sticky = header.offsetTop;
+        //var header = document.getElementById("target");
+        ////var sticky = header.offsetTop;
 
-        function myFunction() {
-            if (window.pageYOffset > sticky) {
-                header.classList.add("sticky");
-            } else {
-                header.classList.remove("sticky");
-            }
-        }
+        //function myFunction() {
+        //    if (window.pageYOffset > sticky) {
+        //        header.classList.add("sticky");
+        //    } else {
+        //        header.classList.remove("sticky");
+        //    }
+        //}
 
         function loadProducts() {
             var items = "";
