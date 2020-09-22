@@ -1,17 +1,24 @@
 ﻿@model AssistedDeckViewModel
-<div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px">
-    <h1>Multi target removal</h1>
-    <br />
-    <p>Does your opponnet have an entire army causing you an issue? A constellation of enchantments preventing you from playing more than one card per turn? <b>Choose 5 of these to take with you!</b></p>
-    <br />
-    @if (Model.ErrorMessage != null)
-    {
-        <p>@Model.ErrorMessage</p>
-    }
-    <br />
-</div>
+    <div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px">
+        <h1>Multi target removal</h1>
+        <style>
+            body {
+                background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+                background-size: cover;
+                background-attachment: fixed;
+            }
+        </style>
+        <br />
+        <p>Does your opponnet have an entire army causing you an issue? A constellation of enchantments preventing you from playing more than one card per turn? <b>Choose 5 of these to take with you!</b></p>
+        <br />
+        @if (Model.ErrorMessage != null)
+        {
+            <p>@Model.ErrorMessage</p>
+        }
+        <br />
+    </div>
 <form asp-action="ValidateSelectedCards" asp-controller="AssistedDeckBuilder">
-    <table class="table">
+    <table class="table" style="color:white;">
         <tr>
             <th>Number</th>
             <th>Name</th>
@@ -59,7 +66,7 @@
                     <td>Could not find pricing information</td>
                 }
 
-                <td><input name="SelectedCard" type="checkbox" value="@Model.CardSearch.data[i].id" /></td>
+                <td><input name="SelectedCard" type="checkbox" style="width:50px; height:50px;" value="@Model.CardSearch.data[i].id" /></td>
             </tr>
 
         }
