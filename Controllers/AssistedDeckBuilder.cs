@@ -411,6 +411,13 @@ namespace MagicTheGatheringFinal.Controllers
         [HttpGet]
         public void CreateDeckName(int commanderId, string colorId)
         {
+            AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
+            var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
+
+            if (deckStatus != "EmptySession")
+            {
+                assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
+            }
             string assistedDeckName = "";
             DecksTable deckTable = new DecksTable();
 
@@ -419,12 +426,14 @@ namespace MagicTheGatheringFinal.Controllers
             int deckNumber = (from n in _context.DecksTable where n.AspUserId == userName select n.DeckName).Count();
 
             assistedDeckName = ($"{userName}_assistedDeck_{deckNumber + 1}");
-
+            assistedDeck.DeckName = assistedDeckName;
             deckTable.DeckName = assistedDeckName;
             deckTable.CardId = commanderId;
             deckTable.AspUserId = userName;
             deckTable.Quantity = 1;
             deckTable.ColorIdentity = colorId;
+            string assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
+            HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
             _context.DecksTable.Add(deckTable);
             _context.SaveChanges();
         }
@@ -446,7 +455,35 @@ namespace MagicTheGatheringFinal.Controllers
             _context.DecksTable.Add(deckTable);
             _context.SaveChanges();
         }
+        public IActionResult DeckList()
+        {
+            AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
+            var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
 
+            if (deckStatus != null)
+            {
+                assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
+            }
+            CardsTable cd = new CardsTable();
+            string id = FindUserId();
+
+            var deckList = (from d in _context.DecksTable
+                            where d.AspUserId == id && d.DeckName == assistedDeck.DeckName
+                            select d.CardId).ToList();
+
+            List<CardsTable> cardlist = new List<CardsTable>();
+           
+
+            for (int i = 0; i < deckList.Count; i++)
+            {
+                cardlist.Add(_context.CardsTable.Find(deckList[i]));
+            }
+
+            return View(cardlist);
+        }
+        //instead of creating a deck name based off the commander, we're going to allow the user to create a deck name on their own
+        //this page will also allow the user to set their deck name
+       
         #endregion
 
     }

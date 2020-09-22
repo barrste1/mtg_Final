@@ -12,5 +12,6 @@ namespace MagicTheGatheringFinal.Models
         public string DeckStatus { get; set; }
         public int Creatures { get; set; }
         public string ErrorMessage { get; set; }
+        public string DeckName { get; set; }
     }
 }
