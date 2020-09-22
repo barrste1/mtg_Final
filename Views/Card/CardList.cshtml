@@ -1,13 +1,20 @@
 ﻿@model CombinedDeckViewModel
 
-<form action="/card/AddCard" method="post">
-    @for (int i = 0; i < Model.Search.Count; i++)
-    {
-        @Model.Search[i].Name
-        <img src="@Model.Search[i].CardArtUrl" />
-        <input type="checkbox" name="Name" value="@Model.Search[i].Name" />
-        <input name="cardId" value="@Model.Search[i].CardId" hidden >
-    }
-    <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
-    <input type="submit" value="Add to Deck" />
-</form>
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+    </style>
+    <form action="/card/AddCard" method="post">
+        @for (int i = 0; i < Model.Search.Count; i++)
+        {
+            @Model.Search[i].Name
+            <img src="@Model.Search[i].CardArtUrl" />
+            <input type="checkbox" name="Name" value="@Model.Search[i].Name" />
+            <input name="cardId" value="@Model.Search[i].CardId" hidden>
+        }
+        <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
+        <input type="submit" value="Add to Deck" />
+    </form>
