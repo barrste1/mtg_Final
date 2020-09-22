@@ -7,26 +7,32 @@
 }
 
 
-<h1>Assisted Deck Task Manager</h1>
-
+<h1 style="color:white;">Assisted Deck Task Manager</h1>
+<style>
+    body {
+        background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+    }
+</style>
 
 <table>
     <tr>
-        <th>Task Name</th>
+        <th style="color:white;">Task Name</th>
     </tr>
     <tr>
         @if (Model.DeckStatus.Substring(0, 1) == "f")
         {
 
             <td>
-                <a href="../AssistedDeckBuilder/FindDraw" class="btn-danger">Add Draw</a>
+                <a href="../AssistedDeckBuilder/FindDraw" class="btn-danger"style="border:solid white 3px; padding-bottom:5px" >Add Draw</a>
             </td>
 
         }
         else
         {
 
-            <td class="btn-success">Card Draw Looking Good!</td>
+            <td class="btn-success"style="border:solid white 3px;">Card Draw Looking Good!</td>
 
         }
     </tr>
@@ -36,14 +42,14 @@
     {
 
         <td>
-            <a href="../AssistedDeckBuilder/FindRamp" class="btn-danger">Add Ramp</a>
+            <a href="../AssistedDeckBuilder/FindRamp" class="btn-danger"style="border:solid white 3px;">Add Ramp</a>
         </td>
 
     }
     else
     {
 
-        <td class="btn-success">Ready to keep up with opponents with your ramp!</td>
+        <td class="btn-success"style="border:solid white 3px;">Ready to keep up with opponents with your ramp!</td>
 
     }
 </tr>
@@ -53,14 +59,14 @@
     {
 
         <td>
-            <a href="../AssistedDeckBuilder/FindSingleRemoval" class="btn-danger">Add Single Target Removal</a>
+            <a href="../AssistedDeckBuilder/FindSingleRemoval" class="btn-danger"style="border:solid white 3px;">Add Single Target Removal</a>
         </td>
 
     }
     else
     {
 
-        <td class="btn-success">Ready to answer your opponents threats!</td>
+        <td class="btn-success"style="border:solid white 3px;">Ready to answer your opponents threats!</td>
 
     }
 </tr>
@@ -71,14 +77,14 @@
     {
 
         <td>
-            <a href="../AssistedDeckBuilder/FindMultiRemoval" class="btn-danger">Add Board Clears</a>
+            <a href="../AssistedDeckBuilder/FindMultiRemoval" class="btn-danger"style="border:solid white 3px;">Add Board Clears</a>
         </td>
 
     }
     else
     {
 
-        <td class="btn-success">Ready to reset the board!</td>
+        <td class="btn-success;" style="border:solid white 3px;">Ready to reset the board!</td>
 
     }
 </tr>
@@ -88,13 +94,13 @@
         {
 
             <td>
-                <a href="../AssistedDeckBuilder/StartCreatures" class="btn-danger">Add Creatures</a>
+                <a href="../AssistedDeckBuilder/StartCreatures" class="btn-danger" style="border: solid white 3px;">Add Creatures</a>
             </td>
         }
         else
         {
 
-            <td class="btn-success">Your Army is Ready!</td>
+    <td class="btn-success" style="border:solid white 3px; color:white;">Your Army is Ready!</td>
 
         }
 
@@ -104,13 +110,13 @@
         @if (Model.DeckStatus == "ttttt")
         {
             <td>
-                <a href="" class="btn">View Finished Deck</a>
+                <a href="" class="btn" style="color:white;">View Finished Deck</a>
             </td>
         }
         else
         {
             <td>
-                <a href="" class="btn">View Current Deck</a>
+                <a href="" class="btn" style="color:white;">View Current Deck</a>
             </td>
         }
     </tr>

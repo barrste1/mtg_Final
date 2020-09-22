@@ -1,4 +1,11 @@
 ﻿<div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px"><h1>Pick Two Colors That Describe You</h1></div>
+<style>
+    body {
+        background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+    }
+</style>
 <br />
 <form action="../NewUser/SelectColorIdentity" method="post">
     <table>
@@ -18,7 +25,7 @@
 
             </td>
             <td>
-                    <input type="checkbox" style="width:50px; height:50px;" name="SelectedColor" value="W" />
+                <input type="checkbox" style="width:50px; height:50px;" name="SelectedColor" value="W" />
             </td>
         </tr>
 
@@ -27,7 +34,7 @@
 
                 <h4><b style="color:blue">Blue: Perfection Through Knowledge</b></h4>
                 <img style="width:150px; height:100px; border-color:white;border:30px; padding-right:30px;" src="https://miro.medium.com/max/250/1*b7GF-I5Igj5pz0cNrPoHRQ.png" align="right" />
-                <div >
+                <div>
                     <p style="word-break:break-word;">
                         Knowledge is perfection sought by those who choose this path. You believe that all things could be good if only the truth could be solved, and that knowledge is applied to it's fullest extent. This is where your wizards, faeries and monsters from below reside. Containing spells, both with trickery and illusion, that add to a accumulative knowledge and incremental advantage that will undercut or directly oppose your opponent using brains over raw physical power.
 
@@ -40,7 +47,7 @@
 
             </td>
             <td>
-                <input type="checkbox"style="width:50px; height:50px;" name="SelectedColor" value="U" />
+                <input type="checkbox" style="width:50px; height:50px;" name="SelectedColor" value="U" />
             </td>
         </tr>
 
@@ -60,7 +67,7 @@
 
             </td>
             <td>
-                <input type="checkbox" style="width:50px; height:50px;"name="SelectedColor" value="B" />
+                <input type="checkbox" style="width:50px; height:50px;" name="SelectedColor" value="B" />
             </td>
         </tr>
 
@@ -79,8 +86,8 @@
                 </p>
 
 
-<td>
-                <input type="checkbox" style="width:50px; height:50px;"name="SelectedColor" value="R" />
+            <td>
+                <input type="checkbox" style="width:50px; height:50px;" name="SelectedColor" value="R" />
             </td>
         </tr>
 
@@ -107,7 +114,7 @@
         </tr>
 
     </table>
-    <div class="btn btn-lg"style="border: solid black 1px; background-color:lavender; display:flex; justify-content:center">
+    <div class="btn btn-lg" style="border: solid black 1px; background-color:lavender; display:flex; justify-content:center">
         <input type="submit" value="Pick Colors" />
     </div>
 </form>
