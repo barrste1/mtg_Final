@@ -11,3 +11,8 @@
     <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
     <input type="submit" value="Add to Deck" />
 </form>
+
+<form action="/card/DeckList" method="post">
+    <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
+    <input type="submit" value="Go back to Deck List" />
+</form>
