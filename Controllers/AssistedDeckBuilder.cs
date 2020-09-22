@@ -10,9 +10,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 
-
-
-
 namespace MagicTheGatheringFinal.Controllers
 {
     [Authorize]
@@ -91,12 +88,6 @@ namespace MagicTheGatheringFinal.Controllers
                     AddCardsToDecksTable("2b90e88b-60a3-4d1d-bb8c-14633e5005a5", commanderLandCount);
                 }
             }
-
-            AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
-            assistedDeck.DeckStatus = "fffff";
-            assistedDeck.Creatures = 5;
-            string assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
-            HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
 
             //return View(assistedDeck);
             return View("Budget");
@@ -218,7 +209,7 @@ namespace MagicTheGatheringFinal.Controllers
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
             var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
 
-            if (deckStatus != null)
+            if (deckStatus != "EmptySession")
             {
                 assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
             }
@@ -238,7 +229,7 @@ namespace MagicTheGatheringFinal.Controllers
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
             var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
             string assistedDeckJSON = "";
-            if (deckStatus != null)
+            if (deckStatus != "EmptySession")
             {
                 assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
             }
@@ -427,19 +418,28 @@ namespace MagicTheGatheringFinal.Controllers
 
             assistedDeckName = ($"{userName}_assistedDeck_{deckNumber + 1}");
             assistedDeck.DeckName = assistedDeckName;
+            assistedDeck.DeckStatus = "fffff";
+            assistedDeck.Creatures = 5;
+            string assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
+            HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
+
+
+
+
             deckTable.DeckName = assistedDeckName;
             deckTable.CardId = commanderId;
             deckTable.AspUserId = userName;
             deckTable.Quantity = 1;
             deckTable.ColorIdentity = colorId;
-            string assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
-            HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
+
+
+
             _context.DecksTable.Add(deckTable);
             _context.SaveChanges();
         }
 
         [HttpPost]
-        public void AddCardsToDecksTable(string assistedCardId, int quantity)
+        public async void AddCardsToDecksTable(string assistedCardId, int quantity)
         {
             DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
             DecksTable deckTable = new DecksTable();
@@ -460,7 +460,7 @@ namespace MagicTheGatheringFinal.Controllers
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
             var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
 
-            if (deckStatus != null)
+            if (deckStatus != "EmptySession")
             {
                 assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
             }
