@@ -31,7 +31,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             if (_context.CardsTable.Where(x => x.Name == cardName).FirstOrDefault() == null)
             {
-                Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", "/named?fuzzy=", "https://api.scryfall.com/", cardName);
+                Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", "/search?q=", "https://api.scryfall.com/", cardName);
 
                 cardTable.CardArtUrl = cardItem.image_uris.normal;
                 cardTable.CardId = cardItem.id;
@@ -153,17 +153,18 @@ namespace MagicTheGatheringFinal.Controllers
             CombinedDeckViewModel combo = new CombinedDeckViewModel();
             string userName = FindUserId();
 
-            var deckList = (from d in _context.DecksTable where d.AspUserId == userName select d.DeckName).Distinct().ToList();
-
-            List<DecksTable> collection = new List<DecksTable>();
-
-
-            for (int i = 1; i < deckList.Count; i++)
-            {
-                collection[i].DeckName = deckList[i];
-            }
+            List<DecksTable> collection = (from d in _context.DecksTable where d.AspUserId == userName select d).Distinct().ToList();
+            //collection = (from c in collection orderby c.DeckName select c).ToList();
 
             combo.deckObject = collection;
+
+            //for (int i = 0, j = 1; i < combo.deckObject.Count; i++, j++)
+            //{
+            //    if (combo.deckObject[i].DeckName == combo.deckObject[j].DeckName)
+            //    {
+            //        combo.deckObject.Remove(combo.deckObject[j]);
+            //    }
+            //}
 
             return View(combo);
         }
@@ -204,8 +205,6 @@ namespace MagicTheGatheringFinal.Controllers
         {
 
             DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
-
-            //lastEntry.Id = 0;
 
             lastEntry.DeckName = deckName;
             _context.DecksTable.Update(lastEntry);

@@ -1,5 +1,11 @@
 ﻿@model List<CardsTable>
-
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+    </style>
 @for (int i = 0; i < Model.Count; i++)
 {
     <img src="@Model[i].CardArtUrl" />
@@ -10,4 +16,4 @@
         }*@
 }   
 
-<a class="btn-success" href="../AssisstedDeckBuilder/Index">Return to Menu</a>
+<a class="btn btn-lg" style="border: solid black 1px; background-color:mediumpurple" href="../AssisstedDeckBuilder/Index">Return to Menu</a>

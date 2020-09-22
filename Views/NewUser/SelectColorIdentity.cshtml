@@ -1,54 +1,66 @@
 ﻿<div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px"><h1>Pick Two Colors That Describe You</h1></div>
+<style>
+    body {
+        background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+    }
+</style>
 <br />
 <form action="../NewUser/SelectColorIdentity" method="post">
     <table>
         <tr>
             <td>
 
-                <h4><b style="background-color:black; color:white">White: Peace Through Order</b></h4>
+                <h4><b style="color: white;text-shadow: 2px 2px 2px black;">White: Peace Through Order</b></h4>
                 <img style="width:150px; height:100px;padding-right:30px" src="https://miro.medium.com/max/250/1*l2llQ_yQq2a8Rxr0rRIp_g.png" align="right" />
-                <p>
-                    One who wishes to achieve peace through the imposition of order. White believes that suffering and unhappiness is due to a lack of cooperation, rules, and restraint within the world. White cards are your Knights, clearics, and Angels, with healing spells and protective auras and laws that will bind each party equally, and strengthen your allies all at once.
+                <div style="color: white;text-shadow: 1px 1px 2px pink;">
+                    <p>
+                        One who wishes to achieve peace through the imposition of order. White believes that suffering and unhappiness is due to a lack of cooperation, rules, and restraint within the world. White cards are your Knights, clearics, and Angels, with healing spells and protective auras and laws that will bind each party equally, and strengthen your allies all at once.
 
-                    Claiming victory as an agent of White will be one of honor, valor, and formality as your opponent is struck down under your bright, blinding light.
+                        Claiming victory as an agent of White will be one of honor, valor, and formality as your opponent is struck down under your bright, blinding light.
 
-                    This by no means signifies an agent of white being of a higher morale or ethical standard, but all depends on where their "morales" compass has directed them based on a prior moral or cultural framework.
-                </p>
-
-
-            </td>
-            <td>
-                    <input type="checkbox" style="width:50px; height:50px;" name="SelectedColor" value="W" />
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-
-                <h4><b style="color:blue">Blue: Perfection Through Knowledge</b></h4>
-                <img style="width:150px; height:100px; border-color:white;border:30px; padding-right:30px;" src="https://miro.medium.com/max/250/1*b7GF-I5Igj5pz0cNrPoHRQ.png" align="right" />
-                <div >
-                    <p style="word-break:break-word;">
-                        Knowledge is perfection sought by those who choose this path. You believe that all things could be good if only the truth could be solved, and that knowledge is applied to it's fullest extent. This is where your wizards, faeries and monsters from below reside. Containing spells, both with trickery and illusion, that add to a accumulative knowledge and incremental advantage that will undercut or directly oppose your opponent using brains over raw physical power.
-
-                        Claiming victory as an agent of blue will bring feelings of brillance, strategy, and mindfulness as you outwit and outsmart your opponents on the battlefield.
-
-                        An agent of blue when given a question or asked to decide will first ask what action can I take that makes the most logical "sense" to accomplish said goal.
+                        This by no means signifies an agent of white being of a higher morale or ethical standard, but all depends on where their "morales" compass has directed them based on a prior moral or cultural framework.
                     </p>
                 </div>
 
 
             </td>
             <td>
-                <input type="checkbox"style="width:50px; height:50px;" name="SelectedColor" value="U" />
+                <input type="checkbox" style="width:50px; height:50px;" name="SelectedColor" value="W" />
             </td>
         </tr>
 
         <tr>
             <td>
 
-                <h4><b>Black: Satisfaction Through Ruthlessness</b></h4>
-                <img style="width:150px; height:100px; padding-right:30px" src="https://miro.medium.com/max/225/1*6eelskg5O2w2ujOrZ7UqTA.png" align="right" />
+                <h4><b style="color: blue;text-shadow: 2px 2px 2px black;">Blue: Perfection Through Knowledge</b></h4>
+                <img style="width:150px; height:100px; border-color:white;border:30px; padding-right:30px;" src="https://miro.medium.com/max/250/1*b7GF-I5Igj5pz0cNrPoHRQ.png" align="right" />
+                <div>
+                    <div style="color:white;">
+                        <p style="word-break: break-word;text-shadow: 1px 1px 2px pink;">
+                            Knowledge is perfection sought by those who choose this path. You believe that all things could be good if only the truth could be solved, and that knowledge is applied to it's fullest extent. This is where your wizards, faeries and monsters from below reside. Containing spells, both with trickery and illusion, that add to a accumulative knowledge and incremental advantage that will undercut or directly oppose your opponent using brains over raw physical power.
+
+                            Claiming victory as an agent of blue will bring feelings of brillance, strategy, and mindfulness as you outwit and outsmart your opponents on the battlefield.
+
+                            An agent of blue when given a question or asked to decide will first ask what action can I take that makes the most logical "sense" to accomplish said goal.
+                        </p>
+                    </div>
+                </div>
+
+
+            </td>
+            <td>
+                <input type="checkbox" style="width:50px; height:50px;" name="SelectedColor" value="U" />
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+
+                <h4 style="text-shadow: 2px 2px 2px black; color:white"><b>Black: Satisfaction Through Ruthlessness</b></h4>
+                <img style="width:150px; height:100px; padding-right:30px" src="https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/2/2f/B.svg/revision/latest/scale-to-width-down/1200?cb=20160125093424" align="right" />
+                <div style="color: white;text-shadow: 1px 1px 2px pink;">
                 <p>
                     Power and control is how you will reshape the world around you. You take what you want, seeing no limits in your ambition and pursuing only what may benefit your own personal interests or goals. You are willing to ally with others but at your core you are amoral as belief in morality is a foreign concept to a Black agent.
 
@@ -56,47 +68,52 @@
 
                     When presented with a decision an agent of black will ask "What can I do that will benefit me the most in achieving the end goal."
                 </p>
+                    </div>
 
 
             </td>
             <td>
-                <input type="checkbox" style="width:50px; height:50px;"name="SelectedColor" value="B" />
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-
-                <h4><b style="color:red">Red: Freedom Through Action</b></h4>
-                <img style="width:150px; height:100px; padding-right:30px" src="https://miro.medium.com/max/225/1*BXo8q3OT144yUeOhDMIbzw.png" align="right" />
-                <p>
-                    An agent of red lives life in the moment, experiencing life with passion and enthusiasm. A Red dystopian society would simply be anarchy. This is the home of goblins, pyromancers, dragons, and bolts of lightning that burn your opponent. You will taunt your enemies with illusions and enrage their allies, spells that grant speed, haste, and fragile power. You will use chaotic effects that will disrupt the entire battlefield. Leaving your opponents army decimated and disorganized.
-
-                    Your victories will be beautiful and magnificent like watching the moon eclipse the sun in totality. You are alive and defeat is quiet, empty, and gray. Feeling trapped by events that you cannot decipher as if the world may swallow you whole.
-
-                    When presented with a decision you may ask yourself "what do I feel like doing"?
-
-                </p>
-
-
-<td>
-                <input type="checkbox" style="width:50px; height:50px;"name="SelectedColor" value="R" />
+                <input type="checkbox" style="width:50px; height:50px;" name="SelectedColor" value="B" />
             </td>
         </tr>
 
         <tr>
             <td>
 
-                <h4><b style="color:green">Green: Harmony Through Acceptance</b></h4>
-                <img style="width:150px; height:100px; padding-right:30px" src="https://miro.medium.com/max/225/1*tlFHS3NXUkmEtPIE4QOUjQ.png" align="right" />
-                <p>
-                    Green is the color of nature, wisdom, stoicism, taoism, and destiny. The belief that most suffering and misfortune in the world comes from removing oneself from the natural order of the planet. An agent of green could envision themselves on a hippie commune where they seek to embrace a more natural lifestyle.
+                <h4><b style="color:red;text-shadow: 2px 2px 2px black;">Red: Freedom Through Action</b></h4>
+                <img style="width:150px; height:100px; padding-right:30px" src="https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/8/87/R.svg/revision/latest/scale-to-width-down/1200?cb=20160125094914" align="right" />
+                <div style="color: white;text-shadow:1px 1px 2px pink;">
+                    <p>
+                        An agent of red lives life in the moment, experiencing life with passion and enthusiasm. A Red dystopian society would simply be anarchy. This is the home of goblins, pyromancers, dragons, and bolts of lightning that burn your opponent. You will taunt your enemies with illusions and enrage their allies, spells that grant speed, haste, and fragile power. You will use chaotic effects that will disrupt the entire battlefield. Leaving your opponents army decimated and disorganized.
 
-                    Your victories will feel peaceful and balanced - an exhausted Roman general retiring to his farm. The rain has come and the pestilence has passed. A solemn reminder of accomplishment without ego, but still joyous.
+                        Your victories will be beautiful and magnificent like watching the moon eclipse the sun in totality. You are alive and defeat is quiet, empty, and gray. Feeling trapped by events that you cannot decipher as if the world may swallow you whole.
 
-                    When presented with a decision green asks, "how are these things usually done? What is the established wisdom?"
+                        When presented with a decision you may ask yourself "what do I feel like doing"?
 
-                </p>
+                    </p>
+                </div>
+
+
+            <td>
+                <input type="checkbox" style="width:50px; height:50px;" name="SelectedColor" value="R" />
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+
+                <h4><b style="color: green;text-shadow: 2px 2px 2px black;">Green: Harmony Through Acceptance</b></h4>
+                <img style="width:150px; height:100px; padding-right:30px" src="https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/8/88/G.svg/revision/latest/scale-to-width-down/1200?cb=20160125094908" align="right" />
+                <div style="color: white;text-shadow: 1px 1px 2px pink;">
+                    <p>
+                        Green is the color of nature, wisdom, stoicism, taoism, and destiny. The belief that most suffering and misfortune in the world comes from removing oneself from the natural order of the planet. An agent of green could envision themselves on a hippie commune where they seek to embrace a more natural lifestyle.
+
+                        Your victories will feel peaceful and balanced - an exhausted Roman general retiring to his farm. The rain has come and the pestilence has passed. A solemn reminder of accomplishment without ego, but still joyous.
+
+                        When presented with a decision green asks, "how are these things usually done? What is the established wisdom?"
+
+                    </p>
+                </div>
 
 
 
@@ -107,7 +124,7 @@
         </tr>
 
     </table>
-    <div class="btn btn-lg"style="border: solid black 1px; background-color:lavender; display:flex; justify-content:center">
+    <div class="btn btn-lg" style="border: solid black 1px; background-color:lavender; display:flex; justify-content:center">
         <input type="submit" value="Pick Colors" />
     </div>
 </form>
