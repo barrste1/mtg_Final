@@ -64,11 +64,13 @@
 
 
     <form ondragstart="dragstart_handler(event)" style="float:left">
-        
-        @foreach (var card in Model)
-        {
-            <p id="@card.CardId" draggable="true">@card.Name</p>
-        }
+        <table>
+            @foreach (var card in Model)
+            {
+
+                <p id="@card.CardId" draggable="true"></p>
+            }
+        </table>
     </form>
     <body>
         <div class="header" id="target"  ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
