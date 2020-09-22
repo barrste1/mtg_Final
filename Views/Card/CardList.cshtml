@@ -8,8 +8,6 @@
     }
 </style>
 
-@Model.Search[0].CardArtUrl
-@Model.Search[0].Name
 
 <form action="/card/AddCard" method="post">
     @for (int i = 0; i < Model.Search.Count; i++)
