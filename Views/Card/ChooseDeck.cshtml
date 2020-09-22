@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "ChooseDeck";
+}
+
+@model CombinedDeckViewModel
+
+<h1>ChooseDeck</h1>
+<form action="/card/DeckList" method="post">
+    @for (int d = 0; d < Model.deckObject.Count; d++)
+    {
+        @Model.deckObject[d].DeckName
+        <input type="checkbox" name="DeckName" value="@Model.deckObject[d].DeckName" />
+    }
+    <input type="submit" value="Select this deck" />
+</form>

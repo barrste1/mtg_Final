@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MagicTheGatheringFinal.Models
 {
@@ -32,5 +33,6 @@ namespace MagicTheGatheringFinal.Models
 
         public virtual DecksTable DecksTableKeyNavigation { get; set; }
         public virtual ICollection<DecksTable> DecksTable { get; set; }
+
     }
 }
