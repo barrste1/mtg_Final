@@ -1,0 +1,13 @@
+﻿@model List<CardsTable>
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    <img src="@Model[i].CardArtUrl" />
+
+    @*@if (Model[i].Search.("https:"))
+        {
+            <img style="width:17.5%; height:17.5%" src="@Model[i]" />
+        }*@
+}   
+
+<a class="btn-success" href="../AssisstedDeckBuilder/Index">Return to Menu</a>
