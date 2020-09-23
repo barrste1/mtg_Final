@@ -207,11 +207,23 @@ namespace MagicTheGatheringFinal.Controllers
 
             List<CardsTable> cardlist = new List<CardsTable>();
             List<DecksTable> userDecks = new List<DecksTable>();
-
+            int cardCount = 0;
             for (int i = 0; i < deckList.Count; i++)
             {
                 cardlist.Add(_context.CardsTable.Find(deckList[i]));
+
             }
+
+            float cmc = 0;
+            decimal? cost = 0;
+            foreach (CardsTable card in cardlist)
+            {
+               cmc += card.Cmc;
+               cost += card.CardPrice;
+            }
+
+
+            combo.DeckCost = cost?.ToString("C2");
 
             userDecks.Add(dName);
 

@@ -12,5 +12,7 @@ namespace MagicTheGatheringFinal.Models
     {
         public List<CardsTable> Search { get; set; }
         public List<DecksTable> deckObject { get; set; }
+        public string DeckCost { get; set; }
+        public float AverageCMC { get; set; }
     }
 }
