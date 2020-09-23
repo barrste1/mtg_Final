@@ -13,11 +13,11 @@
 
 @model CombinedDeckViewModel
 
-<h1>@Model.deckObject[0].DeckName</h1>
+<h1 style="color:white;">@Model.deckObject[0].DeckName</h1>
 
-<p>Card Count: @Model.Search.Count</p>
-
-
+<p style="color:white;">Card Count: @Model.Search.Count</p>
+<p style="color:white;">Deck Cost: @Model.DeckCost</p>
+<br />
 <form action="/Card/ChooseDeck" method="get">
     <input type="submit" value="Go back to deck selection" />
 </form>
@@ -27,7 +27,7 @@
     <input type="submit" value="Search for card" />
 </form>
 
-<form action="/Card/DeleteCard" method="post">
+<form action="/Card/DeleteCard" method="post" style="color:white;">
 
     <h2>Creatures</h2>
     @for (int i = 0; i < Model.Search.Count; i++)

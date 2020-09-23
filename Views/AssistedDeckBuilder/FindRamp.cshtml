@@ -12,7 +12,7 @@
         <p>All those creatures and spells cost mana and only playing one mana per turn can be a bit slow. <b>Take 10 of these</b> with you to ensure you can pay for all of those cards you want to play!</p>
         @if (Model.ErrorMessage != null)
         {
-            <p>@Model.ErrorMessage</p>
+            <p style="color:red;">@Model.ErrorMessage</p>
         }
     </div>
     <form asp-action="ValidateSelectedCards" asp-controller="AssistedDeckBuilder">

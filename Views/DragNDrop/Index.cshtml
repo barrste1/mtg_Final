@@ -1,62 +1,4 @@
-﻿@model List<CardsTable>
-<head>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        #target {
-            border: solid;
-            width: 350px;
-            height: auto;
-            background-color: rgba(0, 0, 255, 0.3);
-            text-align: left;
-            margin-right: -250px;
-            margin-left: auto;
-            padding-bottom: 40px;
-            padding-left: 40px;
-        }
-
-        #top-container {
-            margin-right: auto;
-            margin-left: auto;
-            background-color: rgba(128, 128, 128, 0.21);
-            width: 30%;
-            padding: 30px;
-            text-align: right;
-            top: 0;
-            right: 500px;
-            image-resol
-        }
-        /*.header {
-            margin-right: auto;
-            margin-left: auto;
-            background: #808080;
-            color: #000000;
-            width:15%;
-            right: 500px;
-        }*/
-        .content {
-            margin-right: auto;
-            margin-left: auto;
-            padding: 10px;
-        }
-
-        .sticky {
-            margin-right: auto;
-            margin-left: auto;
-            position: fixed;
-            top: 70px;
-            right: 397px;
-            width: 50%;
-        }
-
-            .sticky + .content {
-                margin-right: auto;
-                margin-left: auto;
-                padding-top: 102px;
-            }
-    </style>
+</style>
 </head>
 
 <div class="header" id="target" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
@@ -94,7 +36,6 @@
         ev.preventDefault();
         ev.dataTransfer.dropEffect = "copy";
     }
-
     function drop_handler(ev) {
         console.log(ev);
         ev.preventDefault();
@@ -109,7 +50,6 @@
             ev.target.appendChild(view);
             cards.push(data)
         }
-
     }
     function dragstart_handler(ev) {
         // Add the target element's id to the data transfer object
