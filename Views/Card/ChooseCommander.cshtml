@@ -5,30 +5,19 @@
 
 @model List<CardsTable>
 
-    <div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px">
-        <h1 style="text-align:center;">Choose Commander</h1>
+<div style="position:sticky;text-shadow: 1px 1px 2px white; top:0px; background-color:gray; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; text-align:center;"><h1>Choose Commander</h1><p style="padding-left:4px">Choose your commander!</p></div>
 
-        <p style="padding-left:4px">Choose your commander!</p>
-    </div>
-    <style>
-        body {
-            background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
-            background-size: cover;
-            background-attachment: fixed;
-        }
-    </style>
+<style>
+    body {
+        background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+    }
+</style>
 
 <form action="/Card/CommanderList" method="get">
     <input type="text" name="commanderName" placeholder="Search for card" />
     <input type="submit" value="Search for Commander" />
 </form>
 
-@*<div style="display:flex; flex-direction:column">
-    @for (int i = 0; i < Model.Count; i++)
-    {
-        <img style="width:17.5%; height:17.5%" src="@Model[i].CardArtUrl" />
-        <a style="margin-bottom:30px; text-decoration:underline; color:white;" href="/Card/SaveCommander?cId=@Model[i].Id"> Make @Model[i].Name your commander!</a>
-
-    }
-</div>*@
 

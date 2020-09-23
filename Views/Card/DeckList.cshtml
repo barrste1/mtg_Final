@@ -10,7 +10,12 @@
 
 
 
+
 <h1 style="color:white;">@Model.deckObject[0].DeckName</h1>
+
+@model CombinedDeckViewModel
+    <div style="position:sticky;text-shadow: 1px 1px 2px white; top:0px; background-color:gray; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; text-align:center;"><h1>@Model.deckObject[0].DeckName</h1></div>
+
 
 <p style="color:white;">Card Count: @Model.Search.Count</p>
 <p style="color:white;">Deck Cost: @Model.DeckCost</p>
@@ -25,13 +30,7 @@
 </form>
 
 
-<form action="/Card/DeleteCard" method="post" style="color:white;">
-    <table class="table" style="color:white;">
-        <tr>
-            <th>Creatures</th>
-            <th>Creature count = @Model.creatureCount</th>
-            <th></th>
-        </tr>
+<form action="/Card/DeleteCard" method="post" style="color: white;text-shadow: 1px 1px 2px white;">
 
         <tr>
             <th>Card Image</th>
