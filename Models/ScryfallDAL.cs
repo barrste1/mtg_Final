@@ -57,7 +57,16 @@ namespace MagicTheGatheringFinal.Models
             //obect. If the JSON does not fit within the object we get an Internal Deserialization error
             return card;
         }
+        public async Task<CardSearchObject> GetListOfCards(string cardName)
+        {
+            var client = GetClient();
+            var inputQuery = MakeQuery(cardName);
+            var response = await client.GetAsync($"/cards/search?q={cardName}");
 
+            CardSearchObject card = await response.Content.ReadAsAsync<CardSearchObject>();
+
+            return card;
+        }
         public string MakeQuery(string input)
         {
             //splits query into words separated by +, as this is the format for the api queries.

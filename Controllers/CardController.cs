@@ -28,46 +28,71 @@ namespace MagicTheGatheringFinal.Controllers
         public async Task<IActionResult> CardList(string cardName, DecksTable dName)
         {
             CardsTable cardTable = new CardsTable();
+            ScryfallDAL dl = new ScryfallDAL();
+            List<CardsTable> cardList = new List<CardsTable>();
 
-            if (_context.CardsTable.Where(x => x.Name == cardName).FirstOrDefault() == null)
+            if (_context.CardsTable.Where(x => x.Name.Contains(cardName)).FirstOrDefault() == null)
             {
-                Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", "/search?q=", "https://api.scryfall.com/", cardName);
+                CardSearchObject cardItem = await dl.GetListOfCards(cardName);
 
-                cardTable.CardArtUrl = cardItem.image_uris.normal;
-                cardTable.CardId = cardItem.id;
-                cardTable.Cmc = cardItem.cmc;
-                cardTable.ManaCost = cardItem.mana_cost;
-                cardTable.Name = cardItem.name;
-                cardTable.OracleText = cardItem.oracle_text;
-                cardTable.TypeLine = cardItem.type_line;
-                cardTable.EdhrecRank = cardItem.edhrec_rank;
-                if (cardItem.prices.usd == null)
+                for (int i = 0; i < cardItem.data.Length; i++)
                 {
-                    cardItem.prices.usd = "0.00";
+
+                    if (cardItem.data[i].image_uris == null)
+                    {
+                        cardTable.CardArtUrl = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
+                    }
+                    else
+                    {
+                        cardTable.CardArtUrl = cardItem.data[i].image_uris.normal;
+                    }
+                    cardTable.CardId = cardItem.data[i].id;
+                    cardTable.Cmc = cardItem.data[i].cmc;
+                    cardTable.ManaCost = cardItem.data[i].mana_cost;
+                    cardTable.Name = cardItem.data[i].name;
+                    cardTable.OracleText = cardItem.data[i].oracle_text;
+                    cardTable.TypeLine = cardItem.data[i].type_line;
+                    cardTable.EdhrecRank = cardItem.data[i].edhrec_rank;
+                    if (cardItem.data[i].prices == null)
+                    {
+                        cardItem.data[i].prices.usd = "0.00";
+                        cardItem.data[i].prices.eur = "0.00";
+                        cardItem.data[i].prices.usd_foil = "0.00";
+                        cardItem.data[i].prices.tix = "0.00";
+                    }
+                    else if (cardItem.data[i].prices.usd == null)
+                    { 
+                        cardItem.data[i].prices.usd = "0.00";
+                    }
+                    cardTable.CardPrice = decimal.Parse(cardItem.data[i].prices.usd);
+
+                    if (cardItem.data[i].color_identity.Contains("B"))
+                    {
+                        cardTable.Black = "B";
+                    }
+                    if (cardItem.data[i].color_identity.Contains("U"))
+                    {
+                        cardTable.Blue = "U";
+                    }
+                    if (cardItem.data[i].color_identity.Contains("W"))
+                    {
+                        cardTable.White = "W";
+                    }
+                    if (cardItem.data[i].color_identity.Contains("G"))
+                    {
+                        cardTable.Green = "G";
+                    }
+                    if (cardItem.data[i].color_identity.Contains("R"))
+                    {
+                        cardTable.Red = "R";
+                    }
+
+                    cardTable.Id = 0;
+
+                    _context.CardsTable.Add(cardTable);
+                    _context.SaveChanges();
+
                 }
-                cardTable.CardPrice = decimal.Parse(cardItem.prices.usd);
-                if (cardItem.color_identity.Contains("B"))
-                {
-                    cardTable.Black = "B";
-                }
-                if (cardItem.color_identity.Contains("U"))
-                {
-                    cardTable.Blue = "U";
-                }
-                if (cardItem.color_identity.Contains("W"))
-                {
-                    cardTable.White = "W";
-                }
-                if (cardItem.color_identity.Contains("G"))
-                {
-                    cardTable.Green = "G";
-                }
-                if (cardItem.color_identity.Contains("R"))
-                {
-                    cardTable.Red = "R";
-                }
-                _context.CardsTable.Add(cardTable);
-                _context.SaveChanges();
             }
 
             //now that the card exists in the card table
@@ -77,12 +102,11 @@ namespace MagicTheGatheringFinal.Controllers
             CombinedDeckViewModel combo = new CombinedDeckViewModel();
             
             List<DecksTable> deckList = new List<DecksTable>();
-            List<CardsTable> cardList = new List<CardsTable>();
 
             combo.Search = cardList;
             combo.deckObject = deckList;
 
-            cardList = (from c in _context.CardsTable where c.Name == cardName select c).ToList();
+            cardList = (from c in _context.CardsTable where c.Name.Contains(cardName) select c).ToList();
 
             deckList.Add(dName);
 
@@ -153,22 +177,23 @@ namespace MagicTheGatheringFinal.Controllers
             CombinedDeckViewModel combo = new CombinedDeckViewModel();
             string userName = FindUserId();
 
-            List<DecksTable> collection = (from d in _context.DecksTable where d.AspUserId == userName select d).Distinct().ToList();
-            //collection = (from c in collection orderby c.DeckName select c).ToList();
+            List<string> collection = (from d in _context.DecksTable where d.AspUserId == userName select d.DeckName).Distinct().ToList();
 
-            combo.deckObject = collection;
-
-            //for (int i = 0, j = 1; i < combo.deckObject.Count; i++, j++)
-            //{
-            //    if (combo.deckObject[i].DeckName == combo.deckObject[j].DeckName)
-            //    {
-            //        combo.deckObject.Remove(combo.deckObject[j]);
-            //    }
-            //}
-
-            return View(combo);
+            return View(collection);
         }
+        public IActionResult GetDeckData(string deckName)
+        {
+            DecksTable decks = new DecksTable();
 
+            List<DecksTable> decksList = (from d in _context.DecksTable where d.DeckName == deckName select d).ToList();
+
+            for (int i = 0; i < decksList.Count; i++)
+            {
+                decks = decksList[i];
+            }
+
+            return RedirectToAction("DeckList", decks);
+        }
         public IActionResult DeckList(DecksTable dName)
         {
             CardsTable cd = new CardsTable();
@@ -290,8 +315,19 @@ namespace MagicTheGatheringFinal.Controllers
                 _context.SaveChanges();
             }
             var idCollection = (from x in _context.CardsTable where id == x.CardId select x.Id).FirstOrDefault();
+            if (cId.ManaCost != null)
+            {
+                string colorId = FindColorId(cId);
+                dName.ColorIdentity = colorId;
+            }
+            else
+            {
+                dName.ColorIdentity = "L";
+            }    
             dName.CardId = idCollection;
             dName.Quantity = 1;
+
+
             if (userId != null)
             {
                 dName.AspUserId = userId;
@@ -299,6 +335,21 @@ namespace MagicTheGatheringFinal.Controllers
 
             _context.DecksTable.Add(dName);
             _context.SaveChanges();
+
+            return RedirectToAction("DeckList", dName);
+        }
+        public IActionResult DeleteCard(int Id, DecksTable dName)
+        {
+            DecksTable dt = new DecksTable();
+            var getId = (from i in _context.DecksTable where i.CardId == Id select i.Id).FirstOrDefault();
+
+            var foundCard = _context.DecksTable.Find(getId);
+            if (foundCard != null)
+            {
+                _context.DecksTable.Remove(foundCard);
+                _context.SaveChanges();
+            }
+            //_context.DecksTable.Remove(from r in _context.DecksTable where cardId == r.Id select r.Id);
 
             return RedirectToAction("DeckList", dName);
         }

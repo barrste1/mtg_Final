@@ -89,7 +89,7 @@ namespace MagicTheGatheringFinal.Controllers
         }
 
 
-        //Delete below method once all commanders are added to DB.Final page crashed; will need to refacor
+        //Delete below method once all commanders are added to DB. Final page crashed; will need to refacor
         //Will retry tomorrow(9/17/2020) to not overuse API
 
 

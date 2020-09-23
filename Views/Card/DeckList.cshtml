@@ -3,31 +3,93 @@
 *@
 @{
 }
-    <style>
-        body {
-            background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
-            background-size: cover;
-            background-attachment: fixed;
-        }
-    </style>
+<style>
+    body {
+        background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+    }
+</style>
 
 @model CombinedDeckViewModel
 
+<h1>@Model.deckObject[0].DeckName</h1>
+
+<p>Card Count: @Model.Search.Count</p>
+
+
+<form action="/Card/ChooseDeck" method="get">
+    <input type="submit" value="Go back to deck selection" />
+</form>
 <form action="/Card/CardList" method="get">
     <input type="text" name="cardName" placeholder="Search for card" />
-    <input type="text" name ="deckName" value="@Model.deckObject[0].DeckName" hidden />
-    <input type="submit" />
+    <input type="text" name="deckName" value="@Model.deckObject[0].DeckName" hidden />
+    <input type="submit" value="Search for card" />
 </form>
 
+<form action="/Card/DeleteCard" method="post">
 
-@for (int i = 0; i < Model.Search.Count; i++)
-{ 
-    <img src="@Model.Search[i].CardArtUrl" />
-
-    @*@if (Model[i].Search.("https:"))
-    { 
-        <img style="width:17.5%; height:17.5%" src="@Model[i]" />
-    }*@
-}   
-
+    <h2>Creatures</h2>
+    @for (int i = 0; i < Model.Search.Count; i++)
+    {
+        if (Model.Search[i].TypeLine.Contains("Creature"))
+        {
+            <img style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" />
+            <input type="checkbox" name="Id" value="@Model.Search[i].Id" />
+        }
+    }
+    <br />
+    <h2>Instant</h2>
+    @for (int i = 0; i < Model.Search.Count; i++)
+    {
+        if (Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment") && !Model.Search[i].TypeLine.Contains("Land"))
+        {
+            <img style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" />
+            <input type="checkbox" name="Id" value="@Model.Search[i].Id" />
+        }
+    }
+    <br />
+    <h2>Sorcery</h2>
+    @for (int i = 0; i < Model.Search.Count; i++)
+    {
+        if (Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment") && !Model.Search[i].TypeLine.Contains("Land"))
+        {
+            <img style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" />
+            <input type="checkbox" name="Id" value="@Model.Search[i].Id" />
+        }
+    }
+    <h2>Artifact</h2>
+    @for (int i = 0; i < Model.Search.Count; i++)
+    {
+        if (Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Enchantment") && !Model.Search[i].TypeLine.Contains("Land"))
+        {
+            <img style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" />
+            <input type="checkbox" name="Id" value="@Model.Search[i].Id" />
+        }
+    }
+    <h2>Enchantment</h2>
+    @for (int i = 0; i < Model.Search.Count; i++)
+    {
+        if (Model.Search[i].TypeLine.Contains("Enchantment") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Land"))
+        {
+            <img style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" />
+            <input type="checkbox" name="Id" value="@Model.Search[i].Id" />
+        }
+    }
+    <h2>Land</h2>
+    @for (int i = 0; i < Model.Search.Count; i++)
+    {
+        if (Model.Search[i].TypeLine.Contains("Land") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment"))
+        {
+            <img style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" />
+            <input type="checkbox" name="Id" value="@Model.Search[i].Id" />
+        }
+    }
+    @*<img style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" />*@
+    @*<input type="checkbox" name="Id" value="@Model.Search[i].Id" />*@
+    <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
+    }
+    <br />
+    <input type="submit" value="Delete Card" />
+</form>
 
