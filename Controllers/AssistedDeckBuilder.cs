@@ -130,7 +130,7 @@ namespace MagicTheGatheringFinal.Controllers
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
             var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
 
-            if (deckStatus != null)
+            if (deckStatus != "EmptySession")
             {
                 assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
             }
@@ -416,7 +416,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             int deckNumber = (from n in _context.DecksTable where n.AspUserId == userName select n.DeckName).Count();
 
-            assistedDeckName = ($"{userName}_assistedDeck_{deckNumber + 1}");
+            assistedDeckName = ($"assistedDeck_{deckNumber + 1}");
             assistedDeck.DeckName = assistedDeckName;
             assistedDeck.DeckStatus = "fffff";
             assistedDeck.Creatures = 5;
