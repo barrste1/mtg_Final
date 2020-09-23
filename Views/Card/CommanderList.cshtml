@@ -1,7 +1,9 @@
 ﻿
 @{
-    ViewData["Title"] = "ChooseCommander";
+    ViewData["Title"] = "CommanderList";
 }
+
+<h1>CommanderList</h1>
 
 @model List<CardsTable>
 
@@ -18,17 +20,11 @@
         }
     </style>
 
-<form action="/Card/CommanderList" method="get">
-    <input type="text" name="commanderName" placeholder="Search for card" />
-    <input type="submit" value="Search for Commander" />
-</form>
+    <div style="display:flex; flex-direction:column">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <img style="width:17.5%; height:17.5%" src="@Model[i].CardArtUrl" />
+            <a style="margin-bottom:30px; text-decoration:underline; color:white;" href="/Card/SaveCommander?cId=@Model[i].Id"> Make @Model[i].Name your commander!</a>
 
-@*<div style="display:flex; flex-direction:column">
-    @for (int i = 0; i < Model.Count; i++)
-    {
-        <img style="width:17.5%; height:17.5%" src="@Model[i].CardArtUrl" />
-        <a style="margin-bottom:30px; text-decoration:underline; color:white;" href="/Card/SaveCommander?cId=@Model[i].Id"> Make @Model[i].Name your commander!</a>
-
-    }
-</div>*@
-
+        }
+    </div>
