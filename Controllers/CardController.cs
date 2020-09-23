@@ -17,109 +17,15 @@ namespace MagicTheGatheringFinal.Controllers
     [Authorize]
     public class CardController : Controller
     {
+        #region context
         private readonly MagicDbContext _context;
 
         public CardController(MagicDbContext context)
         {
             _context = context;
         }
-
-        [HttpGet]
-        public async Task<IActionResult> CardList(string cardName, DecksTable dName)
-        {
-            CardsTable cardTable = new CardsTable();
-            ScryfallDAL dl = new ScryfallDAL();
-            List<CardsTable> cardList = new List<CardsTable>();
-
-            if (_context.CardsTable.Where(x => x.Name.Contains(cardName)).FirstOrDefault() == null)
-            {
-                CardSearchObject cardItem = await dl.GetListOfCards(cardName);
-
-                for (int i = 0; i < cardItem.data.Length; i++)
-                {
-
-                    if (cardItem.data[i].image_uris == null)
-                    {
-                        cardTable.CardArtUrl = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
-                    }
-                    else
-                    {
-                        cardTable.CardArtUrl = cardItem.data[i].image_uris.normal;
-                    }
-                    cardTable.CardId = cardItem.data[i].id;
-                    cardTable.Cmc = cardItem.data[i].cmc;
-                    cardTable.ManaCost = cardItem.data[i].mana_cost;
-                    cardTable.Name = cardItem.data[i].name;
-                    cardTable.OracleText = cardItem.data[i].oracle_text;
-                    cardTable.TypeLine = cardItem.data[i].type_line;
-                    cardTable.EdhrecRank = cardItem.data[i].edhrec_rank;
-                    if (cardItem.data[i].prices == null)
-                    {
-                        cardItem.data[i].prices.usd = "0.00";
-                        cardItem.data[i].prices.eur = "0.00";
-                        cardItem.data[i].prices.usd_foil = "0.00";
-                        cardItem.data[i].prices.tix = "0.00";
-                    }
-                    else if (cardItem.data[i].prices.usd == null)
-                    { 
-                        cardItem.data[i].prices.usd = "0.00";
-                    }
-                    cardTable.CardPrice = decimal.Parse(cardItem.data[i].prices.usd);
-
-                    if (cardItem.data[i].color_identity.Contains("B"))
-                    {
-                        cardTable.Black = "B";
-                    }
-                    if (cardItem.data[i].color_identity.Contains("U"))
-                    {
-                        cardTable.Blue = "U";
-                    }
-                    if (cardItem.data[i].color_identity.Contains("W"))
-                    {
-                        cardTable.White = "W";
-                    }
-                    if (cardItem.data[i].color_identity.Contains("G"))
-                    {
-                        cardTable.Green = "G";
-                    }
-                    if (cardItem.data[i].color_identity.Contains("R"))
-                    {
-                        cardTable.Red = "R";
-                    }
-
-                    cardTable.Id = 0;
-
-                    _context.CardsTable.Add(cardTable);
-                    _context.SaveChanges();
-
-                }
-            }
-
-            //now that the card exists in the card table
-            //we need to get the card from the cards table and save
-            //first to the cardList then to the combo
-
-            CombinedDeckViewModel combo = new CombinedDeckViewModel();
-            
-            List<DecksTable> deckList = new List<DecksTable>();
-
-            combo.Search = cardList;
-            combo.deckObject = deckList;
-
-            cardList = (from c in _context.CardsTable where c.Name.Contains(cardName) select c).ToList();
-
-            deckList.Add(dName);
-
-            for (int i = 0; i < cardList.Count; i++)
-            {
-                combo.Search.Add(cardList[i]);
-            }
-
-            combo.deckObject = deckList;
-
-            return View(combo);
-        }
-
+#endregion
+        #region basic tasks
         [HttpGet]
         public async Task<IActionResult> CardColorList(string cardColor)
         {
@@ -171,7 +77,103 @@ namespace MagicTheGatheringFinal.Controllers
             var results = await response.Content.ReadAsAsync<Prices>();
             return View(results);
         }
+        #endregion
+        #region CRUD
+        [HttpGet]
+        public async Task<IActionResult> CardList(string cardName, DecksTable dName)
+        {
+            CardsTable cardTable = new CardsTable();
+            ScryfallDAL dl = new ScryfallDAL();
+            List<CardsTable> cardList = new List<CardsTable>();
 
+            if (_context.CardsTable.Where(x => x.Name.Contains(cardName)).FirstOrDefault() == null)
+            {
+                CardSearchObject cardItem = await dl.GetListOfCards(cardName);
+
+                for (int i = 0; i < cardItem.data.Length; i++)
+                {
+
+                    if (cardItem.data[i].image_uris == null)
+                    {
+                        cardTable.CardArtUrl = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
+                    }
+                    else
+                    {
+                        cardTable.CardArtUrl = cardItem.data[i].image_uris.normal;
+                    }
+                    cardTable.CardId = cardItem.data[i].id;
+                    cardTable.Cmc = cardItem.data[i].cmc;
+                    cardTable.ManaCost = cardItem.data[i].mana_cost;
+                    cardTable.Name = cardItem.data[i].name;
+                    cardTable.OracleText = cardItem.data[i].oracle_text;
+                    cardTable.TypeLine = cardItem.data[i].type_line;
+                    cardTable.EdhrecRank = cardItem.data[i].edhrec_rank;
+                    if (cardItem.data[i].prices == null)
+                    {
+                        cardItem.data[i].prices.usd = "0.00";
+                        cardItem.data[i].prices.eur = "0.00";
+                        cardItem.data[i].prices.usd_foil = "0.00";
+                        cardItem.data[i].prices.tix = "0.00";
+                    }
+                    else if (cardItem.data[i].prices.usd == null)
+                    {
+                        cardItem.data[i].prices.usd = "0.00";
+                    }
+                    cardTable.CardPrice = decimal.Parse(cardItem.data[i].prices.usd);
+
+                    if (cardItem.data[i].color_identity.Contains("B"))
+                    {
+                        cardTable.Black = "B";
+                    }
+                    if (cardItem.data[i].color_identity.Contains("U"))
+                    {
+                        cardTable.Blue = "U";
+                    }
+                    if (cardItem.data[i].color_identity.Contains("W"))
+                    {
+                        cardTable.White = "W";
+                    }
+                    if (cardItem.data[i].color_identity.Contains("G"))
+                    {
+                        cardTable.Green = "G";
+                    }
+                    if (cardItem.data[i].color_identity.Contains("R"))
+                    {
+                        cardTable.Red = "R";
+                    }
+
+                    cardTable.Id = 0;
+
+                    _context.CardsTable.Add(cardTable);
+                    _context.SaveChanges();
+
+                }
+            }
+
+            //now that the card exists in the card table
+            //we need to get the card from the cards table and save
+            //first to the cardList then to the combo
+
+            CombinedDeckViewModel combo = new CombinedDeckViewModel();
+
+            List<DecksTable> deckList = new List<DecksTable>();
+
+            combo.Search = cardList;
+            combo.deckObject = deckList;
+
+            cardList = (from c in _context.CardsTable where c.Name.Contains(cardName) select c).ToList();
+
+            deckList.Add(dName);
+
+            for (int i = 0; i < cardList.Count; i++)
+            {
+                combo.Search.Add(cardList[i]);
+            }
+
+            combo.deckObject = deckList;
+
+            return View(combo);
+        }
         public IActionResult ChooseDeck()
         {
             CombinedDeckViewModel combo = new CombinedDeckViewModel();
@@ -365,6 +367,8 @@ namespace MagicTheGatheringFinal.Controllers
 
             return RedirectToAction("DeckList", dName);
         }
+        #endregion
+        #region FindInfoInDb
         public string FindDeck()
         {
             DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
@@ -403,6 +407,7 @@ namespace MagicTheGatheringFinal.Controllers
                 return _context.AspNetUsers.Where(s => s.UserName == User.Identity.Name).FirstOrDefault().Id;
             }
         }
+        #endregion
     }
 
 
