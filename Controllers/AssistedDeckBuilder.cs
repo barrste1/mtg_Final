@@ -88,7 +88,7 @@ namespace MagicTheGatheringFinal.Controllers
             return View("Budget");
         }
 
-        public IActionResult UpdateBudget(string budget)
+        public async Task<IActionResult> UpdateBudget(string budget)
         {
             decimal budgetParse = 0;
             try
@@ -104,7 +104,7 @@ namespace MagicTheGatheringFinal.Controllers
             user.Budget = decimal.Parse(budget);
             _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.Update(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             AssistedDeckViewModel assistedDeck = OpenSession();
 
@@ -389,7 +389,7 @@ namespace MagicTheGatheringFinal.Controllers
                     cardTable.Red = "R";
                 }
                 _context.CardsTable.Add(cardTable);
-                _context.SaveChanges();
+               await _context.SaveChangesAsync();
             }
         }
         public AssistedDeckViewModel OpenSession()
@@ -405,7 +405,7 @@ namespace MagicTheGatheringFinal.Controllers
         }
 
         [HttpGet]
-        public void CreateDeckName(int commanderId, string colorId)
+        public async void CreateDeckName(int commanderId, string colorId)
         {
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
             var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
@@ -440,7 +440,7 @@ namespace MagicTheGatheringFinal.Controllers
 
 
             _context.DecksTable.Add(deckTable);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         [HttpPost]
@@ -458,7 +458,7 @@ namespace MagicTheGatheringFinal.Controllers
             deckTable.Quantity = quantity;
 
             _context.DecksTable.Add(deckTable);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         public IActionResult DeckList()
         {
