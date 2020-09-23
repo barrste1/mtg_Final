@@ -1,126 +1,12 @@
-﻿@model List<CardsTable>
-<head>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        
-        #target {
-            border: solid;
-            width: 350px;
-            height: auto;
-            background-color: rgba(0, 0, 255, 0.3);
-            text-align: left;
-            margin-right: -250px;
-            margin-left: auto;
-            padding-bottom:40px;
-            padding-left:40px;
-        }
-      
-
-        #top-container {
-            margin-right: auto;
-            margin-left: auto;
-            background-color: rgba(128, 128, 128, 0.21);
-            width: 30%;
-            padding: 30px;
-            text-align: right;
-            top: 0;
-            right: 500px;
-            image-resol
-        }
-        /*.header {
-            margin-right: auto;
-            margin-left: auto;
-            background: #808080;
-            color: #000000;
-            width:15%;
-            right: 500px;
-        }*/
-        .content {
-            margin-right: auto;
-            margin-left: auto;
-            padding: 10px;
-        }
-
-        .sticky {
-            margin-right: auto;
-            margin-left: auto;
-            position: fixed;
-            top: 70px;
-            right: 397px;
-            width: 50%;
-        }
-
-            .sticky + .content {
-                margin-right: auto;
-                margin-left: auto;
-                padding-top: 102px;
-            }
-    </style>
-<<<<<<< HEAD
-    </head>
-
-
-
-    <form ondragstart="dragstart_handler(event)">
-        <div class="container">
-            <div  style="width:20%;height:auto" class="row sticky-top" id="top-container" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" ondragstart="dragstart_handler(event)">
-                <div class="col-md-12">
-                    <img style="width:100px;height:100px; float:left" src="https://www.iconfinder.com/data/icons/glypho-generic-icons/64/garbage-can-recycle-bin-512.png" ondrop="trash_drop(event)" ondragover="dragover_handler(event)" />
-                    <input style="float:left" onclick="loadProducts()" id="target" type="submit" value="submit">
-                </div>
-            </div>
-
-            <div class="row">
-
-                @foreach (var card in Model)
-                {
-                    <div class="col-md-2">
-                        <img src="@card.CardArtUrl" draggable="true" style="width:180px;height:auto" id="@card.Id" />
-                        <p>Price: @card.CardPrice?.ToString("C2")</p>
-                    </div>
-                    @*<p id="@card.CardId" draggable="true">@card.Name</p>*@
-
-                }
-            </div>
-        </div>
-
-    </form>
-
-    
-
-    <script>
-        var cards = [];
-        function dragover_handler(ev) {
-            ev.preventDefault();
-            ev.dataTransfer.dropEffect = "link";
-        }
-        function drop_handler(ev) {
-            console.log(ev);
-            ev.preventDefault();
-            // Get the id of the target and add the moved element to the target's DOM
-            const data = ev.dataTransfer.getData("application/MagicTheGatheringFinal");
-            const view = document.getElementById(data).cloneNode(true);
-            view.id = data + 1;
-            ev.target.appendChild(view);
-            cards.push(data)
-        }
-        function dragstart_handler(ev) {
-            // Add the target element's id to the data transfer object
-            ev.dataTransfer.setData("application/MagicTheGatheringFinal", ev.target.id);
-            ev.dataTransfer.dropEffect = "link";
-        }
-=======
+﻿    </style>
 </head>
 
 <div class="header" id="target" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
->>>>>>> curtis
-    
-            <img style="width:100px;height:100px; float:right;" src="https://www.iconfinder.com/data/icons/glypho-generic-icons/64/garbage-can-recycle-bin-512.png" ondrop="trash_drop(event)" ondragover="dragover_handler(event)" />
-        <footer>
-            <input style="" onclick="loadProducts()"  type="submit" value="submit">
-        </footer>
+
+    <img style="width:100px;height:100px; float:right;" src="https://www.iconfinder.com/data/icons/glypho-generic-icons/64/garbage-can-recycle-bin-512.png" ondrop="trash_drop(event)" ondragover="dragover_handler(event)" />
+    <footer>
+        <input style="" onclick="loadProducts()" type="submit" value="submit">
+    </footer>
 </div>
 
 
@@ -131,8 +17,8 @@
     {<img id="@Model[i].CardId" style="width: 22%; height:auto" src="@Model[i].CardArtUrl" draggable="true" />
         <!--<tr>
             <td>-->
-                @*<p id="@card.CardId" draggable="true">@card.Name</p>*@
-                <!--<img id="@Model[i * 3].CardId" style="width: 15%; height:auto" src="@Model[i * 3].CardArtUrl" draggable="true" />
+        @*<p id="@card.CardId" draggable="true">@card.Name</p>*@
+        <!--<img id="@Model[i * 3].CardId" style="width: 15%; height:auto" src="@Model[i * 3].CardArtUrl" draggable="true" />
             </td>
             <td>
                 <img id="@Model[i * 3 + 1].CardId" style="width: 15%; height:auto" src="@Model[i * 3 + 1].CardArtUrl" draggable="true" />
@@ -150,7 +36,7 @@
         ev.preventDefault();
         ev.dataTransfer.dropEffect = "copy";
     }
-   
+
     function drop_handler(ev) {
         console.log(ev);
         ev.preventDefault();
@@ -163,8 +49,9 @@
         //only 1 card can be dragged in
         if (cards.indexOf(data) == -1) {
             ev.target.appendChild(view);
-            cards.push(data) }
-        
+            cards.push(data)
+        }
+
     }
     function dragstart_handler(ev) {
         // Add the target element's id to the data transfer object
@@ -179,7 +66,8 @@
         if (data.endsWith("\\deck")) {
             document.getElementById(data).remove();
             let pos = cards.indexOf(data);
-            cards.splice(pos, 1); }
+            cards.splice(pos, 1);
+        }
     }
     window.onscroll = function () { myFunction() };
     var header = document.getElementById("target");
