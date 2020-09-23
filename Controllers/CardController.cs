@@ -79,6 +79,7 @@ namespace MagicTheGatheringFinal.Controllers
         }
         #endregion
         #region CRUD
+
         [HttpGet]
         public async Task<IActionResult> CardList(string cardName, DecksTable dName)
         {
@@ -210,23 +211,49 @@ namespace MagicTheGatheringFinal.Controllers
             List<CardsTable> cardlist = new List<CardsTable>();
             List<DecksTable> userDecks = new List<DecksTable>();
             int cardCount = 0;
+
             for (int i = 0; i < deckList.Count; i++)
             {
                 cardlist.Add(_context.CardsTable.Find(deckList[i]));
-
             }
 
             float cmc = 0;
             decimal? cost = 0;
+
             foreach (CardsTable card in cardlist)
             {
-               cmc += card.Cmc;
-               cost += card.CardPrice;
+                cmc += card.Cmc;
+                cost += card.CardPrice;
+
+                if (card.TypeLine.Contains("Creature"))
+                {
+                    combo.creatureCount += 1;
+                }
+                if (card.TypeLine.Contains("Instant"))
+                {
+                    combo.instantCount += 1;
+                }
+                if (card.TypeLine.Contains("Sorcery"))
+                {
+                    combo.sorceryCount += 1;
+                }
+                if (card.TypeLine.Contains("Artifact") && !card.TypeLine.Contains("Creature") && !card.TypeLine.Contains("Enchantment") )
+                {
+                    combo.artifactCount += 1;
+                }
+                if (card.TypeLine.Contains("Enchantment") && !card.TypeLine.Contains("Creature") && !card.TypeLine.Contains("Artifact"))
+                {
+                    combo.enchantmentCount += 1;
+                }
+                if (card.TypeLine.Contains("Land") && !card.TypeLine.Contains("Creature") && !card.TypeLine.Contains("Artifact") && !card.TypeLine.Contains("Enchantment"))
+                {
+                    combo.landCount += 1;
+                }
             }
 
 
             combo.DeckCost = cost?.ToString("C2");
-
+            
             userDecks.Add(dName);
 
             combo.Search = cardlist;
@@ -254,7 +281,12 @@ namespace MagicTheGatheringFinal.Controllers
         public IActionResult ChooseCommander()
         {
 
-            List<CardsTable> commanders = _context.CardsTable.Where(c => c.IsCommander == true).ToList();
+
+            return View();
+        }
+        public IActionResult CommanderList(string commanderName)
+        {
+            List<CardsTable> commanders = _context.CardsTable.Where(c => c.IsCommander == true && c.Name.Contains(commanderName)).ToList();
 
             return View(commanders);
         }
