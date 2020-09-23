@@ -70,9 +70,7 @@ namespace MagicTheGatheringFinal.Controllers
 
                 AddCardsToDecksTable(CardId);
             }
-
             return Json("");
-
         }
 
         public IActionResult Index()

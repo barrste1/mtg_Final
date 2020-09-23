@@ -59,7 +59,7 @@
 
                 @if (Model.CardSearch.data[i].prices.usd != null)
                 {
-                    <td>@Model.CardSearch.data[i].prices</td>
+                    <td>$@Model.CardSearch.data[i].prices.usd</td>
                 }
                 else
                 {
@@ -70,7 +70,7 @@
             </tr>
 
         }
-        <input name="menu" value="0" hidden />
+        <input name="menu" value="3" hidden />
         <input type="submit" />
     </table>
     
