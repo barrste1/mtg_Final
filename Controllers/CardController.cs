@@ -315,8 +315,19 @@ namespace MagicTheGatheringFinal.Controllers
                 _context.SaveChanges();
             }
             var idCollection = (from x in _context.CardsTable where id == x.CardId select x.Id).FirstOrDefault();
+            if (cId.ManaCost != null)
+            {
+                string colorId = FindColorId(cId);
+                dName.ColorIdentity = colorId;
+            }
+            else
+            {
+                dName.ColorIdentity = "L";
+            }    
             dName.CardId = idCollection;
             dName.Quantity = 1;
+
+
             if (userId != null)
             {
                 dName.AspUserId = userId;
