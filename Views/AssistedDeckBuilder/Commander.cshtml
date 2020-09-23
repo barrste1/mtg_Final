@@ -1,7 +1,7 @@
 ﻿
 
 @model List<CardsTable>
-    <div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; margin-left:5px">
+    <div style="position:sticky; top:0px; background-color:grey; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; margin-left:5px; text-shadow: 1px 1px 2px white;">
         <h1 style="text-align:center;">Choose your Commander!</h1>
         <style>
             body {
@@ -11,19 +11,23 @@
             }
         </style>
         <br />
-        <form style="margin-left:5px">
-            <p>Your commander is the leader of your army. They dictate the color of your deck and what cards you should put in.</p>
-            <p>Think of them as your best asset. They're always available to you and can be how you win the game!</p>
+        <form style="margin-left: 5px; text-shadow: 1px 1px 2px white; color:black; font-size:20px">
+            <b>
+                <p>Your commander is the leader of your army. They dictate the color of your deck and what cards you should put in.</p>
+                <p>Think of them as your best asset. They're always available to you and can be how you win the game!</p>
+            </b>
         </form>
     </div>
-    <div style="display:flex; flex-direction:column">
+
+<form style="display:flex; flex-direction:column">
         @for (int i = 0; i < Model.Count; i++)
         {
-            if (Model[i].CardArtUrl != null)
-            {
+        
+                if (Model[i].CardArtUrl != null)
+                {
                 <img style="width:20%; height:20%" src="@Model[i].CardArtUrl" />
-            }
-            <a style="margin-bottom:30px; text-decoration:underline; color:white;" href="../AssistedDeckBuilder/StartDeck?commanderId=@Model[i].Id"> Make @Model[i].Name your commander!</a>
-
+                }
+                <a style="margin-bottom:30px; text-decoration:underline; color:white;" href="../AssistedDeckBuilder/StartDeck?commanderId=@Model[i].Id"> Make @Model[i].Name your commander!</a>
+          
         }
-    </div>
+</form>

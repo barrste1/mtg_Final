@@ -1,4 +1,11 @@
 ﻿<!DOCTYPE html>
+
+<style>
+    buttonBorder{
+        border:solid 3px black;
+    }
+
+</style>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,21 +18,35 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">.NET Decks</a>
+                <a class="navbar-brand" style="padding-right:5px" asp-area="" asp-controller="Home" asp-action="Index">.NET Decks</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"> 
                     <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
+                    <ul class="navbar-nav flex-grow-1" style="font-size:12px; text-align:center; text-decoration:solid; padding:0px 2px 0px 55px;" >
+                      
+                            <li class="nav-item;">
+                                <a class="nav-link text-dark" style="border: solid 3px black;" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="NewUser" asp-action="Index">New Player Guide</a>
+                            <li class="nav-item;" style="border:solid 3px black;">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="NewUser" asp-action="Index">New Player Guide</a>
+                            </li>
+                            <li class="nav-item" style="border:solid 3px black;">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Newuser" asp-action="BasicMagicConcepts">Learn To Play</a>
+                            </li>
+                            <li class="nav-item" style="border:solid 3px black;">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="NewUser" asp-action="QuizIntro">Personality Color Quiz</a>
+                            </li>
+                            <li class="nav-item" style="border:solid 3px black;">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="NewUser" asp-action="SelectColorIdentity">Assisted Deck Builder</a>
+                            </li>
+                            <li class="nav-item" style="border:solid 3px black;">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="ChooseDeck">Build A Deck</a>
                         </li>
+                            
                     </ul>
                 </div>
             </div>
@@ -38,8 +59,11 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - MagicTheGatheringFinal - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container" style="font-size:20px">
+    <a  style ="color:white;"href="https://www.linkedin.com/in/andonimoutousis/">Andoni Moutousis |</a>
+    <a style ="color:white;" href="https://www.linkedin.com/in/scientifically-stephen/">Stephen Barr |</a>
+    <a style ="color:white;" href="https://www.linkedin.com/in/curtisgodzisz/">Curtis Godzisz |</a>
+    <a style ="color:white;"href="https://www.linkedin.com/in/robert-kress-/">Robbie Kress</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
