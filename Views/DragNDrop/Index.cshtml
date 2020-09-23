@@ -1,7 +1,67 @@
-</style>
+@model List<CardsTable>
+<head>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #target {
+            border: solid;
+            width: 350px;
+            height: auto;
+            background-color: rgba(0, 0, 255, 0.3);
+            text-align: left;
+            margin-right: -250px;
+            margin-left: auto;
+            padding-bottom: 40px;
+            padding-left: 40px;
+        }
+
+
+        #top-container {
+            margin-right: auto;
+            margin-left: auto;
+            background-color: rgba(128, 128, 128, 0.21);
+            width: 30%;
+            padding: 30px;
+            text-align: right;
+            top: 0;
+            right: 500px;
+            image-resol
+        }
+        /*.header {
+            margin-right: auto;
+            margin-left: auto;
+            background: #808080;
+            color: #000000;
+            width:15%;
+            right: 500px;
+        }*/
+        .content {
+            margin-right: auto;
+            margin-left: auto;
+            padding: 10px;
+        }
+
+        .sticky {
+            margin-right: auto;
+            margin-left: auto;
+            position: fixed;
+            top: 70px;
+            right: 397px;
+            width: 50%;
+        }
+
+            .sticky + .content {
+                margin-right: auto;
+                margin-left: auto;
+                padding-top: 102px;
+            }
+    </style>
 </head>
 
 <div class="header" id="target" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
+
 
     <img style="width:100px;height:100px; float:right;" src="https://www.iconfinder.com/data/icons/glypho-generic-icons/64/garbage-can-recycle-bin-512.png" ondrop="trash_drop(event)" ondragover="dragover_handler(event)" />
     <footer>
@@ -9,16 +69,14 @@
     </footer>
 </div>
 
-
-
-
 <form ondragstart="dragstart_handler(event)" style="float:left">
     @for (int i = 0; i < 100; i++)
     {<img id="@Model[i].CardId" style="width: 22%; height:auto" src="@Model[i].CardArtUrl" draggable="true" />
+
         <!--<tr>
             <td>-->
-        @*<p id="@card.CardId" draggable="true">@card.Name</p>*@
-        <!--<img id="@Model[i * 3].CardId" style="width: 15%; height:auto" src="@Model[i * 3].CardArtUrl" draggable="true" />
+                @*<p id="@card.CardId" draggable="true">@card.Name</p>*@
+                <!--<img id="@Model[i * 3].CardId" style="width: 15%; height:auto" src="@Model[i * 3].CardArtUrl" draggable="true" />
             </td>
             <td>
                 <img id="@Model[i * 3 + 1].CardId" style="width: 15%; height:auto" src="@Model[i * 3 + 1].CardArtUrl" draggable="true" />
@@ -28,65 +86,67 @@
             </td>
         </tr>-->
     }
-</form>
+    </form>
 
-<script>
-    var cards = [];
-    function dragover_handler(ev) {
-        ev.preventDefault();
-        ev.dataTransfer.dropEffect = "copy";
-    }
-    function drop_handler(ev) {
-        console.log(ev);
-        ev.preventDefault();
-        // Get the id of the target and add the moved element to the target's DOM
-        const data = ev.dataTransfer.getData("application/MagicTheGatheringFinal");
-        const view = document.getElementById(data).cloneNode(true);
-        view.id = data + "\\deck";
-        //resizing image after drag
-        view.style.width = "50px";
-        //only 1 card can be dragged in
-        if (cards.indexOf(data) == -1) {
-            ev.target.appendChild(view);
-            cards.push(data)
+    <script>
+        var cards = [];
+        function dragover_handler(ev) {
+            ev.preventDefault();
+            ev.dataTransfer.dropEffect = "copy";
         }
-    }
-    function dragstart_handler(ev) {
-        // Add the target element's id to the data transfer object
-        ev.dataTransfer.setData("application/MagicTheGatheringFinal", ev.target.id);
-        ev.dataTransfer.dropEffect = "copy";
-    }
-    function trash_drop(trash) {
-        trash.preventDefault();
-        const data = trash.dataTransfer.getData("application/MagicTheGatheringFinal");
-        console.log(document.getElementById(data));
-        //trashing cards inside the decklist only
-        if (data.endsWith("\\deck")) {
-            document.getElementById(data).remove();
-            let pos = cards.indexOf(data);
-            cards.splice(pos, 1);
+
+        function drop_handler(ev) {
+            console.log(ev);
+            ev.preventDefault();
+            // Get the id of the target and add the moved element to the target's DOM
+            const data = ev.dataTransfer.getData("application/MagicTheGatheringFinal");
+            const view = document.getElementById(data).cloneNode(true);
+            view.id = data + "\\deck";
+            //resizing image after drag
+            view.style.width = "50px";
+            //only 1 card can be dragged in
+            if (cards.indexOf(data) == -1) {
+                ev.target.appendChild(view);
+                cards.push(data)
+            }
+
         }
-    }
-    window.onscroll = function () { myFunction() };
-    var header = document.getElementById("target");
-    var sticky = header.offsetTop;
-    function myFunction() {
-        if (window.pageYOffset > sticky) {
-            header.classList.add("sticky");
-        } else {
-            header.classList.remove("sticky");
+        function dragstart_handler(ev) {
+            // Add the target element's id to the data transfer object
+            ev.dataTransfer.setData("application/MagicTheGatheringFinal", ev.target.id);
+            ev.dataTransfer.dropEffect = "copy";
         }
-    }
-    function loadProducts() {
-        var items = "";
-        $.ajax({
-            url: "../DragNDrop/SaveChanges",
-            type: "POST",
-            crossDomain: true,
-            dataType: "json",
-            contentType: "application/json",
-            data: JSON.stringify(cards),
-            traditional: true
-        });
-    }
-</script>
+        function trash_drop(trash) {
+            trash.preventDefault();
+            const data = trash.dataTransfer.getData("application/MagicTheGatheringFinal");
+            console.log(document.getElementById(data));
+            //trashing cards inside the decklist only
+            if (data.endsWith("\\deck")) {
+                document.getElementById(data).remove();
+                let pos = cards.indexOf(data);
+                cards.splice(pos, 1);
+            }
+        }
+        window.onscroll = function () { myFunction() };
+        var header = document.getElementById("target");
+        var sticky = header.offsetTop;
+        function myFunction() {
+            if (window.pageYOffset > sticky) {
+                header.classList.add("sticky");
+            } else {
+                header.classList.remove("sticky");
+            }
+        }
+        function loadProducts() {
+            var items = "";
+            $.ajax({
+                url: "../DragNDrop/SaveChanges",
+                type: "POST",
+                crossDomain: true,
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(cards),
+                traditional: true
+            });
+        }
+    </script>
