@@ -19,9 +19,11 @@ namespace MagicTheGatheringFinal.Controllers
     {
         #region context
         private readonly MagicDbContext _context;
+        private readonly MagicDbContext _context2;
 
-        public CardController(MagicDbContext context)
+        public CardController(MagicDbContext context, MagicDbContext context2)
         {
+            _context2 = context2;
             _context = context;
         }
 #endregion
