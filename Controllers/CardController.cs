@@ -217,13 +217,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             for (int i = 0; i < deckList.Count; i++)
             {
-<<<<<<< HEAD
-                cardlist.Add(_context.CardsTable.Find(deckList[i]));
-=======
-
                 cardlist.Add(_context.CardsTable.Find(deckList[i].CardId));
-
->>>>>>> curtis
             }
 
             float cmc = 0;
@@ -233,7 +227,7 @@ namespace MagicTheGatheringFinal.Controllers
             {
                 cmc += card.Cmc;
                 cost += card.CardPrice;
-<<<<<<< HEAD
+
 
                 if (card.TypeLine.Contains("Creature"))
                 {
@@ -259,11 +253,7 @@ namespace MagicTheGatheringFinal.Controllers
                 {
                     combo.landCount += 1;
                 }
-=======
->>>>>>> curtis
             }
-
-
             combo.DeckCost = cost?.ToString("C2");
             
             userDecks.Add(dName);
@@ -412,11 +402,7 @@ namespace MagicTheGatheringFinal.Controllers
 
         //    return RedirectToAction("DeckList", dName);
         //}
-
-<<<<<<< HEAD
-            return RedirectToAction("DeckList", dName);
-        }
-
+    
         public IActionResult DeleteDeck(string deckName)
         {
             string userName = FindUserId();
@@ -434,9 +420,8 @@ namespace MagicTheGatheringFinal.Controllers
 
             return RedirectToAction("ChooseDeck");
         }
-=======
->>>>>>> curtis
         #endregion
+
         #region FindInfoInDb
         public string FindDeck()
         {

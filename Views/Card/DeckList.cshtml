@@ -82,11 +82,6 @@
     <input type="submit" value="Search for card" />
 </form>
 
-<<<<<<< HEAD
-=======
-<form>
->>>>>>> curtis
-
 <form action="/Card/DeleteCard" method="post" style="color: white;text-shadow: 1px 1px 2px white;">
     <table class="table" style="color:white;">
         <tr>
@@ -102,19 +97,15 @@
         </tr>
         @for (int i = 0; i < Model.Search.Count; i++)
         {
-<<<<<<< HEAD
             <tr>
                 @if (Model.Search[i].TypeLine.Contains("Creature"))
                 {
-                    <td><img style="width:auto;height:33%" src="@Model.Search[i].CardArtUrl" /></td>
+                <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+                     ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
                     <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                    <td><input type="checkbox" name="Id" value="@Model.Search[i].Id" /></td>
+                   
                 }
             </tr>
-=======
-            <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-                 ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
->>>>>>> curtis
         }
     </table>
     <table class="table" style="color:white;">
@@ -131,19 +122,15 @@
         </tr>
         @for (int i = 0; i < Model.Search.Count; i++)
         {
-<<<<<<< HEAD
             <tr>
                 @if (Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment") && !Model.Search[i].TypeLine.Contains("Land"))
                 {
-                    <td><img style="width:auto;height:33%" src="@Model.Search[i].CardArtUrl" /></td>
+                <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+                     ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
                     <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                    <td><input type="checkbox" name="Id" value="@Model.Search[i].Id" /></td>
+                   
                 }
             </tr>
-=======
-            <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-                 ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
->>>>>>> curtis
         }
     </table>
     <table class="table" style="color:white;">
@@ -161,19 +148,15 @@
 
         @for (int i = 0; i < Model.Search.Count; i++)
         {
-<<<<<<< HEAD
             <tr>
                 @if (Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment") && !Model.Search[i].TypeLine.Contains("Land"))
                 {
-                    <td><img style="width:auto;height:33%" src="@Model.Search[i].CardArtUrl" /></td>
+                <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+                     ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
                     <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                    <td><input type="checkbox" name="Id" value="@Model.Search[i].Id" /></td>
+                    
                 }
             </tr>
-=======
-            <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-                 ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
->>>>>>> curtis
         }
     </table>
     <table class="table" style="color:white;">
@@ -190,19 +173,15 @@
         </tr>
         @for (int i = 0; i < Model.Search.Count; i++)
         {
-<<<<<<< HEAD
             <tr>
                 @if (Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Enchantment") && !Model.Search[i].TypeLine.Contains("Land"))
                 {
-                    <td><img style="width:auto;height:33%" src="@Model.Search[i].CardArtUrl" /></td>
+                <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+                     ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
                     <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                    <td><input type="checkbox" name="Id" value="@Model.Search[i].Id" /></td>
+                    
                 }
             </tr>
-=======
-            <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-                 ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
->>>>>>> curtis
         }
     </table>
     <table class="table" style="color:white;">
@@ -219,19 +198,17 @@
         </tr>
         @for (int i = 0; i < Model.Search.Count; i++)
         {
-<<<<<<< HEAD
+
             <tr>
                 @if (Model.Search[i].TypeLine.Contains("Enchantment") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Land"))
                 {
-                    <td><img style="width:auto;height:33%" src="@Model.Search[i].CardArtUrl" /></td>
+                    <td><img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+     ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" /></td>
                     <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                    <td><input type="checkbox" name="Id" value="@Model.Search[i].Id" /></td>
+                    
                 }
             </tr>
-=======
-            <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-                 ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
->>>>>>> curtis
+
         }
     </table>
     <table class="table" style="color:white;">
@@ -249,23 +226,24 @@
 
         @for (int i = 0; i < Model.Search.Count; i++)
         {
-<<<<<<< HEAD
+
             <tr>
                 @if (Model.Search[i].TypeLine.Contains("Land") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment"))
                 {
-                    <td><img style="width:auto;height:33%" src="@Model.Search[i].CardArtUrl" /></td>
+                <td>
+                    <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+                         ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+                </td>
                     <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                    <td><input type="checkbox" name="Id" value="@Model.Search[i].Id" /></td>
+                    
                 }
             </tr>
         }
     </table>
-=======
-            <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-                 ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+
         }
     }
->>>>>>> curtis
+
     <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
     <br />
     
