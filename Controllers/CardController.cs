@@ -544,7 +544,7 @@ namespace MagicTheGatheringFinal.Controllers
             var cardExists = (from d in _context.DecksTable where idCollection == d.CardId && FindUserId() == d.AspUserId && dName.DeckName == d.DeckName select d).FirstOrDefault();
 
             //if the linq statement returns null, the card doesn't exist and needs to be added.
-            if (cardExists == null)
+            if (cardExists == null || cardExists.Id == 5633 || cardExists.Id == 5634 || cardExists.Id == 5635 || cardExists.Id == 5636 || cardExists.Id == 5637)
             {
                 if (cId.ManaCost != null)
                 {
