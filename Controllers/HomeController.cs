@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Controller;
 
 namespace MagicTheGatheringFinal.Controllers
 {
-    [Authorize]
+
     public class HomeController : Controller
     {
         private readonly MagicDbContext _context;

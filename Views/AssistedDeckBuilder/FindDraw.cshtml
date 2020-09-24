@@ -7,7 +7,7 @@
             background-attachment: fixed;
             font-family: Arial, Helvetica, sans-serif;
         }
-       
+
         #target {
             border: solid;
             width: 350px;
@@ -63,7 +63,10 @@
     </style>
 </head>
 
-<div style="position:sticky;text-shadow: 1px 1px 2px white; top:0px; background-color:gray; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; text-align:center; border-radius:15px;"><h1>Please Select 10 Cards From The List</h1></div>
+<div style="position:sticky;text-shadow: 1px 1px 2px white; top:0px; background-color:gray; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; text-align:center; border-radius:15px;">
+    <h1>Card Draw</h1>
+    <h4>You always want to make sure you have cards in your hard to play! Take <b>10</b> of these with you!</h4>
+</div>
 
 <div class="header" id="target" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
 
@@ -82,7 +85,7 @@
         }
         else
         {
-            <p id="@Model.CardSearch.data[i].id">@Model.CardSearch.data[i].name</p>
+            <img id="@Model.CardSearch.data[i].id" src="https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png" />
         }
 
 

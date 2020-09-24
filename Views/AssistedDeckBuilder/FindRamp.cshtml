@@ -62,34 +62,38 @@
             }
     </style>
 </head>
-
-
-<div class="header" id="target" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
-
-
-    <img style="width:100px;height:100px; float:right;" src="https://www.iconfinder.com/data/icons/glypho-generic-icons/64/garbage-can-recycle-bin-512.png" ondrop="trash_drop(event)" ondragover="dragover_handler(event)" />
-    <footer>
-        <input style="" onclick="loadProducts()" type="submit" value="submit">
-    </footer>
+<div style="position:sticky;text-shadow: 1px 1px 2px white; top:0px; background-color:gray; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; text-align:center; border-radius:15px;">
+    <h1>Ramp Cards</h1>
+    <h4>"Ramp" is a term in Magic Term that means spending mana now to get more mana later. It's like investing in a bank account! The earlier you play ramp cards the sooner they pay off, and let you keep pace with your opponent. It accelerates your game plan, like speeding up when going down a ramp. You want to add <b>10</b> of these cards!</h4>
 </div>
 
-<form ondragstart="dragstart_handler(event)" style="float:left">
-    @for (int i = 0; i < Model.CardSearch.data.Count(); i++)
-    {
-        if (Model.CardSearch.data[i].image_uris != null)
+
+    <div class="header" id="target" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
+
+
+        <img style="width:100px;height:100px; float:right;" src="https://www.iconfinder.com/data/icons/glypho-generic-icons/64/garbage-can-recycle-bin-512.png" ondrop="trash_drop(event)" ondragover="dragover_handler(event)" />
+        <footer>
+            <input style="" onclick="loadProducts()" type="submit" value="submit">
+        </footer>
+    </div>
+
+    <form ondragstart="dragstart_handler(event)" style="float:left">
+        @for (int i = 0; i < Model.CardSearch.data.Count(); i++)
         {
-            <img id="@Model.CardSearch.data[i].id" style="width: 22%; height:auto" src="@Model.CardSearch.data[i].image_uris.normal" draggable="true" />
+            if (Model.CardSearch.data[i].image_uris != null)
+            {
+                <img id="@Model.CardSearch.data[i].id" style="width: 22%; height:auto" src="@Model.CardSearch.data[i].image_uris.normal" draggable="true" />
+            }
+            else
+            {
+                 <img id="@Model.CardSearch.data[i].id" src="https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png" />
+            }
+
+
         }
-        else
-        {
-            <p id="@Model.CardSearch.data[i].id">@Model.CardSearch.data[i].name</p>
-        }
+    </form>
 
-
-    }
-</form>
-
-<script>
+    <script>
     var cards = [];
     function dragover_handler(ev) {
         ev.preventDefault();
@@ -158,4 +162,4 @@
             }
         });
     }
-</script>
+    </script>

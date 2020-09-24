@@ -248,6 +248,7 @@ namespace MagicTheGatheringFinal.Controllers
         #endregion
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> CardList(string cardName, DecksTable dName)
         {
             CardsTable cardTable = new CardsTable();
@@ -344,6 +345,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             return View(combo);
         }
+        [Authorize]
         public IActionResult ChooseDeck()
         {
             CombinedDeckViewModel combo = new CombinedDeckViewModel();
@@ -353,6 +355,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             return View(collection);
         }
+        [Authorize]
         public IActionResult GetDeckData(string deckName)
         {
             DecksTable decks = new DecksTable();
@@ -366,6 +369,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             return RedirectToAction("DeckList", decks);
         }
+        [Authorize]
         public IActionResult DeckList(DecksTable dName)
         {
             CardsTable cd = new CardsTable();
@@ -431,10 +435,12 @@ namespace MagicTheGatheringFinal.Controllers
         }
         //instead of creating a deck name based off the commander, we're going to allow the user to create a deck name on their own
         //this page will also allow the user to set their deck name
+        [Authorize]
         public IActionResult DeckName()
         {
             return View();
         }
+        [Authorize]
         public IActionResult SaveDeckName(string deckName)
         {
 
@@ -446,12 +452,14 @@ namespace MagicTheGatheringFinal.Controllers
 
             return RedirectToAction("DeckList", lastEntry);
         }
+        [Authorize]
         public IActionResult ChooseCommander()
         {
 
 
             return View();
         }
+        [Authorize]
         public IActionResult CommanderList(string commanderName)
         {
             if (commanderName == null)
@@ -464,6 +472,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             return View(commanders);
         }
+        [Authorize]
         public IActionResult SaveCommander(int cId)
         {
             //find the last deck this user made
@@ -544,7 +553,7 @@ namespace MagicTheGatheringFinal.Controllers
             var cardExists = (from d in _context.DecksTable where idCollection == d.CardId && FindUserId() == d.AspUserId && dName.DeckName == d.DeckName select d).FirstOrDefault();
 
             //if the linq statement returns null, the card doesn't exist and needs to be added.
-            if (cardExists == null || cardExists.Id == 5633 || cardExists.Id == 5634 || cardExists.Id == 5635 || cardExists.Id == 5636 || cardExists.Id == 5637)
+            if (cardExists == null || cardExists.CardId == 5633 || cardExists.CardId == 5634 || cardExists.CardId == 5635 || cardExists.CardId == 5636 || cardExists.CardId == 5637)
             {
                 if (cId.ManaCost != null)
                 {
@@ -577,10 +586,12 @@ namespace MagicTheGatheringFinal.Controllers
             }
 
         }
+        [Authorize]
         public IActionResult NewDeckName(string DeckName)
         {
             return View((object)DeckName);
         }
+        [Authorize]
         public IActionResult UpdateDeckName(string newDeckName, string currentDeckName)
         {
             //from the decks table where the current deck name and user id is equal select all the data and put it into a list
@@ -596,7 +607,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             return RedirectToAction("ChooseDeck");
         }
-
+        [Authorize]
         public IActionResult DeleteDeck(string deckName)
         {
             string userName = FindUserId();
@@ -617,6 +628,7 @@ namespace MagicTheGatheringFinal.Controllers
         #endregion
 
         #region FindInfoInDb
+        [Authorize]
         public string RemoveDuplicatesFromEndpoint(string deckName)
         {
             string cardstoFilter = "+-";
@@ -632,6 +644,7 @@ namespace MagicTheGatheringFinal.Controllers
             cardstoFilter = cardstoFilter.Substring(0, cardstoFilter.Length - 2);
             return cardstoFilter;
         }
+        [Authorize]
         public string FindDeck()
         {
             DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
@@ -639,6 +652,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             return deckName;
         }
+        [Authorize]
         public string FindColorId(CardsTable commanderId)
         {
             string deckIdentity = commanderId.ManaCost;
@@ -659,6 +673,7 @@ namespace MagicTheGatheringFinal.Controllers
             return (deckIdentity);
 
         }
+        [Authorize]
         public string FindUserId()
         {
             if (User.Identity.Name == null)
@@ -673,6 +688,7 @@ namespace MagicTheGatheringFinal.Controllers
         #endregion
 
         #region DragNDrop CRUD
+
         public void DragNDropAdd(string CardId)
         {
             DecksTable deckTable = new DecksTable();
