@@ -1,46 +1,96 @@
 ﻿
-
 @model List<CardsTable>
-    
-        <h1>Choose your Commander!</h1>
-        <style>
-            body {
-                background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
-                background-size: cover;
-                background-attachment: fixed;
-                }
-            h1 {
-                position: sticky;
-                top: 0px;
-                background-color: grey;
-                padding-bottom: 2px;
-                margin-bottom: 15px;
-                border-bottom: solid grey 3px;
-                margin-left: 5px;
-                text-shadow: 1px 1px 2px white;
-                border-radius: 15px;
-                text-align: center;
-            }
-        </style>
-        <br />
-        <form style="margin-left: 5px; text-shadow: 1px 1px 2px white; color:black; font-size:20px">
-            <b>
-                <p>Your commander is the leader of your army. They dictate the color of your deck and what cards you should put in.</p>
-                <p>Think of them as your best asset. They're always available to you and can be how you win the game!</p>
-            </b>
-        </form>
 
-    <form class=row; style="column-fill">
-        @for (int i = 0; i < Model.Count; i++)
+<div style="position:sticky; top:0px; background-color:grey; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; margin-left:5px; text-shadow: 1px 1px 2px white;border-radius:15px;">
+    <h1 style="text-align:center;">Choose your Commander!</h1>
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+
         {
-
-            if (Model[i].CardArtUrl != null)
-            {
-                <img style="width:10%; height:auto" src="@Model[i].CardArtUrl" />
-                <a style=" text-decoration:underline; color:white;" href="../AssistedDeckBuilder/StartDeck?commanderId=@Model[i].Id"> Make @Model[i].Name your commander!</a>
-            }
-         
-
-
+            box-sizing: border-box;
         }
+
+        #row1 {
+            display: -ms-flexbox; /* IE 10 */
+            display: flex;
+            -ms-flex-wrap: wrap; /* IE 10 */
+            flex-wrap: wrap;
+            padding: 0 4px;
+        }
+        /* Create two equal columns that sits next to each other */
+        #column1 {
+            -ms-flex: 50%; /* IE 10 */
+            flex: 50%;
+            padding: 0 4px;
+        }
+
+        #column img {
+            margin-top: 8px;
+            vertical-align: middle;
+        }
+        }
+    </style>
+    <br />
+    <form style="margin-left: 5px; text-shadow: 1px 1px 2px white; color:black; font-size:20px">
+        <b>
+            <p>Your commander is the leader of your army. They dictate the color of your deck and what cards you should put in.</p>
+            <p>Think of them as your best asset. They're always available to you and can be how you win the game!</p>
+        </b>
     </form>
+</div>
+
+<form>
+
+    @for (int i = 0; i < Model.Count; i++)
+    {
+
+        if (Model[i].CardArtUrl != null)
+        {
+            <div id="row">
+                <div id="column">
+                    <img style="width:30%; height:auto; margin-bottom:30px" src="@Model[i].CardArtUrl" />
+                    <a style="margin-left:30px; text-decoration:underline; color:white;" href="../AssistedDeckBuilder/StartDeck?commanderId=@Model[i].Id"> Add Commander!</a>
+                </div>
+
+            </div>
+        }
+
+
+    }
+</form>
+
+<div style="position:sticky; top:0px; background-color:grey; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; margin-left:5px; text-shadow: 1px 1px 2px white;border-radius:15px;">
+    <h1 style="text-align:center;">Choose your Commander!</h1>
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+    </style>
+    <br />
+    <form style="margin-left: 5px; text-shadow: 1px 1px 2px white; color:black; font-size:20px">
+        <b>
+            <p>Your commander is the leader of your army. They dictate the color of your deck and what cards you should put in.</p>
+            <p>Think of them as your best asset. They're always available to you and can be how you win the game!</p>
+        </b>
+    </form>
+</div>
+
+<form class=row; style="column-fill">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+
+        if (Model[i].CardArtUrl != null)
+        {
+            <img style="width:10%; height:auto" src="@Model[i].CardArtUrl" />
+            <a style=" text-decoration:underline; color:white;" href="../AssistedDeckBuilder/StartDeck?commanderId=@Model[i].Id"> Make @Model[i].Name your commander!</a>
+        }
+
+
+
+    }
+</form>

@@ -367,7 +367,7 @@ namespace MagicTheGatheringFinal.Controllers
         [HttpPost]
         public async void AddCardsToCardsTable(string assistedCardId)
         {
-            Thread.Sleep(100);
+            Thread.Sleep(400);
             CardsTable cardTable = new CardsTable();
             if (_context.CardsTable.Where(x => x.CardId == assistedCardId).FirstOrDefault() == null)
             {
@@ -432,7 +432,7 @@ namespace MagicTheGatheringFinal.Controllers
         [HttpGet]
         public async void CreateDeckName(int commanderId, string colorId)
         {
-            Thread.Sleep(100);
+            Thread.Sleep(400);
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
             var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
 
@@ -472,9 +472,9 @@ namespace MagicTheGatheringFinal.Controllers
         [HttpPost]
         public async void AddCardsToDecksTable(string assistedCardId, int quantity)
         {
-            Thread.Sleep(100);
+            Thread.Sleep(400);
            // DecksTable lastEntry = (from x in _context.DecksTable where assistedCardId == x.CardId select x.Id).FirstOrDefault();
-            DecksTable deckTable = new DecksTable();
+
 
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
             var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
@@ -484,18 +484,21 @@ namespace MagicTheGatheringFinal.Controllers
                 assistedDeck = System.Text.Json.JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
             }
 
+            for (int i = 0;i<quantity ;i++)
+            {
+                DecksTable deckTable = new DecksTable();
+                var userId = FindUserId();
+                var idCollection = (from x in _context.CardsTable where assistedCardId == x.CardId select x.Id).FirstOrDefault();
 
+                deckTable.CardId = idCollection;
+                deckTable.AspUserId = userId;
+                deckTable.DeckName = assistedDeck.DeckName;
+                deckTable.Quantity = 1;
 
-            var userId = FindUserId();
-            var idCollection = (from x in _context.CardsTable where assistedCardId == x.CardId select x.Id).FirstOrDefault();
+                _context.DecksTable.Add(deckTable);
+                _context.SaveChanges();
+            };
 
-            deckTable.CardId = idCollection;
-            deckTable.AspUserId = userId;
-            deckTable.DeckName = assistedDeck.DeckName;
-            deckTable.Quantity = quantity;
-
-            _context.DecksTable.Add(deckTable);
-             _context.SaveChanges();
 
 
         }
