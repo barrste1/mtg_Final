@@ -519,14 +519,26 @@ namespace MagicTheGatheringFinal.Controllers
             }
             return Json("");
         }
-        public void DeleteCards(int Id)
+        public void DecreaseCardQuantity(int Id)
         {
 
             var userId = FindUserId();
             DecksTable idCollection = (from x in _context.DecksTable where Id == x.Id select x).FirstOrDefault();
 
-            _context.DecksTable.Remove(idCollection);
-            _context.SaveChanges();
+            idCollection.Quantity--;
+            if (idCollection.Quantity<1)
+            {
+                _context.DecksTable.Remove(idCollection);
+                _context.SaveChanges();
+            }
+            else
+            {
+                _context.Entry(idCollection).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.Update(idCollection);
+                _context.SaveChanges();
+            }
+
+            
 
         }
         [HttpPost]
@@ -542,7 +554,7 @@ namespace MagicTheGatheringFinal.Controllers
             }
             foreach (var CardId in ids)
             {
-                DeleteCards(CardId);
+                DecreaseCardQuantity(CardId);
             }
             return Json("");
         }
