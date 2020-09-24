@@ -34,13 +34,6 @@ namespace MagicTheGatheringFinal.Controllers
         }
         #endregion
 
-        public IActionResult Testing(string testing)
-        {
-
-            return View();
-        }
-
-
         #region Deckbuilding Actions
         public IActionResult StartDeck(int commanderId)
         {
@@ -114,7 +107,7 @@ namespace MagicTheGatheringFinal.Controllers
             user.Budget = decimal.Parse(budget);
             _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.Update(user);
-            _context.SaveChanges();
+             _context.SaveChanges();
 
             AssistedDeckViewModel assistedDeck = OpenSession();
 
@@ -127,6 +120,7 @@ namespace MagicTheGatheringFinal.Controllers
         {
             AssistedDeckViewModel assistedDeck = OpenSession();
 
+
             var ids = new List<string>();
             using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
             {
@@ -134,8 +128,6 @@ namespace MagicTheGatheringFinal.Controllers
                 ids = JsonConvert.DeserializeObject<List<string>>(x);
 
             }
-
-            //0 corresponds to cards draw
             if (menu == 0)
             {
                 if (ids.Count() != 10)
@@ -186,18 +178,36 @@ namespace MagicTheGatheringFinal.Controllers
 
         public async Task<IActionResult> StartCreatures()
         {
+            //This List displays how many creatures should be chosen at each mana value along a mana curve.
+            List<int> cardCurveData = new List<int>()
+            {
+                5,
+                8,
+                7,
+                5,
+                4,
+                2
+            };
+            
+            //Opens session, stores card curve data, then re-serializes as assistedDeckJSON. This assisted deck is then passed to the view
             AssistedDeckViewModel assistedDeck = OpenSession();
-            string cardsInDeck = RemoveDuplicatesFromEndpoint(assistedDeck.DeckName);
+            assistedDeck.CurveData = cardCurveData;
+            assistedDeck.ErrorMessage = $"You need to select exactly {assistedDeck.CurveData[assistedDeck.CurvePosition]} creatures of this mana level.";
+        
+            //Reserialize the session, so that the information can be saved.
+            string assistedDeckJSON = System.Text.Json.JsonSerializer.Serialize(assistedDeck);
+            HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
+          
+            //Taps into the DAL inorder to connect to scryfall endpoints for returning creatures that cost 2 mana
             ScryfallDAL dl = new ScryfallDAL();
             string identity = FindPlayerType();
-            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={assistedDeck.CurvePosition+2}{cardsInDeck}", FindPlayerBudget());
+            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={assistedDeck.CurvePosition+2}{RemoveDuplicatesFromEndpoint(assistedDeck.DeckName)}", FindPlayerBudget());
 
             return View("FindCreatures",assistedDeck);
         }
-        public async Task<IActionResult> FindCreatures()
+      
+        public async Task<IActionResult> AddCreaturesIfValid()
         {
-            ScryfallDAL dl = new ScryfallDAL();
-            string identity = FindPlayerType();
 
             var SelectedCard = new List<string>();
             using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
@@ -208,52 +218,56 @@ namespace MagicTheGatheringFinal.Controllers
             }
 
             AssistedDeckViewModel assistedDeck = OpenSession();
-
-            string assistedDeckJSON = "";
-
-
-            List<int> cardCurveData = new List<int>()
-            {
-                5,
-                8,
-                7,
-                5,
-                4,
-                2
-            };
-
-            int creatureCount = cardCurveData[assistedDeck.CurvePosition];
+            int creatureCount = assistedDeck.CurveData[assistedDeck.CurvePosition];
 
             if (SelectedCard.Count() != creatureCount)
             {
-                assistedDeck.ErrorMessage = $"You need to select exactly {cardCurveData[assistedDeck.CurvePosition]} creatures of this mana level.";
-                assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={assistedDeck.CurvePosition+2}{RemoveDuplicatesFromEndpoint(assistedDeck.DeckName)}", FindPlayerBudget());
-
-                return View("FindCreatures", assistedDeck);
+                return Json(false);
             }
-
-            foreach (string card in SelectedCard)
+            else
             {
-                AddCardsToCardsTable(card);
-                AddCardsToDecksTable(card, 1);
+                foreach (string card in SelectedCard)
+                {
+                    AddCardsToCardsTable(card);
+                    AddCardsToDecksTable(card, 1);
+                }
+
+                return Json(true);
             }
+
+        }
+        public async Task<IActionResult> AdvanceCreatureManaCurve()
+        {
+            ScryfallDAL dl = new ScryfallDAL();
+            string identity = FindPlayerType();
+
+            AssistedDeckViewModel assistedDeck = OpenSession();
+
+            string assistedDeckJSON = "";
 
             assistedDeck.CurvePosition++;
 
-            if (assistedDeck.CurvePosition >= cardCurveData.Count())
+
+            //Checks if all points on the mana curve have been filled out. Once they have, creatures portion of deck
+            //being true should now be true, so f converted t at position 5, and information is returned to index. this will
+            //update the button status from red to green and indicate that this portion is taken care of.
+            if (assistedDeck.CurvePosition >= assistedDeck.CurveData.Count())
             {
                 assistedDeck.DeckStatus = assistedDeck.DeckStatus.Substring(0, 4) + "t";
                 assistedDeckJSON = System.Text.Json.JsonSerializer.Serialize(assistedDeck);
                 HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
-                return View("Index",assistedDeck);
+                return View("Index", assistedDeck);
             };
 
+
+            assistedDeck.ErrorMessage = $"You need to select exactly {assistedDeck.CurveData[assistedDeck.CurvePosition]} creatures of this mana level.";
+
             assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={assistedDeck.CurvePosition+2}", FindPlayerBudget());
-            assistedDeck.Creatures = cardCurveData[assistedDeck.CurvePosition];
+            assistedDeck.Creatures = assistedDeck.CurveData[assistedDeck.CurvePosition];
             assistedDeckJSON = System.Text.Json.JsonSerializer.Serialize(assistedDeck);
             HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
 
-            return View(assistedDeck);
+            return View("FindCreatures",assistedDeck);
         }
 
         public async Task<IActionResult> FindSingleRemoval(AssistedDeckViewModel assistedDeck)
@@ -469,7 +483,9 @@ namespace MagicTheGatheringFinal.Controllers
             deckTable.Quantity = quantity;
 
             _context.DecksTable.Add(deckTable);
-            _context.SaveChanges();
+             _context.SaveChanges();
+
+
         }
         public IActionResult DeckList()
         {
@@ -501,33 +517,6 @@ namespace MagicTheGatheringFinal.Controllers
         //this page will also allow the user to set their deck name
 
         #endregion
-
-        [HttpPost]
-        public async Task<IActionResult> SaveChanges()
-        {
-            var ids = new List<string>();
-            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
-            {
-                var x = await reader.ReadToEndAsync();
-                ids = JsonConvert.DeserializeObject<List<string>>(x);
-
-            }
-
-            AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
-            var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
-
-            if (deckStatus != "EmptySession")
-            {
-                assistedDeck = System.Text.Json.JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
-            }
-
-
-
-            return Json(false);
-        }
-
-
-
 
     }
 }

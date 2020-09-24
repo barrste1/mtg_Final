@@ -13,5 +13,6 @@ namespace MagicTheGatheringFinal.Models
         public int Creatures { get; set; }
         public string ErrorMessage { get; set; }
         public string DeckName { get; set; }
+        public List<int> CurveData { get; set; }
     }
 }
