@@ -136,18 +136,13 @@ namespace MagicTheGatheringFinal.Controllers
             }
 
 
-
-
-
-
-
             //0 corresponds to cards draw
             if (menu == 0)
             {
                 if (ids.Count() != 10)
                 {
-                    assistedDeck.ErrorMessage = "You need to select exactly 10 card draw sources.";
-                    return RedirectToAction("FindDraw", assistedDeck);
+
+                    return Json(false);
                 }
                 assistedDeck.DeckStatus = "t" + assistedDeck.DeckStatus.Substring(1);
             }
@@ -155,8 +150,8 @@ namespace MagicTheGatheringFinal.Controllers
             {
                 if (ids.Count() != 10)
                 {
-                    assistedDeck.ErrorMessage = "You need to select exactly 10 sources of ramp.";
-                    return RedirectToAction("FindRamp", assistedDeck);
+
+                    return Json(false);
                 }
                 assistedDeck.DeckStatus = assistedDeck.DeckStatus.Substring(0, 1) + "t" + assistedDeck.DeckStatus.Substring(2);
             }
@@ -302,7 +297,7 @@ namespace MagicTheGatheringFinal.Controllers
             string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
             assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+produces:br+-t:\"Land\"{RemoveDuplicatesFromEndpoint(session.DeckName)}", FindPlayerBudget());
-
+            assistedDeck.ErrorMessage = "You need to select exactly 10 sources of ramp.";
             //ramp goes to draw from the view
             return View(assistedDeck);
         }
@@ -313,7 +308,7 @@ namespace MagicTheGatheringFinal.Controllers
             string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
             assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+o:draw{RemoveDuplicatesFromEndpoint(session.DeckName)}", FindPlayerBudget());
-
+            assistedDeck.ErrorMessage = "You need to select exactly 10 card draw sources.";
             return View(assistedDeck);
         }
         #endregion
