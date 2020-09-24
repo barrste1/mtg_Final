@@ -14,5 +14,11 @@ namespace MagicTheGatheringFinal.Models
         public List<DecksTable> deckObject { get; set; }
         public string DeckCost { get; set; }
         public float AverageCMC { get; set; }
+        public int creatureCount { get; set; }
+        public int instantCount { get; set; }
+        public int sorceryCount { get; set; }
+        public int enchantmentCount { get; set; }
+        public int artifactCount { get; set; }
+        public int landCount { get; set; }
     }
 }
