@@ -292,9 +292,7 @@
         }
 
     }
-<<<<<<< HEAD
 
-=======
     function drop_handler(ev) {
         console.log(ev);
         ev.preventDefault();
@@ -309,7 +307,7 @@
             cards.push(data)
         }
     }
->>>>>>> 8c5ef608174e5791b984112cb5110304950184b1
+
     function dragstart_handler(ev) {
         // Add the target element's id to the data transfer object
         ev.dataTransfer.setData("application/MagicTheGatheringFinal", ev.target.id);
@@ -322,7 +320,7 @@
         const view = document.getElementById(data)
         trash.dataTransfer.dropEffect = "move";
         if (cards.indexOf(data) == -1) {
-            trash.target.appendChild(view);
+            document.getElementById("target").appendChild(view);
             cards.push(data)
         }
         $.ajax({
@@ -349,9 +347,7 @@
             header.classList.remove("sticky");
         }
     }
-<<<<<<< HEAD
 
-=======
     function loadProducts() {
         var items = "";
         $.ajax({
@@ -364,5 +360,5 @@
             traditional: true
         });
     }
->>>>>>> 8c5ef608174e5791b984112cb5110304950184b1
+
 </script>

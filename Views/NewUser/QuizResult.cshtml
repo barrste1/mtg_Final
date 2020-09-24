@@ -11,6 +11,17 @@
             background-size: cover;
             background-attachment: fixed;
         }
+        h3 {
+            color: white;
+            text-shadow: 1px 1px 2px pink;
+        }
+        h4{
+            color:white;
+        }
+        form {
+            color: white;
+            text-shadow: 1px 1px 2px pink;
+        }
     </style>
 
     @if (Model.ThirdiaryColor == null)
@@ -22,7 +33,7 @@
             <h2>The colors that most define you are @Model.PrimaryColor, @Model.SecondaryColor! and @Model.ThirdiaryColor!</h2>
         }*@
     <br />
-    <h3 style="color: white;text-shadow: 1px 1px 2px pink;">Your overall Colorscore is: White: @Model.ColorScore["W"] | Blue: @Model.ColorScore["U"] | Black: @Model.ColorScore["B"] | Red: @Model.ColorScore["R"] | Green: @Model.ColorScore["G"]</h3>
+    <h3>">Your overall Colorscore is: White: @Model.ColorScore["W"] | Blue: @Model.ColorScore["U"] | Black: @Model.ColorScore["B"] | Red: @Model.ColorScore["R"] | Green: @Model.ColorScore["G"]</h3>
     <br />
     <br />
 
@@ -30,7 +41,7 @@
     @if (Model.PrimaryColor == "W")
     {
         <br />
-        <h4 style="color:white;"><b>White: Peace Through Order</b></h4>
+        <h1 style="color:white;"><b>White: Peace Through Order</b></h1>
         <form style="color: white;text-shadow: 1px 1px 2px pink;">
         <p>
             One who wishes to achieve peace through the imposition of order. White believes that suffering and unhappiness is due to a lack of cooperation, rules, and restraint within the world. White cards are your Knights, clearics, and Angels, with healing spells and protective auras and laws that will bind each party equally, and strengthen your allies all at once.

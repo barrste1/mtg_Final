@@ -495,7 +495,9 @@ namespace MagicTheGatheringFinal.Controllers
             deckTable.Quantity = quantity;
 
             _context.DecksTable.Add(deckTable);
-            _context.SaveChanges();
+             _context.SaveChanges();
+
+
         }
         public IActionResult DeckList()
         {

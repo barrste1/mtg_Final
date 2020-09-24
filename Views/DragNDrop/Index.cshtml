@@ -111,6 +111,7 @@
             let pos = cards.indexOf(data);
             cards.splice(pos, 1);
         }
+
     }
 
     window.onscroll = function () { myFunction() };
@@ -118,24 +119,22 @@
     var sticky = header.offsetTop;
 
     function myFunction() {
-        co
         if (window.pageYOffset > sticky) {
             header.classList.add("sticky");
         } else {
             header.classList.remove("sticky");
-        }
-    }
 
-    function loadProducts() {
-        var items = "";
-        $.ajax({
-            url: "../DragNDrop/SaveChanges",
-            type: "POST",
-            crossDomain: true,
-            dataType: "json",
-            contentType: "application/json",
-            data: JSON.stringify(cards),
-            traditional: true
-        });
+        function loadProducts() {
+            var items = "";
+            $.ajax({
+                url: "../Test/SaveChanges",
+                type: "POST",
+                crossDomain: true,
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(cards),
+                traditional: true
+            });
+        }
     }
 </script>

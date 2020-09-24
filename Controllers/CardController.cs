@@ -294,6 +294,12 @@ namespace MagicTheGatheringFinal.Controllers
         }
         public IActionResult CommanderList(string commanderName)
         {
+            if (commanderName == null)
+            {
+                List<CardsTable> fullListofCommanders = _context.CardsTable.Where(c => c.IsCommander == true).ToList();
+                return View(fullListofCommanders);
+            }
+
             List<CardsTable> commanders = _context.CardsTable.Where(c => c.IsCommander == true && c.Name.Contains(commanderName)).ToList();
 
             return View(commanders);
@@ -411,7 +417,25 @@ namespace MagicTheGatheringFinal.Controllers
             }
 
         }
+        public IActionResult NewDeckName(string DeckName)
+        {
+            return View((object)DeckName);
+        }
+        public IActionResult UpdateDeckName(string newDeckName, string currentDeckName)
+        {
+            //from the decks table where the current deck name and user id is equal select all the data and put it into a list
+            List<DecksTable> deckToBeRenamed = (from d in _context.DecksTable where d.AspUserId == FindUserId() && d.DeckName == currentDeckName select d).ToList();
+            //update the list with new name
+            for (int i = 0; i < deckToBeRenamed.Count; i++)
+            {
+                deckToBeRenamed[i].DeckName = newDeckName;
+                //write changes to database
+                _context.DecksTable.Update(deckToBeRenamed[i]);
+                _context.SaveChanges();
+            }
 
+            return RedirectToAction("ChooseDeck");
+        }
     
         public IActionResult DeleteDeck(string deckName)
         {
