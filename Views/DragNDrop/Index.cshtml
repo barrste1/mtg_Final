@@ -17,6 +17,7 @@
             padding-bottom: 40px;
             padding-left: 40px;
         }
+
         #top-container {
             margin-right: auto;
             margin-left: auto;
@@ -27,11 +28,13 @@
             top: 0;
             right: 500px;
         }
+
         .content {
             margin-right: auto;
             margin-left: auto;
             padding: 10px;
         }
+
         .sticky {
             margin-right: auto;
             margin-left: auto;
@@ -40,6 +43,7 @@
             right: 397px;
             width: 50%;
         }
+
             .sticky + .content {
                 margin-right: auto;
                 margin-left: auto;
@@ -66,67 +70,67 @@
     {
         <img id="@Model[i].CardId" style="width: 22%; height:auto" src="@Model[i].CardArtUrl" draggable="true" />
     }
-    </form>
+</form>
 
-    <script>
-        var cards = [];
-        function dragover_handler(ev) {
-            ev.preventDefault();
-            ev.dataTransfer.dropEffect = "copy";
+<script>
+    var cards = [];
+    function dragover_handler(ev) {
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = "copy";
+    }
+
+    function drop_handler(ev) {
+        console.log(ev);
+        ev.preventDefault();
+        // Get the id of the target and add the moved element to the target's DOM
+        const data = ev.dataTransfer.getData("application/MagicTheGatheringFinal");
+        const view = document.getElementById(data).cloneNode(true);
+        view.id = data + "\\deck";
+        //resizing image after drag
+        view.style.width = "50px";
+        //only 1 card can be dragged in
+        if (cards.indexOf(data) == -1) {
+            ev.target.appendChild(view);
+            cards.push(data)
         }
 
-        function drop_handler(ev) {
-            console.log(ev);
-            ev.preventDefault();
-            // Get the id of the target and add the moved element to the target's DOM
-            const data = ev.dataTransfer.getData("application/MagicTheGatheringFinal");
-            const view = document.getElementById(data).cloneNode(true);
-            view.id = data + "\\deck";
-            //resizing image after drag
-            view.style.width = "50px";
-            //only 1 card can be dragged in
-            if (cards.indexOf(data) == -1) {
-                ev.target.appendChild(view);
-                cards.push(data)
-            }
-
+    }
+    function dragstart_handler(ev) {
+        // Add the target element's id to the data transfer object
+        ev.dataTransfer.setData("application/MagicTheGatheringFinal", ev.target.id);
+        ev.dataTransfer.dropEffect = "copy";
+    }
+    function trash_drop(trash) {
+        trash.preventDefault();
+        const data = trash.dataTransfer.getData("application/MagicTheGatheringFinal");
+        console.log(document.getElementById(data));
+        //trashing cards inside the decklist only
+        if (data.endsWith("\\deck")) {
+            document.getElementById(data).remove();
+            let pos = cards.indexOf(data);
+            cards.splice(pos, 1);
         }
-        function dragstart_handler(ev) {
-            // Add the target element's id to the data transfer object
-            ev.dataTransfer.setData("application/MagicTheGatheringFinal", ev.target.id);
-            ev.dataTransfer.dropEffect = "copy";
+    }
+    window.onscroll = function () { myFunction() };
+    var header = document.getElementById("target");
+    var sticky = header.offsetTop;
+    function myFunction() {
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
         }
-        function trash_drop(trash) {
-            trash.preventDefault();
-            const data = trash.dataTransfer.getData("application/MagicTheGatheringFinal");
-            console.log(document.getElementById(data));
-            //trashing cards inside the decklist only
-            if (data.endsWith("\\deck")) {
-                document.getElementById(data).remove();
-                let pos = cards.indexOf(data);
-                cards.splice(pos, 1);
-            }
-        }
-        window.onscroll = function () { myFunction() };
-        var header = document.getElementById("target");
-        var sticky = header.offsetTop;
-        function myFunction() {
-            if (window.pageYOffset > sticky) {
-                header.classList.add("sticky");
-            } else {
-                header.classList.remove("sticky");
-            }
-        }
-        function loadProducts() {
-            var items = "";
-            $.ajax({
-                url: "../DragNDrop/SaveChanges",
-                type: "POST",
-                crossDomain: true,
-                dataType: "json",
-                contentType: "application/json",
-                data: JSON.stringify(cards),
-                traditional: true
-            });
-        }
-    </script>
+    }
+    function loadProducts() {
+        var items = "";
+        $.ajax({
+            url: "../DragNDrop/SaveChanges",
+            type: "POST",
+            crossDomain: true,
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(cards),
+            traditional: true
+        });
+    }
+</script>

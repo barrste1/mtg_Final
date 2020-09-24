@@ -100,10 +100,12 @@
             <tr>
                 @if (Model.Search[i].TypeLine.Contains("Creature"))
                 {
-                <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-                     ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+                    <td>
+                        <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+                             ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+                    </td>
                     <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                   
+
                 }
             </tr>
         }
@@ -125,10 +127,12 @@
             <tr>
                 @if (Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment") && !Model.Search[i].TypeLine.Contains("Land"))
                 {
-                <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-                     ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+                    <td>
+                        <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+                             ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+                    </td>
                     <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                   
+
                 }
             </tr>
         }
@@ -151,10 +155,12 @@
             <tr>
                 @if (Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment") && !Model.Search[i].TypeLine.Contains("Land"))
                 {
-                <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-                     ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+                    <td>
+                        <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+                             ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+                    </td>
                     <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                    
+
                 }
             </tr>
         }
@@ -176,10 +182,12 @@
             <tr>
                 @if (Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Enchantment") && !Model.Search[i].TypeLine.Contains("Land"))
                 {
-                <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-                     ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+                    <td>
+                        <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+                             ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+                    </td>
                     <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                    
+
                 }
             </tr>
         }
@@ -202,10 +210,12 @@
             <tr>
                 @if (Model.Search[i].TypeLine.Contains("Enchantment") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Land"))
                 {
-                    <td><img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-     ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" /></td>
+                    <td>
+                        <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+                             ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+                    </td>
                     <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                    
+
                 }
             </tr>
 
@@ -230,31 +240,31 @@
             <tr>
                 @if (Model.Search[i].TypeLine.Contains("Land") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment"))
                 {
-                <td>
-                    <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-                         ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
-                </td>
+                    <td>
+                        <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+                             ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+                    </td>
                     <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                    
+
                 }
             </tr>
         }
     </table>
 
-        }
+    }
     }
 
     <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
     <br />
-    
+
 </form>
 
 <script>
-        var cards = [];
-        function dragover_handler(ev) {
-            ev.preventDefault();
-            ev.dataTransfer.dropEffect = "move";
-        }
+    var cards = [];
+    function dragover_handler(ev) {
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = "move";
+    }
 
     function drop_handler_decklist(ev) {
         console.log(ev);
@@ -270,69 +280,45 @@
         }
 
     }
-        function drop_handler(ev) {
-            console.log(ev);
-            ev.preventDefault();
-            // Get the id of the target and add the moved element to the target's DOM
-            const data = ev.dataTransfer.getData("application/MagicTheGatheringFinal");
-            const view = document.getElementById(data)
-            //resizing image after drag
-            view.style.width = "50px";
-            //only 1 card can be dragged in
-            if (cards.indexOf(data) == -1) {
-                ev.target.appendChild(view);
-                cards.push(data)
-            }
+
+    function dragstart_handler(ev) {
+        // Add the target element's id to the data transfer object
+        ev.dataTransfer.setData("application/MagicTheGatheringFinal", ev.target.id);
+        ev.dataTransfer.dropEffect = "move";
+    }
+    function trash_drop(trash) {
+        var items = "";
+        trash.preventDefault();
+        const data = trash.dataTransfer.getData("application/MagicTheGatheringFinal", trash.target.id);
+        const view = document.getElementById(data)
+        trash.dataTransfer.dropEffect = "move";
+        if (cards.indexOf(data) == -1) {
+            trash.target.appendChild(view);
+            cards.push(data)
         }
-        function dragstart_handler(ev) {
-            // Add the target element's id to the data transfer object
-            ev.dataTransfer.setData("application/MagicTheGatheringFinal", ev.target.id);
-            ev.dataTransfer.dropEffect = "move";
+        $.ajax({
+            url: "../SaveDeleteChanges",
+            type: "POST",
+            crossDomain: true,
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(cards),
+            traditional: true
+        });
+        //trashing cards inside the decklist only
+        document.getElementById(data).remove();
+        let pos = cards.indexOf(data);
+        cards.splice(pos, 1);
+    }
+    window.onscroll = function () { myFunction() };
+    var header = document.getElementById("target");
+    var sticky = header.offsetTop;
+    function myFunction() {
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
         }
-        function trash_drop(trash) {
-            var items = "";
-            trash.preventDefault();
-            const data = trash.dataTransfer.getData("application/MagicTheGatheringFinal", trash.target.id);
-            const view = document.getElementById(data)
-            trash.dataTransfer.dropEffect = "move";
-            if (cards.indexOf(data) == -1) {
-                trash.target.appendChild(view);
-                cards.push(data)
-            }
-            $.ajax({
-                url: "../SaveDeleteChanges",
-                type: "POST",
-                crossDomain: true,
-                dataType: "json",
-                contentType: "application/json",
-                data: JSON.stringify(cards),
-                traditional: true
-            });
-            //trashing cards inside the decklist only
-                document.getElementById(data).remove();
-                let pos = cards.indexOf(data);
-                cards.splice(pos, 1);
-        }
-        window.onscroll = function () { myFunction() };
-        var header = document.getElementById("target");
-        var sticky = header.offsetTop;
-        function myFunction() {
-            if (window.pageYOffset > sticky) {
-                header.classList.add("sticky");
-            } else {
-                header.classList.remove("sticky");
-            }
-        }
-        function loadProducts() {
-            var items = "";
-            $.ajax({
-                url: "../SaveChanges",
-                type: "POST",
-                crossDomain: true,
-                dataType: "json",
-                contentType: "application/json",
-                data: JSON.stringify(cards),
-                traditional: true
-            });
-        }
+    }
+
 </script>

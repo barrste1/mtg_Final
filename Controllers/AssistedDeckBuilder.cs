@@ -104,7 +104,7 @@ namespace MagicTheGatheringFinal.Controllers
             user.Budget = decimal.Parse(budget);
             _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.Update(user);
-            await _context.SaveChangesAsync();
+             _context.SaveChanges();
 
             AssistedDeckViewModel assistedDeck = OpenSession();
 
@@ -458,7 +458,7 @@ namespace MagicTheGatheringFinal.Controllers
             deckTable.Quantity = quantity;
 
             _context.DecksTable.Add(deckTable);
-            await _context.SaveChangesAsync();
+             _context.SaveChanges();
         }
         public IActionResult DeckList()
         {
