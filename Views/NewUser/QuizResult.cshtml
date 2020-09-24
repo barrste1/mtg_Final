@@ -18,22 +18,30 @@
         h4{
             color:white;
         }
-        form {
+        #textbackground {
+            display: table;
+            /*background-color:darkslateblue;*/
             color: white;
+            margin: 0px auto 0px auto;
+            padding: 5px;
+            font-size: 20px;
+            background-color: darkslateblue;
             text-shadow: 1px 1px 2px pink;
+            border-radius: 5px;
+            box-shadow: 5px 5px 8px black;
         }
     </style>
 
     @if (Model.ThirdiaryColor == null)
     {
-        <h2 style="color:white;">The colors that most define you are @Model.PrimaryColor and @Model.SecondaryColor!</h2>
+        <h2 style="color:white;text-shadow: 1px 1px 2px pink;">The colors that most define you are @Model.PrimaryColor and @Model.SecondaryColor!</h2>
     }
     @*else
         {
             <h2>The colors that most define you are @Model.PrimaryColor, @Model.SecondaryColor! and @Model.ThirdiaryColor!</h2>
         }*@
     <br />
-    <h3>">Your overall Colorscore is: White: @Model.ColorScore["W"] | Blue: @Model.ColorScore["U"] | Black: @Model.ColorScore["B"] | Red: @Model.ColorScore["R"] | Green: @Model.ColorScore["G"]</h3>
+    @*<h3>Your overall Colorscore is: White: @Model.ColorScore["W"] | Blue: @Model.ColorScore["U"] | Black: @Model.ColorScore["B"] | Red: @Model.ColorScore["R"] | Green: @Model.ColorScore["G"]</h3>*@
     <br />
     <br />
 
@@ -42,7 +50,7 @@
     {
         <br />
         <h1 style="color:white;"><b>White: Peace Through Order</b></h1>
-        <form style="color: white;text-shadow: 1px 1px 2px pink;">
+        <form id="textbackground">
         <p>
             One who wishes to achieve peace through the imposition of order. White believes that suffering and unhappiness is due to a lack of cooperation, rules, and restraint within the world. White cards are your Knights, clearics, and Angels, with healing spells and protective auras and laws that will bind each party equally, and strengthen your allies all at once.
 
@@ -60,7 +68,7 @@
     {
         <br />
         <h4 style="color: blue;text-shadow: 2px 2px 2px black;"><b>Blue: Perfection Through Knowledge</b></h4>
-        <form style="color: white;text-shadow: 1px 1px 2px pink;">
+        <form id="textbackground">
         <p>
             Knowledge is perfection sought by those who choose this path. You believe that all things could be good if only the truth could be solved, and that knowledge is applied to it's fullest extent. This is where your wizards, faeries and monsters from below reside. Containing spells, both with trickery and illusion, that add to a accumulative knowledge and incremental advantage that will undercut or directly oppose your opponent using brains over raw physical power.
 
@@ -76,7 +84,7 @@
     {
         <br />
         <h4 style="color: white;text-shadow: 2px 2px 2px black;"><b>Black: Satisfaction Through Ruthlessness</b></h4>
-        <form style="color: white;text-shadow: 1px 1px 2px pink;">
+        <form id="textbackground">
         <p>
             Power and control is how you will reshape the world around you. You take what you want, seeing no limits in your ambition and pursuing only what may benefit your own personal interests or goals. You are willing to ally with others but at your core you are amoral as belief in morality is a foreign concept to a Black agent.
 
@@ -95,7 +103,7 @@
     {
         <br />
         <h4 style="color: red;text-shadow: 2px 2px 2px black;"><b>Red: Freedom Through Action</b></h4>
-        <form style="color: white;text-shadow: 1px 1px 2px pink;">
+        <form id="textbackground">
         <p>
             An agent of red lives life in the moment, experiencing life with passion and enthusiasm. A Red dystopian society would simply be anarchy. This is the home of goblins, pyromancers, dragons, and bolts of lightning that burn your opponent. You will taunt your enemies with illusions and enrage their allies, spells that grant speed, haste, and fragile power. You will use chaotic effects that will disrupt the entire battlefield. Leaving your opponents army decimated and disorganized.
 
@@ -113,7 +121,7 @@
     {
         <br />
         <h4 style="color: green;text-shadow: 2px 2px 2px black;"><b>Green: Harmony Through Acceptance</b></h4>
-        <form style="color: white;text-shadow: 1px 1px 2px pink;">
+        <form id="textbackground">
         <p>
             Green is the color of nature, wisdom, stoicism, taoism, and destiny. The belief that most suffering and misfortune in the world comes from removing oneself from the natural order of the planet. An agent of green could envision themselves on a hippie commune where they seek to embrace a more natural lifestyle.
 
@@ -124,7 +132,7 @@
         </p>
             </form>
         <br />
-        <img style="width:150px; height:100px;" src="https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/8/88/G.svg/revision/latest/scale-to-width-down/200?cb=20160125094907" align="bottom" />
+        <img style="width:150px; height:100px;" src="https://i.pinimg.com/originals/14/32/18/1432182314e4f369794a68d50ff52420.png" align="bottom" />
 
     }
 
@@ -134,7 +142,7 @@
     {
         <br />
         <h4 style="color: white;text-shadow: 2px 2px 2px black;"><b>White: Peace Through Order</b></h4>
-        <form style="color: white;text-shadow: 1px 1px 2px pink;">
+        <form id="textbackground">
             <p>
                 One who wishes to achieve peace through the imposition of order. White believes that suffering and unhappiness is due to a lack of cooperation, rules, and restraint within the world. White cards are your Knights, clearics, and Angels, with healing spells and protective auras and laws that will bind each party equally, and strengthen your allies all at once.
 
@@ -151,7 +159,7 @@
     {
         <br />
         <h4 style="color: blue;text-shadow: 2px 2px 2px black;"><b>Blue: Perfection Through Knowledge</b></h4>
-        <form style="color: white;text-shadow: 1px 1px 2px pink;">
+        <form id="textbackground">
         <p>
             Knowledge is perfection sought by those who choose this path. You believe that all things could be good if only the truth could be solved, and that knowledge is applied to it's fullest extent. This is where your wizards, faeries and monsters from below reside. Containing spells, both with trickery and illusion, that add to a accumulative knowledge and incremental advantage that will undercut or directly oppose your opponent using brains over raw physical power.
 
@@ -168,7 +176,7 @@
     {
         <br />
         <h4 style="color: white;text-shadow: 2px 2px 2px black;"><b>Black: Satisfaction Through Ruthlessness</b></h4>
-        <form style="color: white;text-shadow: 1px 1px 2px pink;">
+        <form id="textbackground">
         <p>
             Power and control is how you will reshape the world around you. You take what you want, seeing no limits in your ambition and pursuing only what may benefit your own personal interests or goals. You are willing to ally with others but at your core you are amoral as belief in morality is a foreign concept to a Black agent.
 
@@ -184,7 +192,7 @@
     {
         <br />
         <h4 style="color:red;text-shadow: 2px 2px 2px black;"><b>Red: Freedom Through Action</b></h4>
-        <form style="color: white;text-shadow: 1px 1px 2px pink;">
+        <form id="textbackground">
         <p>
             An agent of red lives life in the moment, experiencing life with passion and enthusiasm. A Red dystopian society would simply be anarchy. This is the home of goblins, pyromancers, dragons, and bolts of lightning that burn your opponent. You will taunt your enemies with illusions and enrage their allies, spells that grant speed, haste, and fragile power. You will use chaotic effects that will disrupt the entire battlefield. Leaving your opponents army decimated and disorganized.
 
@@ -202,7 +210,7 @@
     {
         <br />
         <h4 style="color: green;text-shadow: 2px 2px 2px black;"><b>Green: Harmony Through Acceptance</b></h4>
-        <form style="color: white;text-shadow: 1px 1px 2px pink;">
+        <form id="textbackground">
         <p>
             Green is the color of nature, wisdom, stoicism, taoism, and destiny. The belief that most suffering and misfortune in the world comes from removing oneself from the natural order of the planet. An agent of green could envision themselves on a hippie commune where they seek to embrace a more natural lifestyle.
 
@@ -213,7 +221,7 @@
         </p>
             </form>
         <br />
-        <img style="width:150px; height:100px;" src="https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/8/88/G.svg/revision/latest/scale-to-width-down/200?cb=20160125094907" align="bottom" />
+        <img style="width:150px; height:100px;" src="https://i.pinimg.com/originals/14/32/18/1432182314e4f369794a68d50ff52420.png" align="bottom" />
     }
     <br />
     <br />

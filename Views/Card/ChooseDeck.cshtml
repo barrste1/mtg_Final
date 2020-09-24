@@ -5,7 +5,7 @@
 
 @model List<string>
 
-    <div style="position:sticky;text-shadow: 1px 1px 2px white; top:0px; background-color:gray; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; text-align:center; border-radius:15px;"><h1>Choose Deck</h1></div>
+   ><h1>Choose Deck</h1>
 
 <style>
     body {
@@ -14,34 +14,74 @@
         background-attachment: fixed;
     }
     #selectDeckButton {
-        background-color: #4CAF50;
+        background-color: rgba(90, 83, 89, 0.69);
+        /* Green */
         border: none;
         color: white;
-        padding: 8px 19px;
+        padding: 8px 24px;
         text-align: center;
-        text-decoration: solid;
+        text-decoration: none;
         display: inline-block;
-        font-size: 20px;
-        margin: 4px 2px;
+        font-size: 24px;
+        margin: 10px 0px 10px 0px;
+        transition-duration: 0.2s;
         cursor: pointer;
-        box-shadow: 5px 5px 8px black;
+        border-radius: 4px;
+        width: 45%;
+        box-shadow: 5px 5px 8px mediumpurple;
+    }
+
+    #selectDeckButton:hover {
+        background-color: mediumpurple;
+        transition-delay: 0.2s;
+        box-shadow: 2px 2px 2px 2px mediumpurple;
     }
     #deleteDeckButton {
-        background-color: orangered;
+        background-color: rgba(252, 228, 36, 0.69);
+        /* Green */
         border: none;
         color: white;
-        padding: 8px 19px;
+        padding: 8px 24px;
         text-align: center;
-        text-decoration: solid;
+        text-decoration: none;
         display: inline-block;
-        font-size: 20px;
-        margin: 4px 2px;
+        font-size: 24px;
+        margin: 10px 0px 10px 0px;
+        transition-duration: 0.2s;
         cursor: pointer;
-        box-shadow: 5px 5px 8px black;
+        border-radius: 4px;
+        width: 45%;
+        box-shadow: 5px 5px 8px mediumpurple;
+    }
+        #deleteDeckButton:hover {
+            background-color: mediumpurple;
+            transition-delay: 0.2s;
+            box-shadow: 2px 2px 2px 2px mediumpurple;
+        }
+    h1 {
+        position: sticky;
+        text-shadow: 1px 1px 2px white;
+        top: 0px;
+        background-color: gray;
+        padding-bottom: 2px;
+        margin-bottom: 15px;
+        border-bottom: solid grey 3px;
+        text-align: center;
+        border-radius: 15px;
+        color: black;
+        font-size: 40px
+    }
+
+    #deckstyle {
+        background-color: rgba(59, 11, 82, 0.48);
+        text-shadow: 1px 1px 2px pink;
+        border-radius: 15px;
+        color:white;
+        font-size:30px;
     }
 </style>
 
-<table style="color:white;">
+<table>
     <tr>
         <th>Deck Name</th>
         <th>Deck Actions</th>
@@ -52,14 +92,14 @@
 
 <tr>
 
-    <td>@Model[d]</td>
-    <td class="btn btn-secondary">
+    <td id="deckstyle">@Model[d]</td>
+    <td id="selectDeckButton">
         <a href="/card/GetDeckData?DeckName=@Model[d]">Select This Deck!</a>
     </td>
-    <td class="btn btn-secondary">
+    <td id="selectDeckButton">
         <a href="/card/NewDeckName?DeckName=@Model[d]">Rename Deck!</a>
     </td>
-    <td class="btn btn-danger">
+    <td id="deleteDeckButton">
         <a href="/card/DeleteDeck?DeckName=@Model[d]">Delete Deck</a>
     </td>
 

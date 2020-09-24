@@ -1,5 +1,5 @@
 ﻿@model string
-<div style="position:sticky;text-shadow: 1px 1px 2px white; top:0px; background-color:gray; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; text-align:center; border-radius:15px;"><h1>Deck Name</h1></div>
+<h1>Deck Name</h1>
 <br />
 <br />
 <style>
@@ -7,6 +7,19 @@
         background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
         background-size: cover;
         background-attachment: fixed;
+    }
+    h1 {
+        position: sticky;
+        text-shadow: 1px 1px 2px white;
+        top: 0px;
+        background-color: gray;
+        padding-bottom: 2px;
+        margin-bottom: 15px;
+        border-bottom: solid grey 3px;
+        text-align: center;
+        border-radius: 15px;
+        color: black;
+        font-size: 40px
     }
 </style>
 <h2>Current Deck Name: @Model</h2>

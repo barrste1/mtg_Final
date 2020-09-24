@@ -50,11 +50,25 @@
             margin-left: auto;
             padding-top: 102px;
         }
+
+    h1 {
+        position: sticky;
+        text-shadow: 1px 1px 2px white;
+        top: 0px;
+        background-color: gray;
+        padding-bottom: 2px;
+        margin-bottom: 15px;
+        border-bottom: solid grey 3px;
+        text-align: center;
+        border-radius: 15px;
+        color: black;
+        font-size: 40px
+    }
 </style>
 
-<h1 style="color:white;">@Model.deckObject[0].DeckName</h1>
 
-<div style="position:sticky;text-shadow: 1px 1px 2px white; top:0px; background-color:gray; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; text-align:center;border-radius:15px;"><h1>@Model.deckObject[0].DeckName</h1></div>
+
+<h1>Deck Name:<br />@Model.deckObject[0].DeckName</h1>
 
 
 <p style="color:white;">Card Count: @Model.Search.Count</p>
