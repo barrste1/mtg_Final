@@ -1,15 +1,25 @@
 ﻿
 
 @model List<CardsTable>
-    <div style="position:sticky; top:0px; background-color:grey; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; margin-left:5px; text-shadow: 1px 1px 2px white;border-radius:15px;">
-        <h1 style="text-align:center;">Choose your Commander!</h1>
+    
+        <h1>Choose your Commander!</h1>
         <style>
             body {
                 background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
                 background-size: cover;
                 background-attachment: fixed;
-
-
+                }
+            h1 {
+                position: sticky;
+                top: 0px;
+                background-color: grey;
+                padding-bottom: 2px;
+                margin-bottom: 15px;
+                border-bottom: solid grey 3px;
+                margin-left: 5px;
+                text-shadow: 1px 1px 2px white;
+                border-radius: 15px;
+                text-align: center;
             }
         </style>
         <br />
@@ -19,7 +29,6 @@
                 <p>Think of them as your best asset. They're always available to you and can be how you win the game!</p>
             </b>
         </form>
-    </div>
 
     <form class=row; style="column-fill">
         @for (int i = 0; i < Model.Count; i++)
