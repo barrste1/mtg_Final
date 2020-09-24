@@ -20,22 +20,23 @@
         <th>Deck Name</th>
         <th>Deck Selector</th>
     </tr>
-    <tr>
 
-        @for (int d = 0; d < Model.Count; d++)
-        {
+    @for (int d = 0; d < Model.Count; d++)
+    {
+        <tr>
 
             <td>@Model[d]</td>
-            <td class="btn btn-primary">
+            <td class="btn btn-secondary">
                 <a href="/card/GetDeckData?DeckName=@Model[d]">Select This Deck!</a>
             </td>
-            <td class="btn btn-primary">
+            <td class="btn btn-danger">
                 <a href="/card/DeleteDeck?DeckName=@Model[d]">Delete Deck</a>
             </td>
-        }
 
-    </tr>
-    <form action="/card/ChooseCommander" method="post">
-        <input type="submit" value="Create a new deck" />
-    </form>
-</table>
+        </tr>
+    }
+
+        <form action="/card/ChooseCommander" method="post">
+            <input type="submit" value="Create a new deck" />
+        </form>
+    </table>
