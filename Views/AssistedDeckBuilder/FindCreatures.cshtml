@@ -138,7 +138,7 @@
     function loadProducts() {
         var items = "";
         $.ajax({
-            url: "../AssistedDeckBuilder/ValidateSelectedCards?menu=1",
+            url: "../AssistedDeckBuilder/FindCreatures?CurvePosition=@Model.CurvePosition",
             type: "POST",
             crossDomain: true,
             dataType: "json",

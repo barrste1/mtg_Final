@@ -135,13 +135,11 @@ namespace MagicTheGatheringFinal.Controllers
 
             }
 
-
             //0 corresponds to cards draw
             if (menu == 0)
             {
                 if (ids.Count() != 10)
                 {
-
                     return Json(false);
                 }
                 assistedDeck.DeckStatus = "t" + assistedDeck.DeckStatus.Substring(1);
@@ -150,7 +148,6 @@ namespace MagicTheGatheringFinal.Controllers
             {
                 if (ids.Count() != 10)
                 {
-
                     return Json(false);
                 }
                 assistedDeck.DeckStatus = assistedDeck.DeckStatus.Substring(0, 1) + "t" + assistedDeck.DeckStatus.Substring(2);
@@ -183,21 +180,6 @@ namespace MagicTheGatheringFinal.Controllers
 
             return Json(true);
         }
-
-        public IActionResult CompleteAssistedDeck(List<string> SelectedCard)
-        {
-
-
-            foreach (string assistedCardId in SelectedCard)
-            {
-                AddCardsToCardsTable(assistedCardId);
-                AddCardsToDecksTable(assistedCardId, 1);
-            }
-
-            return RedirectToAction("DeckList", "Card");
-
-        }
-
         #endregion
 
         #region Find Card Types
@@ -205,8 +187,6 @@ namespace MagicTheGatheringFinal.Controllers
         public async Task<IActionResult> StartCreatures()
         {
             AssistedDeckViewModel assistedDeck = OpenSession();
-
-
             string cardsInDeck = RemoveDuplicatesFromEndpoint(assistedDeck.DeckName);
             ScryfallDAL dl = new ScryfallDAL();
             string identity = FindPlayerType();
@@ -214,10 +194,18 @@ namespace MagicTheGatheringFinal.Controllers
 
             return View("FindCreatures",assistedDeck);
         }
-        public async Task<IActionResult> FindCreatures(List<string> SelectedCard)
+        public async Task<IActionResult> FindCreatures()
         {
             ScryfallDAL dl = new ScryfallDAL();
             string identity = FindPlayerType();
+
+            var SelectedCard = new List<string>();
+            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+            {
+                var x = await reader.ReadToEndAsync();
+                SelectedCard = JsonConvert.DeserializeObject<List<string>>(x);
+
+            }
 
             AssistedDeckViewModel assistedDeck = OpenSession();
 
