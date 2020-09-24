@@ -6,6 +6,29 @@
         background-size: cover;
         background-attachment: fixed;
     }
+    #selectDeckButton {
+        background-color: rgba(17, 220, 39, 0.69);
+        /* Green */
+        border: none;
+        color: white;
+        padding: 8px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 24px;
+        margin: 10px 0px 10px 0px;
+        transition-duration: 0.2s;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 45%;
+        box-shadow: 5px 5px 8px mediumpurple;
+    }
+
+        #selectDeckButton:hover {
+            background-color: mediumpurple;
+            transition-delay: 0.2s;
+            box-shadow: 2px 2px 2px 2px mediumpurple;
+        }
 </style>
 
 
@@ -19,12 +42,13 @@
 <p style="color:white;">Card Count: @Model.Search.Count</p>
 <p style="color:white;">Deck Cost: @Model.DeckCost</p>
 <br />
-<form action="/Card/ChooseDeck" method="get">
-    <input type="submit" value="Go back to deck selection" />
+<form action="../AssistedDeckBuilder/Index" method="">
+    <input type="submit" value="Go back to AssistedDeck Manager" />
 </form>
+<a href="../AssistedDeckBuilding/Index" id="selectDeckButton">Go back to the Card Manager</a>
 
 
-<form action="/Card/DeleteCard" method="post" style="color: white;text-shadow: 1px 1px 2px white;">
+
     <table class="table" style="color:white;">
         <tr>
             <th>Creatures</th>
@@ -163,4 +187,4 @@
     </tr>
         }
     </table>
-</form>
+
