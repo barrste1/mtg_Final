@@ -5,7 +5,7 @@
 
 @model List<string>
 
-    <div style="position:sticky;text-shadow: 1px 1px 2px white; top:0px; background-color:gray; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; text-align:center;"><h1>Choose Deck</h1></div>
+    <div style="position:sticky;text-shadow: 1px 1px 2px white; top:0px; background-color:gray; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; text-align:center; border-radius:15px;"><h1>Choose Deck</h1></div>
 
 <style>
     body {
@@ -20,18 +20,23 @@
         <th>Deck Name</th>
         <th>Deck Selector</th>
     </tr>
-    <tr>
-        <form action="/card/GetDeckData" method="post">
-            @for (int d = 0; d < Model.Count; d++)
-            {
 
-                <td>@Model[d]</td>
-                <td><input type="checkbox" name="DeckName" value="@Model[d]" /></td>
-            }
-            <input type="submit" value="Select this deck" />
+    @for (int d = 0; d < Model.Count; d++)
+    {
+        <tr>
+
+            <td>@Model[d]</td>
+            <td class="btn btn-secondary">
+                <a href="/card/GetDeckData?DeckName=@Model[d]">Select This Deck!</a>
+            </td>
+            <td class="btn btn-danger">
+                <a href="/card/DeleteDeck?DeckName=@Model[d]">Delete Deck</a>
+            </td>
+
+        </tr>
+    }
+
+        <form action="/card/ChooseCommander" method="post">
+            <input type="submit" value="Create a new deck" />
         </form>
-    </tr>
-    <form action="/card/ChooseCommander" method="post">
-        <input type="submit" value="Create a new deck" />
-    </form>
-</table>
+    </table>
