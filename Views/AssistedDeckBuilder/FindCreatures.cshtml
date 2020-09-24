@@ -138,7 +138,7 @@
     function loadProducts() {
         var items = "";
         $.ajax({
-            url: "../AssistedDeckBuilder/FindCreatures?CurvePosition=@Model.CurvePosition",
+            url: "../AssistedDeckBuilder/AddCreaturesIfValid",
             type: "POST",
             crossDomain: true,
             dataType: "json",
@@ -149,7 +149,7 @@
             success: function (response) {
                 if (response == true) {
                     alert("Your Cards were added to the Deck!");
-                    window.location = "../AssistedDeckBuilder/Index";
+                    window.location = "../AssistedDeckBuilder/AdvanceCreatureManaCurve";
                 } else {
                     alert("@Model.ErrorMessage");
                 }

@@ -235,17 +235,20 @@
         @for (int i = 0; i < Model.Search.Count; i++)
         {
 
-            <tr>
-                @if (Model.Search[i].TypeLine.Contains("Land") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment"))
-                {
-                    <td>
-                        <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
-                             ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
-                    </td>
-                    <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
+    <tr>
+        @if (Model.Search[i].TypeLine.Contains("Land") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment"))
+        {
+            for (int j = 0; j < Model.deckObject[i].Quantity; j++)
+            {
+                <td>
+                    <img draggable="true" ondrop="drop_handler_decklist(event)" ondragover="dragover_handler(event)"
+                         ondragstart="dragstart_handler(event)" style="width:17.5%;height:17.5%" src="@Model.Search[i].CardArtUrl" id="@Model.deckObject[i].Id" />
+                </td>
+                <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
+            }
 
-                }
-            </tr>
+        }
+    </tr>
         }
     </table>
 
