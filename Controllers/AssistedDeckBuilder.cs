@@ -163,8 +163,8 @@ namespace MagicTheGatheringFinal.Controllers
 
             foreach (string card in ids)
             {
-                AddCardsToCardsTable(card);
-                AddCardsToDecksTable(card, 1);
+               await Task.Run(()=>AddCardsToCardsTable(card));
+              await Task.Run(()=>AddCardsToDecksTable(card, 1));
             }
 
             string assistedDeckJSON = System.Text.Json.JsonSerializer.Serialize(assistedDeck);
@@ -228,8 +228,8 @@ namespace MagicTheGatheringFinal.Controllers
             {
                 foreach (string card in SelectedCard)
                 {
-                    AddCardsToCardsTable(card);
-                    AddCardsToDecksTable(card, 1);
+                   await Task.Run(()=>AddCardsToCardsTable(card));
+                    await Task.Run(()=>AddCardsToDecksTable(card, 1));
                 }
 
                 return Json(true);
