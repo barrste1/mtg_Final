@@ -399,6 +399,24 @@ namespace MagicTheGatheringFinal.Controllers
 
             return RedirectToAction("DeckList", dName);
         }
+
+        public IActionResult DeleteDeck(string deckName)
+        {
+            string userName = FindUserId();
+
+            List<DecksTable> deckList = (from d in _context.DecksTable
+                                         where d.AspUserId == userName && d.DeckName == deckName
+                                         select d).ToList();
+
+
+            for (int i = 0; i < deckList.Count; i++)
+            {
+                _context.DecksTable.Remove(deckList[i]);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("ChooseDeck");
+        }
         #endregion
         #region FindInfoInDb
         public string FindDeck()
