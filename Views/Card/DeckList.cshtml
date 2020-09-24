@@ -27,13 +27,18 @@
 
 
 <form action="/Card/DeleteCard" method="post" style="color: white;text-shadow: 1px 1px 2px white;">
+    <table class="table" style="color:white;">
+        <tr>
+            <th>Creatures</th>
+            <th>Creatures count = @Model.creatureCount</th>
+            <th></th>
+        </tr>
 
         <tr>
             <th>Card Image</th>
             <th>Card Price</th>
             <th>Delete</th>
         </tr>
-
         @for (int i = 0; i < Model.Search.Count; i++)
         {
             <tr>

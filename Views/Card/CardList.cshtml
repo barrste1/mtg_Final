@@ -14,6 +14,7 @@
     {
         <img src="@Model.Search[i].CardArtUrl" style="height:17.5%; width:17.5%" />
         <input type="checkbox" name="cardId" value="@Model.Search[i].CardId" />
+        <a href="/card/AddCard?cardId=@Model.Search[i].CardId">Add This Card To Your Deck</a>
         <input name="Name" value="@Model.Search[i].Name" hidden>
         <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
         <input name="ManaCost" value="@Model.Search[i].ManaCost" hidden />
