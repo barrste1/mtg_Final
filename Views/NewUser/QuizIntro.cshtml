@@ -15,25 +15,40 @@
         text-shadow: 1px 1px 2px white;
         border-radius: 15px;
     }
-    button {
-        border: solid black 1px;
-        text-shadow: 1px 1px 2px pink;
-        background-color: mistyrose;
-
-    }
-    button2 {
-        border: solid black 1px;
-        text-shadow: 1px 1px 2px pink;
-        background-color: mediumpurple;
-    }
-    form {
+    #input {
+        background-color: rgba(90, 83, 89, 0.69);
+        /* Green */
+        border: none;
         color: white;
-        text-shadow: 1px 1px 2px pink;
-        background-color: darkslateblue;
-        border-radius: 15px;
+        padding: 8px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 34px;
+        margin: 10px 0px 10px 0px;
+        transition-duration: 0.2s;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 20%;
+        box-shadow: 5px 5px 8px mediumpurple;
     }
-    div {
-        margin: 10px 0px 0px 10px
+
+        #input:hover {
+            background-color: mediumpurple;
+            transition-delay: 0.2s;
+            box-shadow: 2px 2px 2px 2px mediumpurple;
+        }
+
+            #div {
+        text-shadow: 1px 1px 2px pink;
+        border-radius: 15px;
+        background-color: rgba(59, 11, 82, 0.48);
+        color: white;
+        box-shadow: 5px 5px 8px black;
+        margin: 5px auto 0px 10px;
+        display: table;
+        padding: 10px;
+        font-size: 22px;
     }
     
     
@@ -42,15 +57,15 @@
 <h1>What Magic Colors define you?</h1>
 
 <br />
-<a href="../NewUser/StartQuiz"class="button" style="border: solid black 1px;text-shadow: 1px 1px 2px pink; background-color:mistyrose">Start Quiz</a>
+<a href="../NewUser/StartQuiz"id="input">Start Quiz</a>
 <br />
 <br />
 <form>
-    <div>
+    <div id="div">
 <p>There are a lot of different playstyles, and finding one that speaks to you is important!</p><br />
 <p>Do you want to outwit your enemies with tricky schemes, or simply defeat your opponents with a swarm of squirrels?</p><br />
 <p>We can help you find the colors and commander perfect for you! Click on the link above to get started with a fun personality quiz!</p><br />
         </div>
 </form>
 <br />
-<a href="../NewUser" class="button2">Return to New player Menu</a>
+<a href="../NewUser"  id="input">Return to New player Menu</a>
