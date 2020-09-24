@@ -367,7 +367,7 @@ namespace MagicTheGatheringFinal.Controllers
         [HttpPost]
         public async void AddCardsToCardsTable(string assistedCardId)
         {
-            Thread.Sleep(400);
+            Thread.Sleep(100);
             CardsTable cardTable = new CardsTable();
             if (_context.CardsTable.Where(x => x.CardId == assistedCardId).FirstOrDefault() == null)
             {
@@ -432,7 +432,7 @@ namespace MagicTheGatheringFinal.Controllers
         [HttpGet]
         public async void CreateDeckName(int commanderId, string colorId)
         {
-            Thread.Sleep(400);
+            Thread.Sleep(100);
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
             var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
 
