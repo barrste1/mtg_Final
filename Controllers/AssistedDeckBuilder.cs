@@ -262,7 +262,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             assistedDeck.ErrorMessage = $"You need to select exactly {assistedDeck.CurveData[assistedDeck.CurvePosition]} creatures of this mana level.";
 
-            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={assistedDeck.CurvePosition+2}", FindPlayerBudget());
+            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={assistedDeck.CurvePosition+2}{RemoveDuplicatesFromEndpoint(assistedDeck.DeckName)}", FindPlayerBudget());
             assistedDeck.Creatures = assistedDeck.CurveData[assistedDeck.CurvePosition];
             assistedDeckJSON = System.Text.Json.JsonSerializer.Serialize(assistedDeck);
             HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
