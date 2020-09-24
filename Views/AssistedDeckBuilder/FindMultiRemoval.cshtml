@@ -1,12 +1,30 @@
 ﻿@model AssistedDeckViewModel
 <head>
     <style>
-    
+
         body {
             background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
             background-size: cover;
             background-attachment: fixed;
             font-family: Arial, Helvetica, sans-serif;
+        }
+
+        textbackground {
+            position: sticky;
+            text-shadow: 1px 1px 2px white;
+            top: 0px;
+            background-color: gray;
+            padding-bottom: 2px;
+            margin-bottom: 15px;
+            border-bottom: solid grey 3px;
+            text-align: center;
+            border-radius: 15px;
+            color: black;
+            font-size: 40px
+        }
+
+        p {
+            color: white
         }
 
         #target {
@@ -32,7 +50,7 @@
             top: 0;
             right: 500px;
         }
-    
+
         .content {
             margin-right: auto;
             margin-left: auto;
@@ -47,14 +65,23 @@
             right: 397px;
             width: 50%;
         }
+
             .sticky + .content {
                 margin-right: auto;
                 margin-left: auto;
                 padding-top: 102px;
             }
     </style>
-    
+
 </head>
+<div style="position:sticky;text-shadow: 1px 1px 2px white; top:0px; background-color:gray; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; text-align:center; border-radius:15px;">
+    <h1> Multi-Target Removal</h1>
+    <br />
+    <h4>
+        Multi-Removal cards are great ways to clear an opponent's field of Creatures, Lands, Artifacts, and/or Enchantments.
+        Be sure to stockpile up 5 of these bad boys.
+    </h4>
+</div>
 
 
 
