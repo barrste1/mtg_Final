@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using MagicTheGatheringFinal.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +31,13 @@ namespace MagicTheGatheringFinal.Controllers
             _context = context;
         }
         #endregion
+
+        public IActionResult Testing(string testing)
+        {
+
+            return View();
+        }
+
 
         #region Deckbuilding Actions
         public IActionResult StartDeck(int commanderId)
@@ -105,7 +113,6 @@ namespace MagicTheGatheringFinal.Controllers
             _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.Update(user);
              _context.SaveChanges();
-
             AssistedDeckViewModel assistedDeck = OpenSession();
 
             return View("Index", assistedDeck);
@@ -218,8 +225,9 @@ namespace MagicTheGatheringFinal.Controllers
                 2
             };
 
+            int creatureCount = cardCurveData[assistedDeck.CurvePosition];
 
-            if (SelectedCard.Count() < cardCurveData[assistedDeck.CurvePosition])
+            if (SelectedCard.Count() != creatureCount)
             {
                 assistedDeck.ErrorMessage = $"You need to select exactly {cardCurveData[assistedDeck.CurvePosition]} creatures of this mana level.";
                 assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={assistedDeck.CurvePosition+2}{RemoveDuplicatesFromEndpoint(assistedDeck.DeckName)}", FindPlayerBudget());
@@ -343,6 +351,7 @@ namespace MagicTheGatheringFinal.Controllers
         [HttpPost]
         public async void AddCardsToCardsTable(string assistedCardId)
         {
+            Thread.Sleep(100);
             CardsTable cardTable = new CardsTable();
             if (_context.CardsTable.Where(x => x.CardId == assistedCardId).FirstOrDefault() == null)
             {
@@ -389,7 +398,7 @@ namespace MagicTheGatheringFinal.Controllers
                     cardTable.Red = "R";
                 }
                 _context.CardsTable.Add(cardTable);
-               await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
         }
         public AssistedDeckViewModel OpenSession()
@@ -407,6 +416,7 @@ namespace MagicTheGatheringFinal.Controllers
         [HttpGet]
         public async void CreateDeckName(int commanderId, string colorId)
         {
+            Thread.Sleep(100);
             AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
             var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
 
@@ -440,12 +450,13 @@ namespace MagicTheGatheringFinal.Controllers
 
 
             _context.DecksTable.Add(deckTable);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
         [HttpPost]
         public async void AddCardsToDecksTable(string assistedCardId, int quantity)
         {
+            Thread.Sleep(100);
             DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
             DecksTable deckTable = new DecksTable();
 
@@ -459,6 +470,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             _context.DecksTable.Add(deckTable);
              _context.SaveChanges();
+
         }
         public IActionResult DeckList()
         {

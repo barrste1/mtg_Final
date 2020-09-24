@@ -1,5 +1,4 @@
-
-@model List<CardsTable>
+﻿@model AssistedDeckViewModel
 <head>
     <style>
         body {
@@ -18,6 +17,7 @@
             padding-left: 40px;
         }
 
+
         #top-container {
             margin-right: auto;
             margin-left: auto;
@@ -27,8 +27,16 @@
             text-align: right;
             top: 0;
             right: 500px;
+            image-resol
         }
-
+        /*.header {
+            margin-right: auto;
+            margin-left: auto;
+            background: #808080;
+            color: #000000;
+            width:15%;
+            right: 500px;
+        }*/
         .content {
             margin-right: auto;
             margin-left: auto;
@@ -52,10 +60,7 @@
     </style>
 </head>
 
-<<<<<<< HEAD
 
-=======
->>>>>>> curtis
 <div class="header" id="target" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
 
 
@@ -66,9 +71,18 @@
 </div>
 
 <form ondragstart="dragstart_handler(event)" style="float:left">
-    @for (int i = 0; i < 100; i++)
+    @for (int i = 0; i < Model.CardSearch.data.Count(); i++)
     {
-        <img id="@Model[i].CardId" style="width: 22%; height:auto" src="@Model[i].CardArtUrl" draggable="true" />
+        if (Model.CardSearch.data[i].image_uris != null)
+        {
+            <img id="@Model.CardSearch.data[i].id" style="width: 22%; height:auto" src="@Model.CardSearch.data[i].image_uris.normal" draggable="true" />
+        }
+        else
+        {
+            <p id="@Model.CardSearch.data[i].id">@Model.CardSearch.data[i].name</p>
+        }
+
+
     }
 </form>
 
@@ -110,7 +124,6 @@
             let pos = cards.indexOf(data);
             cards.splice(pos, 1);
         }
-<<<<<<< HEAD
     }
     window.onscroll = function () { myFunction() };
     var header = document.getElementById("target");
@@ -120,31 +133,27 @@
             header.classList.add("sticky");
         } else {
             header.classList.remove("sticky");
-=======
-        function loadProducts() {
-            var items = "";
-            $.ajax({
-                url: "../Test/SaveChanges",
-                type: "POST",
-                crossDomain: true,
-                dataType: "json",
-                contentType: "application/json",
-                data: JSON.stringify(cards),
-                traditional: true
-            });
->>>>>>> 9afb9b391b5abd4f55f7ec31675eedab28400e93
         }
     }
     function loadProducts() {
         var items = "";
         $.ajax({
-            url: "../DragNDrop/SaveChanges",
+            url: "../Test/SaveChanges",
             type: "POST",
             crossDomain: true,
             dataType: "json",
             contentType: "application/json",
             data: JSON.stringify(cards),
-            traditional: true
+            traditional: true,
+
+            success: function (response) {
+                if (response == true) {
+                    alert("Your Cards were added to the Deck!");
+                    window.location = "../AssistedDeckBuilder/Index";
+                } else {
+                    alert("@Model.ErrorMessage");
+                }
+            }
         });
     }
 </script>
