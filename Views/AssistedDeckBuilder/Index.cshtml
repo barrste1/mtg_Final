@@ -14,6 +14,78 @@
         background-size: cover;
         background-attachment: fixed;
     }
+
+    #input {
+        background-color: green;
+        /* Green */
+        border: none;
+        color: white;
+        padding: 8px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 34px;
+        margin: 10px 0px 10px 0px;
+        transition-duration: 0.2s;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 50%;
+        box-shadow: 5px 5px 8px mediumpurple;
+    }
+
+        #input:hover {
+            background-color: mediumpurple;
+            transition-delay: 0.2s;
+            box-shadow: 2px 2px 2px 2px mediumpurple;
+        }
+
+    #input2 {
+        background-color: red;
+        /* Green */
+        border: none;
+        color: white;
+        padding: 8px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 34px;
+        margin: 10px 0px 10px 0px;
+        transition-duration: 0.2s;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 50%;
+        box-shadow: 5px 5px 8px mediumpurple;
+    }
+
+    #input:hover {
+        background-color: mediumpurple;
+        transition-delay: 0.2s;
+        box-shadow: 2px 2px 2px 2px mediumpurple;
+    }
+
+    #input3 {
+        background-color: lightskyblue;
+        /* Green */
+        border: none;
+        color: white;
+        padding: 8px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 34px;
+        margin: 10px 0px 10px 0px;
+        transition-duration: 0.2s;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 50%;
+        box-shadow: 5px 5px 8px mediumpurple;
+    }
+
+    #input:hover {
+        background-color: mediumpurple;
+        transition-delay: 0.2s;
+        box-shadow: 2px 2px 2px 2px mediumpurple;
+    }
 </style>
 
 <table>
@@ -25,82 +97,82 @@
         {
 
             <td>
-                <a href="../AssistedDeckBuilder/FindDraw" class="btn-danger"style="border:solid white 3px; padding-bottom:5px" >Add Draw</a>
+                <a href="../AssistedDeckBuilder/FindDraw" id="input">Add Draw</a>
             </td>
 
         }
         else
         {
 
-            <td class="btn-success"style="border:solid white 3px;">Card Draw Looking Good!</td>
+            <td id="input2">Card Draw Looking Good!</td>
 
         }
     </tr>
 
-<tr>
-    @if (Model.DeckStatus.Substring(1, 1) == "f")
-    {
+    <tr>
+        @if (Model.DeckStatus.Substring(1, 1) == "f")
+        {
 
-        <td>
-            <a href="../AssistedDeckBuilder/FindRamp" class="btn-danger"style="border:solid white 3px;">Add Ramp</a>
-        </td>
+            <td>
+                <a href="../AssistedDeckBuilder/FindRamp" id="input">Add Ramp</a>
+            </td>
 
-    }
-    else
-    {
+        }
+        else
+        {
 
-        <td class="btn-success"style="border:solid white 3px;">Ready to keep up with opponents with your ramp!</td>
+            <td id="input2">Ready to keep up with opponents with your ramp!</td>
 
-    }
-</tr>
+        }
+    </tr>
 
-<tr>
-    @if (Model.DeckStatus.Substring(2, 1) == "f")
-    {
+    <tr>
+        @if (Model.DeckStatus.Substring(2, 1) == "f")
+        {
 
-        <td>
-            <a href="../AssistedDeckBuilder/FindSingleRemoval" class="btn-danger" style="border:solid white 3px;">Add Single Target Removal</a>
-        </td>
+            <td>
+                <a href="../AssistedDeckBuilder/FindSingleRemoval" id="input">Add Single Target Removal</a>
+            </td>
 
-    }
-    else
-    {
+        }
+        else
+        {
 
-        <td class="btn-success"style="border:solid white 3px;">Ready to answer your opponents threats!</td>
+            <td id="input2">Ready to answer your opponents threats!</td>
 
-    }
-</tr>
-   
+        }
+    </tr>
 
-<tr>
-    @if (Model.DeckStatus.Substring(3, 1) == "f")
-    {
 
-        <td>
-            <a href="../AssistedDeckBuilder/FindMultiRemoval" class="btn-danger"style="border:solid white 3px;">Add Board Clears</a>
-        </td>
+    <tr>
+        @if (Model.DeckStatus.Substring(3, 1) == "f")
+        {
 
-    }
-    else
-    {
+            <td>
+                <a href="../AssistedDeckBuilder/FindMultiRemoval" id="input">Add Board Clears</a>
+            </td>
 
-        <td class="btn-success;" style="border:solid white 3px;">Ready to reset the board!</td>
+        }
+        else
+        {
 
-    }
-</tr>
-   
+            <td id="input2">Ready to reset the board!</td>
+
+        }
+    </tr>
+
     <tr>
         @if (Model.DeckStatus.Substring(4, 1) == "f")
         {
 
             <td>
-                <a href="../AssistedDeckBuilder/StartCreatures" class="btn-danger" style="border: solid white 3px;">Add Creatures</a>
+                <a href="../AssistedDeckBuilder/StartCreatures" id="input">Add Creatures</a>
             </td>
         }
         else
         {
 
-    <td class="btn-success" style="border:solid white 3px; color:white;">Your Army is Ready!</td>
+            <td id="input2">Your Army is Ready!</td>
 
         }
 
@@ -110,14 +182,14 @@
         @if (Model.DeckStatus == "ttttt")
         {
             <td>
-                <a href="../AssistedDeckBuilder/DeckList" class="btn" style="color:white;">View Finished Deck</a>
+                <a href="../AssistedDeckBuilder/DeckList" id="input">View Finished Deck</a>
 
             </td>
         }
         else
         {
             <td>
-                <a href="../AssistedDeckBuilder/DeckList" class="btn" style="color:white;">View Current Deck</a>
+                <a href="../AssistedDeckBuilder/DeckList" id="input3">View Current Deck</a>
             </td>
         }
     </tr>

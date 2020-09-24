@@ -10,6 +10,28 @@
             background-size: cover;
             background-attachment: fixed;
         }
+        #input {
+            background-color: rgba(90, 83, 89, 0.69);
+            /* Green */
+            border: none;
+            color: white;
+            padding: 8px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 34px;
+            margin: 10px 0px 10px 0px;
+            transition-duration: 0.2s;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 25%;
+            box-shadow: 5px 5px 8px mediumpurple;
+        }
+
+            #input:hover {
+                background-color: mediumpurple;
+                transition-delay: 0.2s;
+                box-shadow: 2px 2px 2px 2px mediumpurple;
     </style>
 
 @if (Model != null)
@@ -19,6 +41,6 @@
     <form action="../AssistedDeckBuilder/UpdateBudget" method="post" style="color:white;">
         <p>What is the most you are willing to pay for a card? Please enter only numbers</p>
         <input type="text" name="budget" placeholder="$0.00"/>
-        <input type="submit" value="Enter Amount" />
+        <input type="submit" value="Enter Amount" id="input" />
 
     </form>

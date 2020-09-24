@@ -8,6 +8,8 @@
                 background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
                 background-size: cover;
                 background-attachment: fixed;
+
+
             }
         </style>
         <br />
@@ -19,15 +21,17 @@
         </form>
     </div>
 
-<form style="display:flex; flex-direction:column">
+    <form class=row; style="column-fill">
         @for (int i = 0; i < Model.Count; i++)
         {
-        
-                if (Model[i].CardArtUrl != null)
-                {
-                <img style="width:20%; height:20%" src="@Model[i].CardArtUrl" />
-                }
-                <a style="margin-bottom:30px; text-decoration:underline; color:white;" href="../AssistedDeckBuilder/StartDeck?commanderId=@Model[i].Id"> Make @Model[i].Name your commander!</a>
-          
+
+            if (Model[i].CardArtUrl != null)
+            {
+                <img style="width:10%; height:auto" src="@Model[i].CardArtUrl" />
+                <a style=" text-decoration:underline; color:white;" href="../AssistedDeckBuilder/StartDeck?commanderId=@Model[i].Id"> Make @Model[i].Name your commander!</a>
+            }
+         
+
+
         }
-</form>
+    </form>
