@@ -49,17 +49,22 @@
 
     @for (int d = 0; d < Model.Count; d++)
     {
-        <tr>
 
-            <td>@Model[d]</td>
-            <td class="btn" id="selectDeckButton">
-                <a href="/card/GetDeckData?DeckName=@Model[d]">Select This Deck!</a>
-            </td>
-            <td class="btn" id="deleteDeckButton">
-                <a href="/card/DeleteDeck?DeckName=@Model[d]">Delete Deck</a>
-            </td>
+<tr>
 
-        </tr>
+    <td>@Model[d]</td>
+    <td class="btn btn-secondary">
+        <a href="/card/GetDeckData?DeckName=@Model[d]">Select This Deck!</a>
+    </td>
+    <td class="btn btn-secondary">
+        <a href="/card/NewDeckName?DeckName=@Model[d]">Rename Deck!</a>
+    </td>
+    <td class="btn btn-danger">
+        <a href="/card/DeleteDeck?DeckName=@Model[d]">Delete Deck</a>
+    </td>
+
+</tr>
+
     }
 
         <form action="/card/ChooseCommander" method="post">

@@ -1,54 +1,100 @@
 ﻿@model QuizViewModel
 
-    <h3 style="color: white;text-shadow: 1px 1px 2px pink;">How Much Do You Relate To The Word?</h3>
 
-<p style="color: white;text-shadow: 1px 1px 2px pink;">Please select a phrase from the list by choosing one phrase that correlates your feelings towards each word printed on screen. </p>
+<h3>How Much Do You Relate To The Word?</h3>
+
 <br />
 <br />
+<p>Please select a phrase from the list by choosing one phrase that correlates your feelings towards each word printed on screen. </p>
 <h1 style="color: white;text-shadow: 1px 1px 2px pink;">@Model.QuizTable.Word</h1>
+
 <style>
+    h3 {
+        position: sticky;
+        text-shadow: 1px 1px 2px white;
+        top: 0px;
+        background-color: gray;
+        padding-bottom: 2px;
+        margin-bottom: 15px;
+        border-bottom: solid grey 3px;
+        text-align: center;
+        border-radius: 15px;
+        font-size: 40px;
+        
+    }
+
+    p {
+        display:table;
+        /*background-color:darkslateblue;*/
+        color: white;
+        margin: 0px auto 0px auto;
+        padding:5px; font-size:20px;background-color:darkslateblue;
+        text-shadow: 1px 1px 2px pink;
+        border-radius:3px;
+    }
+
+
     body {
         background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
         background-size: cover;
         background-attachment: fixed;
     }
+
+    input {
+        background-color: lightslategray; /* Green */
+        border: none;
+        color: white;
+        padding: 16px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 10px 0px 10px 0px;
+        transition-duration: 0.2s;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 20%;
+    }
+
+        input:hover {
+            background-color: mediumpurple;
+            transition-delay: 0.2s;
+            box-shadow: 2px 2px 2px 2px mediumpurple;
+        }
 </style>
 
-
 <form action="../NewUser/Quiz" method="post">
-    <input hidden name="Counter" value="@Model.Counter"/>
-    <input hidden name="Answer" value="1"/>
+    <input hidden name="Counter" value="@Model.Counter" />
+    <input hidden name="Answer" value="1" />
     <input hidden name="ColorScore" value="@Model.ColorScore" />
-    <input type="submit" name="" value="Not At All" class="btn" style="        border: solid white .5px;color: white;text-shadow: 1px 1px 2px white;margin-bottom: 5px
-"/>
+    <input type="submit" name="" value="Not At All" class="input" />
 </form>
 
 <form action="../NewUser/Quiz" method="post">
     <input hidden name="Counter" value="@Model.Counter" />
     <input hidden name="Answer" value="3" />
     <input hidden name="ColorScore" value="@Model.ColorScore" />
-    <input type="submit" name="" value="A Little Bit" class="btn"style="border: solid white .5px;color: white;margin-bottom: 5px;text-shadow: 1px 1px 2px white;
-" />
+    <input type="submit" name="" value="A Little Bit" class="input" />
+
 </form>
 
 <form action="../NewUser/Quiz" method="post">
     <input hidden name="Counter" value="@Model.Counter" />
     <input hidden name="Answer" value="5" />
     <input hidden name="ColorScore" value="@Model.ColorScore" />
-    <input type="submit" name="" value="I Accept This" class="btn" style="border: solid white .5px;color: white;text-shadow: 1px 1px 2px white;margin-bottom: 5px"/>
+    <input type="submit" name="" value="I Accept This" class="input" />
 </form>
 
 <form action="../NewUser/Quiz" method="post">
     <input hidden name="Counter" value="@Model.Counter" />
     <input hidden name="Answer" value="7" />
     <input hidden name="ColorScore" value="@Model.ColorScore" />
-    <input type="submit" name="" value="I Relate" class="btn"style="border: solid white .5px;color: white;text-shadow: 1px 1px 2px white;margin-bottom: 5px"/>
+    <input type="submit" name="" value="I Relate" class="input" />
 </form>
 
 <form action="../NewUser/Quiz" method="post">
     <input hidden name="Counter" value="@Model.Counter" />
     <input hidden name="Answer" value="10" />
     <input hidden name="ColorScore" value="@Model.ColorScore" />
-    <input type="submit" name="" value="That's Me" class="btn" style="        border: solid white .5px;color: white;margin-bottom: 5px;text-shadow: 1px 1px 2px white;
-"/>
+    <input type="submit" name="" value="That's Me" class="input" />
 </form>
