@@ -270,6 +270,10 @@
     <br />
 
 </form>
+<form action="/card/AddLand" method="post">
+    <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
+    <input type="submit" value="Add Basic Lands to Deck" />
+</form>
 
 <script>
     var cards = [];

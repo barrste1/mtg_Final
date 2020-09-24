@@ -83,8 +83,53 @@ namespace MagicTheGatheringFinal.Controllers
         #endregion
         #region CRUD
 
-        public IActionResult AddLand(CardsTable landCard)
+        public IActionResult AddLand(DecksTable deckName)
         {
+            CombinedDeckViewModel combo = new CombinedDeckViewModel();
+
+            List<DecksTable> landData = (from d in _context.DecksTable where d.AspUserId == FindUserId() && d.DeckName == deckName.DeckName && d.ColorIdentity == "L" select d).ToList();
+
+            combo.deckObject = landData;
+
+            if (landData == null)
+            {
+                combo.deckObject[0] = deckName;
+                return View(combo);
+            }
+            else
+            {
+                for (int i = 0; i < landData.Count; i++)
+                {
+                    combo.Search[i].Name = (from c in _context.CardsTable where c.Id == landData[i].CardId select c.Name).ToString();
+                }
+                return View(combo);
+            }
+
+        }
+        public IActionResult UpdateLandCount(int numberOfPlains, int numberOfIslands, int numberOfSwamps, int numberOfMountains, int numberOfForests, int numberOfWastes, DecksTable deckName)
+        {
+            //this action will update the database with the selected quantity of lands
+            List<DecksTable> landData = (from d in _context.DecksTable where d.AspUserId == FindUserId() && d.DeckName == deckName.DeckName && d.ColorIdentity == "L" select d).ToList();
+            List<int> landPrimaryKey = new List<int>();
+            for (int i = 0; i < landData.Count; i++)
+            {
+                List<int> landPrimaryKey = (from c in _context.CardsTable where c.Id == landData[i].CardId select c.Id).ToList();
+            }
+            //find if the deck table deck name has any lands
+            //update the quantity of lands
+            if (landData != null)
+            { 
+                //if land is not null we need to update
+                for (int i = 0; i < landData.Count; i++)
+                {
+                    if(landData[i].CardId )
+                }
+            }
+            else 
+            { 
+                //if land data is null we need to add
+            }
+
             return View();
         }
         [HttpGet]
