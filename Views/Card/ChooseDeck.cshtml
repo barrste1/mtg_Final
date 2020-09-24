@@ -13,6 +13,32 @@
         background-size: cover;
         background-attachment: fixed;
     }
+    #selectDeckButton {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 8px 19px;
+        text-align: center;
+        text-decoration: solid;
+        display: inline-block;
+        font-size: 20px;
+        margin: 4px 2px;
+        cursor: pointer;
+        box-shadow: 5px 5px 8px black;
+    }
+    #deleteDeckButton {
+        background-color: orangered;
+        border: none;
+        color: white;
+        padding: 8px 19px;
+        text-align: center;
+        text-decoration: solid;
+        display: inline-block;
+        font-size: 20px;
+        margin: 4px 2px;
+        cursor: pointer;
+        box-shadow: 5px 5px 8px black;
+    }
 </style>
 
 <table style="color:white;">
@@ -26,10 +52,10 @@
         <tr>
 
             <td>@Model[d]</td>
-            <td class="btn btn-secondary">
+            <td class="btn" id="selectDeckButton">
                 <a href="/card/GetDeckData?DeckName=@Model[d]">Select This Deck!</a>
             </td>
-            <td class="btn btn-danger">
+            <td class="btn" id="deleteDeckButton">
                 <a href="/card/DeleteDeck?DeckName=@Model[d]">Delete Deck</a>
             </td>
 

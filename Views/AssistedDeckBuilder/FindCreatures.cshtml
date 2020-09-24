@@ -104,7 +104,7 @@
         view.style.width = "50px";
         //only 1 card can be dragged in
         if (cards.indexOf(data) == -1) {
-            ev.target.appendChild(view);
+            document.getElementById("target").appendChild(view);
             cards.push(data)
         }
 
