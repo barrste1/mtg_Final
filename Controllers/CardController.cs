@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -11,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Text;
 
 namespace MagicTheGatheringFinal.Controllers
 {
@@ -24,7 +27,7 @@ namespace MagicTheGatheringFinal.Controllers
         {
             _context = context;
         }
-#endregion
+        #endregion
         #region basic tasks
         [HttpGet]
         public async Task<IActionResult> CardColorList(string cardColor)
@@ -203,16 +206,17 @@ namespace MagicTheGatheringFinal.Controllers
 
             CombinedDeckViewModel combo = new CombinedDeckViewModel();
 
-            var deckList = (from d in _context.DecksTable
-                            where d.AspUserId == id && d.DeckName == dName.DeckName
-                            select d.CardId).ToList();
+            List<DecksTable> deckList = (from d in _context.DecksTable
+                                         where d.AspUserId == id && d.DeckName == dName.DeckName
+                                         select d).ToList();
 
             List<CardsTable> cardlist = new List<CardsTable>();
             List<DecksTable> userDecks = new List<DecksTable>();
             int cardCount = 0;
             for (int i = 0; i < deckList.Count; i++)
             {
-                cardlist.Add(_context.CardsTable.Find(deckList[i]));
+
+                cardlist.Add(_context.CardsTable.Find(deckList[i].CardId));
 
             }
 
@@ -220,8 +224,8 @@ namespace MagicTheGatheringFinal.Controllers
             decimal? cost = 0;
             foreach (CardsTable card in cardlist)
             {
-               cmc += card.Cmc;
-               cost += card.CardPrice;
+                cmc += card.Cmc;
+                cost += card.CardPrice;
             }
 
 
@@ -230,7 +234,7 @@ namespace MagicTheGatheringFinal.Controllers
             userDecks.Add(dName);
 
             combo.Search = cardlist;
-            combo.deckObject = userDecks;
+            combo.deckObject = deckList;
 
             return View(combo);
         }
@@ -337,7 +341,7 @@ namespace MagicTheGatheringFinal.Controllers
             else
             {
                 dName.ColorIdentity = "L";
-            }    
+            }
             dName.CardId = idCollection;
             dName.Quantity = 1;
 
@@ -352,21 +356,23 @@ namespace MagicTheGatheringFinal.Controllers
 
             return RedirectToAction("DeckList", dName);
         }
-        public IActionResult DeleteCard(int Id, DecksTable dName)
-        {
-            DecksTable dt = new DecksTable();
-            var getId = (from i in _context.DecksTable where i.CardId == Id select i.Id).FirstOrDefault();
 
-            var foundCard = _context.DecksTable.Find(getId);
-            if (foundCard != null)
-            {
-                _context.DecksTable.Remove(foundCard);
-                _context.SaveChanges();
-            }
-            //_context.DecksTable.Remove(from r in _context.DecksTable where cardId == r.Id select r.Id);
+        //public IActionResult DeleteCard(int Id, DecksTable dName)
+        //{
+        //    DecksTable dt = new DecksTable();
+        //    var getId = (from i in _context.DecksTable where i.CardId == Id select i.Id).FirstOrDefault();
 
-            return RedirectToAction("DeckList", dName);
-        }
+        //    var foundCard = _context.DecksTable.Find(getId);
+        //    if (foundCard != null)
+        //    {
+        //        _context.DecksTable.Remove(foundCard);
+        //        _context.SaveChanges();
+        //    }
+        //    _context.DecksTable.Remove(from r in _context.DecksTable where cardId == r.Id select r.Id);
+
+        //    return RedirectToAction("DeckList", dName);
+        //}
+
         #endregion
         #region FindInfoInDb
         public string FindDeck()
@@ -408,7 +414,65 @@ namespace MagicTheGatheringFinal.Controllers
             }
         }
         #endregion
+
+        #region DragNDrop CRUD
+        public void DragNDropAdd(string CardId)
+        {
+            DecksTable deckTable = new DecksTable();
+
+            var userId = FindUserId();
+            var idCollection = (from x in _context.CardsTable where CardId == x.CardId select x.Id).FirstOrDefault();
+
+            deckTable.CardId = idCollection;
+            deckTable.AspUserId = userId;
+            
+            _context.DecksTable.Add(deckTable);
+            _context.SaveChanges();
+        }
+        [HttpPost]
+        public async Task<IActionResult> SaveAddChanges()
+        {
+            var ids = new List<string>();
+            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+            {
+                var x = await reader.ReadToEndAsync();
+                ids = JsonConvert.DeserializeObject<List<string>>(x);
+                Console.WriteLine();
+            }
+            foreach (string CardId in ids)
+            {
+
+                DragNDropAdd(CardId);
+            }
+            return Json("");
+        }
+        public void DeleteCards(int Id)
+        {
+
+            var userId = FindUserId();
+            DecksTable idCollection = (from x in _context.DecksTable where Id == x.Id select x).FirstOrDefault();
+
+            _context.DecksTable.Remove(idCollection);
+            _context.SaveChanges();
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> SaveDeleteChanges()
+        {
+
+            var ids = new List<int>();
+            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+            {
+                var x = await reader.ReadToEndAsync();
+                ids = JsonConvert.DeserializeObject<List<int>>(x);
+                Console.WriteLine();
+            }
+            foreach (var CardId in ids)
+            {
+                DeleteCards(CardId);
+            }
+            return Json("");
+        }
+        #endregion
     }
-
-
 }
