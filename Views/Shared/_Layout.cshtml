@@ -4,7 +4,48 @@
     buttonBorder{
         border:solid 3px black;
     }
-
+    #HeaderButtons {
+        background-color: lightslategray; /* Green */
+        border: none;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 4px 0px 4px;
+        transition-duration: 0.2s;
+        cursor: pointer;
+        border-radius: 4px;
+        width: auto;
+        box-shadow: 2px 2px 2px 2px black;
+    }
+        #HeaderButtons:hover {
+            background-color: mediumpurple;
+            transition-delay: 0.2s;
+            box-shadow: 2px 2px 2px 2px mediumpurple;
+        }
+    #HeaderButtons2 {
+        background-color: lightslategray; /* Green */
+        border: none;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 4px 0px 4px;
+        transition-duration: 0.2s;
+        cursor: pointer;
+        border-radius: 4px;
+        width: auto;
+        box-shadow: 2px 2px 2px 2px black;
+    }
+    #HeaderButtons2:hover {
+        background-color: mediumpurple;
+        transition-delay: 0.2s;
+        box-shadow: 2px 2px 2px 2px mediumpurple;
+    }
 </style>
 <html lang="en">
 <head>
@@ -18,7 +59,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" style="padding-right:5px" asp-area="" asp-controller="Home" asp-action="Index">.NET Decks</a>
+                <a class="navbar-brand" style="white-space:nowrap" asp-area="" asp-controller="Home" asp-action="Index"><b>.NET Decks</b></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -27,24 +68,24 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1" style="font-size:12px; text-align:center; text-decoration:solid; padding:0px 2px 0px 30px;" >
                       
-                            <li class="nav-item;">
-                                <a class="nav-link text-dark" style="border: solid 3px black;" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <li class="nav-item;" id="HeaderButtons2">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><b>Home</b></a>
                             </li>
 
-                            <li class="nav-item;" style="border:solid 3px black;">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="NewUser" asp-action="Index">New Player Guide</a>
+                            <li class="nav-item;" id="HeaderButtons">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="NewUser" asp-action="Index"><b>New Player Guide</b></a>
                             </li>
-                            <li class="nav-item" style="border:solid 3px black;">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Newuser" asp-action="BasicMagicConcepts">Learn To Play</a>
+                            <li class="nav-item" id="HeaderButtons2">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Newuser" asp-action="BasicMagicConcepts"><b>Learn To Play</b></a>
                             </li>
-                            <li class="nav-item" style="border:solid 3px black;">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="NewUser" asp-action="QuizIntro">Personality Color Quiz</a>
+                            <li class="nav-item" id="HeaderButtons">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="NewUser" asp-action="QuizIntro"><b>Personality Color Quiz</b></a>
                             </li>
-                            <li class="nav-item" style="border:solid 3px black;">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="NewUser" asp-action="SelectColorIdentity">Assisted Deck Builder</a>
+                            <li class="nav-item" id="HeaderButtons2">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="NewUser" asp-action="SelectColorIdentity"><b>Assisted Deck Builder</b></a>
                             </li>
-                            <li class="nav-item" style="border:solid 3px black;">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="ChooseDeck">Build A Deck</a>
+                            <li class="nav-item" id="HeaderButtons">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="ChooseDeck"><b>Build A Deck</b></a>
                         </li>
                             
                     </ul>
