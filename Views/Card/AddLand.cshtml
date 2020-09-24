@@ -1,0 +1,38 @@
+﻿@model CombinedDeckViewModel
+
+
+    <div style="position:sticky;text-shadow: 1px 1px 2px white; top:0px; background-color:gray; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px; text-align:center; border-radius:15px;"><h1>Choose Deck</h1></div>
+
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+    </style>
+
+@if (Model.Search== null)
+{ 
+    <h2 style="color:white">You do not have any lands in your deck</h2>
+}
+else
+{
+    for (int i = 0; i < Model.Search.Count; i++)
+    {
+        <p style="color:white">You have @Model.deckObject[i].Quantity @Model.Search[i].Name</p>
+    }
+}
+
+<p>How many lands would you like?</p>
+<form style="color:white" action="/card/UpdateLandCount" method="post">
+    Plains: <input type="number" name="numberOfPlains" />
+    <br />
+    Islands: <input type="number" name="numberOfIslands" /><br />
+    Swamps: <input type="number" name="numberOfSwamps" /><br />
+    Mountains: <input type="number" name="numberOfMountains" /><br />
+    Forests: <input type="number" name="numberOfForests" /><br />
+    Wastes: <input type="number" name="numberOfWastes" /><br />
+    <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
+    <input type="submit" value="Add Lands To Deck!" />
+</form>
+
