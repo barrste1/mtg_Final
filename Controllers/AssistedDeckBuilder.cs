@@ -176,6 +176,7 @@ namespace MagicTheGatheringFinal.Controllers
 
         #region Find Card Types
 
+        #region Creature Actions
         public async Task<IActionResult> StartCreatures()
         {
             //This List displays how many creatures should be chosen at each mana value along a mana curve.
@@ -205,7 +206,6 @@ namespace MagicTheGatheringFinal.Controllers
 
             return View("FindCreatures",assistedDeck);
         }
-      
         public async Task<IActionResult> AddCreaturesIfValid()
         {
 
@@ -269,6 +269,8 @@ namespace MagicTheGatheringFinal.Controllers
 
             return View("FindCreatures",assistedDeck);
         }
+        #endregion
+
 
         public async Task<IActionResult> FindSingleRemoval(AssistedDeckViewModel assistedDeck)
         {
@@ -471,15 +473,25 @@ namespace MagicTheGatheringFinal.Controllers
         public async void AddCardsToDecksTable(string assistedCardId, int quantity)
         {
             Thread.Sleep(100);
-            DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
+           // DecksTable lastEntry = (from x in _context.DecksTable where assistedCardId == x.CardId select x.Id).FirstOrDefault();
             DecksTable deckTable = new DecksTable();
+
+            AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
+            var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
+
+            if (deckStatus != "EmptySession")
+            {
+                assistedDeck = System.Text.Json.JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
+            }
+
+
 
             var userId = FindUserId();
             var idCollection = (from x in _context.CardsTable where assistedCardId == x.CardId select x.Id).FirstOrDefault();
 
             deckTable.CardId = idCollection;
             deckTable.AspUserId = userId;
-            deckTable.DeckName = lastEntry.DeckName;
+            deckTable.DeckName = assistedDeck.DeckName;
             deckTable.Quantity = quantity;
 
             _context.DecksTable.Add(deckTable);
@@ -497,19 +509,59 @@ namespace MagicTheGatheringFinal.Controllers
             CardsTable cd = new CardsTable();
             string id = FindUserId();
 
-            var deckList = (from d in _context.DecksTable
-                            where d.AspUserId == id && d.DeckName == assistedDeck.DeckName
-                            select d.CardId).ToList();
-
+            List<DecksTable> deckList = (from d in _context.DecksTable
+                                         where d.AspUserId == id && d.DeckName == assistedDeck.DeckName
+                                         select d).ToList();
             List<CardsTable> cardlist = new List<CardsTable>();
            
 
+            CombinedDeckViewModel combo = new CombinedDeckViewModel();
+
             for (int i = 0; i < deckList.Count; i++)
             {
-                cardlist.Add(_context.CardsTable.Find(deckList[i]));
+                cardlist.Add(_context.CardsTable.Find(deckList[i].CardId));
             }
 
-            return View(cardlist);
+            float cmc = 0;
+            decimal? cost = 0;
+
+            foreach (CardsTable card in cardlist)
+            {
+                cmc += card.Cmc;
+                cost += card.CardPrice;
+
+
+                if (card.TypeLine.Contains("Creature"))
+                {
+                    combo.creatureCount += 1;
+                }
+                if (card.TypeLine.Contains("Instant"))
+                {
+                    combo.instantCount += 1;
+                }
+                if (card.TypeLine.Contains("Sorcery"))
+                {
+                    combo.sorceryCount += 1;
+                }
+                if (card.TypeLine.Contains("Artifact") && !card.TypeLine.Contains("Creature") && !card.TypeLine.Contains("Enchantment"))
+                {
+                    combo.artifactCount += 1;
+                }
+                if (card.TypeLine.Contains("Enchantment") && !card.TypeLine.Contains("Creature") && !card.TypeLine.Contains("Artifact"))
+                {
+                    combo.enchantmentCount += 1;
+                }
+                if (card.TypeLine.Contains("Land") && !card.TypeLine.Contains("Creature") && !card.TypeLine.Contains("Artifact") && !card.TypeLine.Contains("Enchantment"))
+                {
+                    combo.landCount += 1;
+                }
+            }
+            combo.DeckCost = cost?.ToString("C2");
+
+            combo.Search = cardlist;
+            combo.deckObject = deckList;
+
+            return View(combo);
         }
         //instead of creating a deck name based off the commander, we're going to allow the user to create a deck name on their own
         //this page will also allow the user to set their deck name

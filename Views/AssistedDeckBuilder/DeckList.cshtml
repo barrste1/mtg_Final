@@ -166,17 +166,18 @@
 
         @for (int i = 0; i < Model.Search.Count; i++)
         {
-            <tr>
-                @if (Model.Search[i].TypeLine.Contains("Land") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment"))
-                {
-                    <td><img style="width:auto;height:33%" src="@Model.Search[i].CardArtUrl" /></td>
-                    <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
-                    <td><input type="checkbox" name="Id" value="@Model.Search[i].Id" /></td>
-                }
-            </tr>
+    <tr>
+        @if (Model.Search[i].TypeLine.Contains("Land") && !Model.Search[i].TypeLine.Contains("Creature") && !Model.Search[i].TypeLine.Contains("Instant") && !Model.Search[i].TypeLine.Contains("Sorcery") && !Model.Search[i].TypeLine.Contains("Artifact") && !Model.Search[i].TypeLine.Contains("Enchantment"))
+        {
+            for (int j = 0; j < Model.deckObject[i].Quantity; j++)
+            {
+                <td><img style="width:auto;height:33%" src="@Model.Search[i].CardArtUrl" /></td>
+                <td><p>@Model.Search[i].CardPrice?.ToString("C2")</p></td>
+                <td><input type="checkbox" name="Id" value="@Model.Search[i].Id" /></td>
+            }
+
+        }
+    </tr>
         }
     </table>
-    <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
-    <br />
-    <input type="submit" value="Delete Card" />
 </form>
