@@ -32,6 +32,13 @@ namespace MagicTheGatheringFinal.Controllers
         }
         #endregion
 
+        public IActionResult Testing(string testing)
+        {
+
+            return View();
+        }
+
+
         #region Deckbuilding Actions
         public IActionResult StartDeck(int commanderId)
         {
@@ -105,7 +112,7 @@ namespace MagicTheGatheringFinal.Controllers
             user.Budget = decimal.Parse(budget);
             _context.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.Update(user);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             AssistedDeckViewModel assistedDeck = OpenSession();
 
