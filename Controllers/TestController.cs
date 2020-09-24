@@ -57,10 +57,6 @@ namespace MagicTheGatheringFinal.Controllers
             return Json(false);
         }
 
-        public IActionResult Derp()
-        {
 
-            return View("Home/Index");
-        }
     }
 }

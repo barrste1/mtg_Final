@@ -83,6 +83,10 @@ namespace MagicTheGatheringFinal.Controllers
         #endregion
         #region CRUD
 
+        public IActionResult AddLand(CardsTable landCard)
+        {
+            return View();
+        }
         [HttpGet]
         public async Task<IActionResult> CardList(string cardName, DecksTable dName)
         {
@@ -90,9 +94,11 @@ namespace MagicTheGatheringFinal.Controllers
             ScryfallDAL dl = new ScryfallDAL();
             List<CardsTable> cardList = new List<CardsTable>();
 
-            if (_context.CardsTable.Where(x => x.Name.Contains(cardName)).FirstOrDefault() == null)
+            var cardId = _context.CardsTable.Where(x => x.Name.Contains(cardName)).FirstOrDefault();
+
+            if (cardId == null)
             {
-                CardSearchObject cardItem = await dl.GetListOfCards(cardName);
+                CardSearchObject cardItem = await dl.GetListOfCards($"{cardName}+{ RemoveDuplicatesFromEndpoint(dName.DeckName)}");
 
                 for (int i = 0; i < cardItem.data.Length; i++)
                 {
@@ -212,7 +218,7 @@ namespace MagicTheGatheringFinal.Controllers
                                          select d).ToList();
 
             List<CardsTable> cardlist = new List<CardsTable>();
-            List<DecksTable> userDecks = new List<DecksTable>();
+            //List<DecksTable> userDecks = new List<DecksTable>();
             int cardCount = 0;
 
             for (int i = 0; i < deckList.Count; i++)
@@ -256,7 +262,7 @@ namespace MagicTheGatheringFinal.Controllers
             }
             combo.DeckCost = cost?.ToString("C2");
             
-            userDecks.Add(dName);
+            deckList.Add(dName);
 
             combo.Search = cardlist;
             combo.deckObject = deckList;
@@ -324,7 +330,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             if (_context.CardsTable.Where(x => x.CardId == id).FirstOrDefault() == null)
             {
-                Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", id, "https://api.scryfall.com/", "");
+                Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", id, "https://api.scryfall.com/", ""+ RemoveDuplicatesFromEndpoint(dName.DeckName));
 
                 cId.CardArtUrl = cardItem.image_uris.normal;
                 cId.CardId = cardItem.id;
@@ -362,46 +368,50 @@ namespace MagicTheGatheringFinal.Controllers
                 _context.CardsTable.Add(cId);
                 _context.SaveChanges();
             }
+
+            //if the card the user is adding exists in the decks table, return to deckview with an error
+            //otherwise, add the card
+
+            //find ID of the card in the cards table
             var idCollection = (from x in _context.CardsTable where id == x.CardId select x.Id).FirstOrDefault();
-            if (cId.ManaCost != null)
+            //find if the card exists in the decks table for this user and this deck
+            var cardExists = (from d in _context.DecksTable where idCollection == d.CardId && FindUserId() == d.AspUserId && dName.DeckName == d.DeckName select d).FirstOrDefault();
+
+            //if the linq statement returns null, the card doesn't exist and needs to be added.
+            if (cardExists == null)
             {
-                string colorId = FindColorId(cId);
-                dName.ColorIdentity = colorId;
+                if (cId.ManaCost != null)
+                {
+                    string colorId = FindColorId(cId);
+                    dName.ColorIdentity = colorId;
+                }
+                else
+                {
+                    dName.ColorIdentity = "L";
+                }
+                dName.CardId = idCollection;
+                dName.Quantity = 1;
+
+
+                if (userId != null)
+                {
+                    dName.AspUserId = userId;
+                }
+
+                _context.DecksTable.Add(dName);
+                _context.SaveChanges();
+
+                return RedirectToAction("DeckList", dName);
             }
-            else
+            //else redirect to the decklist
+            else 
             {
-                dName.ColorIdentity = "L";
-            }
-            dName.CardId = idCollection;
-            dName.Quantity = 1;
-
-
-            if (userId != null)
-            {
-                dName.AspUserId = userId;
+                dName.errorMessage = "The card you've added already exists in your deck!";
+                return RedirectToAction("DeckList", dName);
             }
 
-            _context.DecksTable.Add(dName);
-            _context.SaveChanges();
-
-            return RedirectToAction("DeckList", dName);
         }
 
-        //public IActionResult DeleteCard(int Id, DecksTable dName)
-        //{
-        //    DecksTable dt = new DecksTable();
-        //    var getId = (from i in _context.DecksTable where i.CardId == Id select i.Id).FirstOrDefault();
-
-        //    var foundCard = _context.DecksTable.Find(getId);
-        //    if (foundCard != null)
-        //    {
-        //        _context.DecksTable.Remove(foundCard);
-        //        _context.SaveChanges();
-        //    }
-        //    _context.DecksTable.Remove(from r in _context.DecksTable where cardId == r.Id select r.Id);
-
-        //    return RedirectToAction("DeckList", dName);
-        //}
     
         public IActionResult DeleteDeck(string deckName)
         {
@@ -423,6 +433,21 @@ namespace MagicTheGatheringFinal.Controllers
         #endregion
 
         #region FindInfoInDb
+        public string RemoveDuplicatesFromEndpoint(string deckName)
+        {
+            string cardstoFilter = "+-";
+
+            var table = (from n in _context.DecksTable where n.AspUserId == FindUserId() && n.DeckName == deckName select n.CardId).ToList();
+
+            foreach (int id in table)
+            {
+                var cardId = _context.CardsTable.Where(x => x.Id == id).FirstOrDefault();
+                cardstoFilter += $"\"{cardId.Name}\"+-";
+            }
+
+            cardstoFilter = cardstoFilter.Substring(0, cardstoFilter.Length - 2);
+            return cardstoFilter;
+        }
         public string FindDeck()
         {
             DecksTable lastEntry = _context.DecksTable.OrderByDescending(i => i.Id).FirstOrDefault();
@@ -494,14 +519,26 @@ namespace MagicTheGatheringFinal.Controllers
             }
             return Json("");
         }
-        public void DeleteCards(int Id)
+        public void DecreaseCardQuantity(int Id)
         {
 
             var userId = FindUserId();
             DecksTable idCollection = (from x in _context.DecksTable where Id == x.Id select x).FirstOrDefault();
 
-            _context.DecksTable.Remove(idCollection);
-            _context.SaveChanges();
+            idCollection.Quantity--;
+            if (idCollection.Quantity<1)
+            {
+                _context.DecksTable.Remove(idCollection);
+                _context.SaveChanges();
+            }
+            else
+            {
+                _context.Entry(idCollection).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.Update(idCollection);
+                _context.SaveChanges();
+            }
+
+            
 
         }
         [HttpPost]
@@ -517,7 +554,7 @@ namespace MagicTheGatheringFinal.Controllers
             }
             foreach (var CardId in ids)
             {
-                DeleteCards(CardId);
+                DecreaseCardQuantity(CardId);
             }
             return Json("");
         }
