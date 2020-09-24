@@ -3,21 +3,32 @@
     ViewData["Title"] = "CommanderList";
 }
 
-<h1>CommanderList</h1>
 
 @model List<CardsTable>
 
-    <div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px">
-        <h1 style="text-align:center;">Choose Commander</h1>
+    
+        <h1>Choose Your Commander<br />Commander List!</h1>
 
-        <p style="padding-left:4px">Choose your commander!</p>
-    </div>
     <style>
         body {
             background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
             background-size: cover;
             background-attachment: fixed;
         }
+        h1 {
+            position: sticky;
+            text-shadow: 1px 1px 2px white;
+            top: 0px;
+            background-color: gray;
+            padding-bottom: 2px;
+            margin-bottom: 15px;
+            border-bottom: solid grey 3px;
+            text-align: center;
+            border-radius: 15px;
+            color: black;
+            font-size: 40px
+        }
+   
     </style>
 
     <div style="display:flex; flex-direction:column">

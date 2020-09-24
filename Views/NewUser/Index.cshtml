@@ -1,18 +1,18 @@
-﻿<div style="display:flex; justify-content:space-between">
-    <a href="../NewUser/BasicMagicConcepts" class="btn btn-lg" style="border: solid black 1px;text-shadow: 1px 1px 2px pink;background-color: palegreen">Learn How To Play</a>
-    <a href="../NewUser/QuizIntro" class="btn btn-lg" style="border: solid black 1px;background-color: lightskyblue;text-shadow: 1px 1px 2px pink;">Take Our Personality Color Quiz</a>
-    <a href="../NewUser/SelectColorIdentity" class="btn btn-lg" style="        border: solid black 1px;background-color:plum;text-shadow: 1px 1px 2px pink;">Assisted Deck Builder</a>
-    <a href="../Card/ChooseDeck" class="btn btn-lg" style="border: solid black 1px;background-color: honeydew;text-shadow: 1px 1px 2px pink;">Build a deck on your own</a>
-</div>
-<style>
+﻿<form style="display:flex; justify-content:space-between">
+    <a href="../NewUser/BasicMagicConcepts" id="input">Learn How To Play</a>
+    <a href="../NewUser/QuizIntro" id="input">Take Our Personality Color Quiz</a>
+    <a href="../NewUser/SelectColorIdentity" id="input">Assisted Deck Builder</a>
+    <a  href="../Card/ChooseDeck" id="input">Build a deck on your own</a>
+</form>
+<style type="text/css">
     body {
         background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
         background-size: cover;
         background-attachment: fixed;
     }
 
-    form {
-        background-color: darkslateblue;
+    #formtext {
+        background-color: rgba(59, 11, 82, 0.48);
         text-shadow: 1px 1px 2px pink;
         border-radius: 15px;
     }
@@ -24,6 +24,30 @@
         display:inline-block;
         border:none;
     }
+    #input {
+        background-color:rgba(90, 83, 89, 0.69);
+        /* Green */
+        border: none;
+        color: white;
+        padding: 8px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 34px;
+        margin: 10px 0px 10px 0px;
+        transition-duration: 0.2s;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 20%;
+        box-shadow: 5px 5px 8px mediumpurple;
+    }
+
+        #input:hover {
+            background-color: mediumpurple;
+            transition-delay: 0.2s;
+            box-shadow: 2px 2px 2px 2px mediumpurple;
+
+        }
     a.btn-lg {
         border: solid black 1px;text-shadow: 1px 1px 2px pink;background-color: palegreen
     }
@@ -33,28 +57,16 @@
     a.btnlg3 {
         border: solid black 1px;background-color: lightskyblue;text-shadow: 1px 1px 2px pink;
     }
+
 </style>
 
-background-color: lightslategray; /* Green */
-        border: none;
-        color: white;
-        padding: 16px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 10px 0px 10px 0px;
-        transition-duration: 0.2s;
-        cursor: pointer;
-        border-radius: 4px;
-        width: 20%;
 @*<a href="../NewUser/AssistedDeckBuilder" class="btn">Assisted Deck Builder</a>*@
 @*<a href="" class="btn">Ready to build my own decks!</a>*@
 
 <br />
 <br />
-<form style="background-color:darkslateblue; text-shadow: 1px 1px 2px pink; border-radius:15px">
-    <div style="color:white; margin: 10px 0px 0px 10px;text-shadow: 1px 1px 2px pink; ">
+<form id="formtext">
+    <div style="color:white; margin: 10px 0px 0px 10px;text-shadow: 1px 1px 2px pink;box-shadow: 5px 5px 8px black; ">
         <p>Magic the Gathering is often described as a mix of Chess and Magic! </p>
         <p>The most popular format, Commander, gives you the opportunity to express yourself and lead</p>
         <p>a deck with a Commander that represents <b>you</b>! </p>

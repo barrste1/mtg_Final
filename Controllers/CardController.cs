@@ -83,10 +83,170 @@ namespace MagicTheGatheringFinal.Controllers
         #endregion
         #region CRUD
 
-        public IActionResult AddLand(CardsTable landCard)
-        {
-            return View();
-        }
+        //Features that need additional work; not functional yet
+        #region WorkInProgress
+        //public IActionResult AddLand(string DeckName)
+        //{
+        //    CombinedDeckViewModel combo = new CombinedDeckViewModel();
+
+        //    List<DecksTable> landData = (from d in _context.DecksTable where d.AspUserId == FindUserId() && d.DeckName == DeckName && d.ColorIdentity == "L" select d).ToList();
+        //    List<CardsTable> cards = new List<CardsTable>();
+
+
+        //    DecksTable passingDeckName = new DecksTable();
+        //    passingDeckName.DeckName = DeckName;
+        //    combo.deckObject = landData;
+        //    combo.Search = cards;
+        //    if (landData.Count == 0)
+        //    {
+        //        combo.deckObject = landData;
+        //        combo.deckObject.Add(passingDeckName);
+        //        return View(combo);
+        //    }
+        //    else
+        //    {
+        //        for (int i = 0; i < landData.Count; i++)
+        //        {
+        //            CardsTable index = new CardsTable();
+        //            cards.Add(index);
+        //            combo.Search[i].Name = (from c in _context.CardsTable where c.Id == landData[i].CardId select c.Name).ToString();
+        //        }
+        //        return View(combo);
+        //    }
+
+        //}
+        //public IActionResult UpdateLandCount(int numberOfPlains, int numberOfIslands, int numberOfSwamps, int numberOfMountains, int numberOfForests, int numberOfWastes, string DeckName)
+        //{
+        //    //this action will update the database with the selected quantity of lands
+        //    List<DecksTable> landData = (from d in _context.DecksTable where d.AspUserId == FindUserId() && d.DeckName == DeckName && d.ColorIdentity == "L" select d).ToList();
+        //    DecksTable landsToAdd = new DecksTable();
+        //    CombinedDeckViewModel combo = new CombinedDeckViewModel();
+        //    List<DecksTable> deckname = new List<DecksTable>();
+        //    List<int> landPrimaryKey = (from c in _context.CardsTable where c.TypeLine.Contains("Basic Land") select c.Id).ToList();
+
+        //    //find if the deck table deck name has any lands
+        //    //update the quantity of lands
+        //    if (landData.Count!=0)
+        //    {
+        //        //if land is not null we need to update
+        //        for (int i = 0; i < landData.Count; i++)
+        //        {
+
+        //            //landsData[i]: cardId, userid, deckname; CARDID==landcount brought in param
+        //            if (landData[i].CardId == landPrimaryKey[0])
+        //            {
+        //                landData[i].Quantity = numberOfPlains;
+        //            }
+        //            else if (landData[i].CardId == landPrimaryKey[1])
+        //            {
+        //                landData[i].Quantity = numberOfIslands;
+        //            }
+        //            else if (landData[i].CardId == landPrimaryKey[2])
+        //            {
+        //                landData[i].Quantity = numberOfSwamps;
+        //            }
+        //            else if (landData[i].CardId == landPrimaryKey[3])
+        //            {
+        //                landData[i].Quantity = numberOfMountains;
+        //            }
+        //            else if (landData[i].CardId == landPrimaryKey[4])
+        //            {
+        //                landData[i].Quantity = numberOfForests;
+        //            }
+        //            else if (landData[i].CardId == landPrimaryKey[5])
+        //            {
+        //                landData[i].Quantity = numberOfWastes;
+        //            }
+
+
+        //            _context.DecksTable.Update(landData[i]);
+        //            _context.SaveChanges();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (numberOfPlains != 0)
+        //        {
+        //            landsToAdd.DeckName = DeckName;
+        //            landsToAdd.Quantity = numberOfPlains;
+        //            landsToAdd.ColorIdentity = "L";
+        //            landsToAdd.CardId = landPrimaryKey[0];
+        //            landsToAdd.AspUserId = FindUserId();
+
+        //            _context.DecksTable.Add(landsToAdd);
+        //            _context.SaveChanges();
+        //            landsToAdd.Id = 0;
+        //        }
+        //        if (numberOfIslands != 0)
+        //        {
+        //            landsToAdd.DeckName = DeckName;
+        //            landsToAdd.Quantity = numberOfIslands;
+        //            landsToAdd.ColorIdentity = "L";
+        //            landsToAdd.CardId = landPrimaryKey[1];
+        //            landsToAdd.AspUserId = FindUserId();
+
+        //            _context.DecksTable.Add(landsToAdd);
+        //            _context.SaveChanges();
+        //            landsToAdd.Id = 0;
+        //        }
+        //        if (numberOfSwamps != 0)
+        //        {
+        //            landsToAdd.DeckName = DeckName;
+        //            landsToAdd.Quantity = numberOfSwamps;
+        //            landsToAdd.ColorIdentity = "L";
+        //            landsToAdd.CardId = landPrimaryKey[2];
+        //            landsToAdd.AspUserId = FindUserId();
+
+        //            _context.DecksTable.Add(landsToAdd);
+        //            _context.SaveChanges();
+        //            landsToAdd.Id = 0;
+        //        }
+        //        if (numberOfMountains != 0)
+        //        {
+        //            landsToAdd.DeckName = DeckName;
+        //            landsToAdd.Quantity = numberOfMountains;
+        //            landsToAdd.ColorIdentity = "L";
+        //            landsToAdd.CardId = landPrimaryKey[3];
+        //            landsToAdd.AspUserId = FindUserId();
+
+        //            _context.DecksTable.Add(landsToAdd);
+        //            _context.SaveChanges();
+        //            landsToAdd.Id = 0;
+        //        }
+        //        if (numberOfForests != 0)
+        //        {
+        //            landsToAdd.DeckName = DeckName;
+        //            landsToAdd.Quantity = numberOfForests;
+        //            landsToAdd.ColorIdentity = "L";
+        //            landsToAdd.CardId = landPrimaryKey[4];
+        //            landsToAdd.AspUserId = FindUserId();
+
+        //            _context.DecksTable.Add(landsToAdd);
+        //            _context.SaveChanges();
+        //            landsToAdd.Id = 0;
+        //        }
+        //        if (numberOfWastes != 0)
+        //        {
+        //            landsToAdd.DeckName = DeckName;
+        //            landsToAdd.Quantity = numberOfWastes;
+        //            landsToAdd.ColorIdentity = "L";
+        //            landsToAdd.CardId = landPrimaryKey[5];
+        //            landsToAdd.AspUserId = FindUserId();
+
+        //            _context.DecksTable.Add(landsToAdd);
+        //            _context.SaveChanges();
+        //            landsToAdd.Id = 0;
+        //        }
+
+
+        //    }
+        //    deckname.Add(landsToAdd);
+        //    combo.deckObject = deckname;
+        //    combo.deckObject[0].DeckName = DeckName;
+        //    return RedirectToAction("DeckList",combo);
+        //}
+        #endregion
+
         [HttpGet]
         public async Task<IActionResult> CardList(string cardName, DecksTable dName)
         {
@@ -247,7 +407,7 @@ namespace MagicTheGatheringFinal.Controllers
                 {
                     combo.sorceryCount += 1;
                 }
-                if (card.TypeLine.Contains("Artifact") && !card.TypeLine.Contains("Creature") && !card.TypeLine.Contains("Enchantment") )
+                if (card.TypeLine.Contains("Artifact") && !card.TypeLine.Contains("Creature") && !card.TypeLine.Contains("Enchantment"))
                 {
                     combo.artifactCount += 1;
                 }
@@ -261,7 +421,7 @@ namespace MagicTheGatheringFinal.Controllers
                 }
             }
             combo.DeckCost = cost?.ToString("C2");
-            
+
             deckList.Add(dName);
 
             combo.Search = cardlist;
@@ -336,7 +496,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             if (_context.CardsTable.Where(x => x.CardId == id).FirstOrDefault() == null)
             {
-                Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", id, "https://api.scryfall.com/", ""+ RemoveDuplicatesFromEndpoint(dName.DeckName));
+                Cardobject cardItem = await ScryfallDAL.GetApiResponse<Cardobject>("cards", id, "https://api.scryfall.com/", "" + RemoveDuplicatesFromEndpoint(dName.DeckName));
 
                 cId.CardArtUrl = cardItem.image_uris.normal;
                 cId.CardId = cardItem.id;
@@ -410,7 +570,7 @@ namespace MagicTheGatheringFinal.Controllers
                 return RedirectToAction("DeckList", dName);
             }
             //else redirect to the decklist
-            else 
+            else
             {
                 dName.errorMessage = "The card you've added already exists in your deck!";
                 return RedirectToAction("DeckList", dName);
@@ -436,7 +596,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             return RedirectToAction("ChooseDeck");
         }
-    
+
         public IActionResult DeleteDeck(string deckName)
         {
             string userName = FindUserId();
@@ -522,7 +682,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             deckTable.CardId = idCollection;
             deckTable.AspUserId = userId;
-            
+
             _context.DecksTable.Add(deckTable);
             _context.SaveChanges();
         }
@@ -550,7 +710,7 @@ namespace MagicTheGatheringFinal.Controllers
             DecksTable idCollection = (from x in _context.DecksTable where Id == x.Id select x).FirstOrDefault();
 
             idCollection.Quantity--;
-            if (idCollection.Quantity<1)
+            if (idCollection.Quantity < 1)
             {
                 _context.DecksTable.Remove(idCollection);
                 _context.SaveChanges();
@@ -562,7 +722,7 @@ namespace MagicTheGatheringFinal.Controllers
                 _context.SaveChanges();
             }
 
-            
+
 
         }
         [HttpPost]
