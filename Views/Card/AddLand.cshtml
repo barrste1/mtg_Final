@@ -11,26 +11,28 @@
         }
     </style>
 
-@if (Model.Search == null)
+@if (Model.Search== null)
 { 
-    <h2>You do not have any lands in your deck</h2>
+    <h2 style="color:white">You do not have any lands in your deck</h2>
 }
 else
 {
     for (int i = 0; i < Model.Search.Count; i++)
     {
-        <p>You have @Model.deckObject[i].Quantity @Model.Search[i].Name</p>
+        <p style="color:white">You have @Model.deckObject[i].Quantity @Model.Search[i].Name</p>
     }
 }
 
 <p>How many lands would you like?</p>
-<form action="/card/UpdateLandCount" method="post">
-    <input type="number" name="numberOfPlains" />
-    <input type="number" name="numberOfIslands" />
-    <input type="number" name="numberOfSwamps" />
-    <input type="number" name="numberOfMountains" />
-    <input type="number" name="numberOfForests" />
-    <input type="number" name="numberOfWastes" />
+<form style="color:white" action="/card/UpdateLandCount" method="post">
+    Plains: <input type="number" name="numberOfPlains" />
+    <br />
+    Islands: <input type="number" name="numberOfIslands" /><br />
+    Swamps: <input type="number" name="numberOfSwamps" /><br />
+    Mountains: <input type="number" name="numberOfMountains" /><br />
+    Forests: <input type="number" name="numberOfForests" /><br />
+    Wastes: <input type="number" name="numberOfWastes" /><br />
     <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
+    <input type="submit" value="Add Lands To Deck!" />
 </form>
 
