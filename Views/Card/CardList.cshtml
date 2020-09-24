@@ -9,18 +9,12 @@
 </style>
 
 
-<form action="/card/AddCard" method="post">
-    @for (int i = 0; i < Model.Search.Count; i++)
-    {
-        <img src="@Model.Search[i].CardArtUrl" style="height:17.5%; width:17.5%" />
-        <input type="checkbox" name="cardId" value="@Model.Search[i].CardId" />
-        <input name="Name" value="@Model.Search[i].Name" hidden>
-        <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
-        <input name="ManaCost" value="@Model.Search[i].ManaCost" hidden />
-        <input name="" value="@Model.Search[i].TypeLine" hidden />
-    }
-    <input type="submit" value="Add to Deck" />
-</form>
+
+@for (int i = 0; i < Model.Search.Count; i++)
+{
+    <a href="/card/AddCard?cardId=@Model.Search[i].CardId&Name=@Model.Search[i].Name&DeckName=@Model.deckObject[0].DeckName&ManaCost=@Model.Search[i].ManaCost&TypeLine=@Model.Search[i].TypeLine"><img src="@Model.Search[i].CardArtUrl" style="height:17.5%; width:17.5%" /></a>
+}
+
 
 <form action="/card/DeckList" method="post">
     <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />

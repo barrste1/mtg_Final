@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MagicTheGatheringFinal.Models
 {
@@ -20,5 +21,8 @@ namespace MagicTheGatheringFinal.Models
         public virtual AspNetUsers AspUser { get; set; }
         public virtual CardsTable Card { get; set; }
         public virtual ICollection<CardsTable> CardsTable { get; set; }
+
+        [NotMapped]
+        public string errorMessage { get; set; }
     }
 }
