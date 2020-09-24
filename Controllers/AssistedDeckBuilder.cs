@@ -1,7 +1,9 @@
 ﻿
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +11,7 @@ using MagicTheGatheringFinal.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using Newtonsoft.Json;
 
 namespace MagicTheGatheringFinal.Controllers
 {
@@ -121,15 +123,28 @@ namespace MagicTheGatheringFinal.Controllers
 
         //This method validates the card amount, then adds them to the deck/cards table before returning to 
         //index.
-        public IActionResult ValidateSelectedCards(List<string> SelectedCard, int menu)
+        public async Task<IActionResult> ValidateSelectedCards(int menu)
         {
             AssistedDeckViewModel assistedDeck = OpenSession();
 
-            
-            //0 corresponds  to cards draw
+            var ids = new List<string>();
+            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+            {
+                var x = await reader.ReadToEndAsync();
+                ids = JsonConvert.DeserializeObject<List<string>>(x);
+
+            }
+
+
+
+
+
+
+
+            //0 corresponds to cards draw
             if (menu == 0)
             {
-                if (SelectedCard.Count() != 10)
+                if (ids.Count() != 10)
                 {
                     assistedDeck.ErrorMessage = "You need to select exactly 10 card draw sources.";
                     return RedirectToAction("FindDraw", assistedDeck);
@@ -138,7 +153,7 @@ namespace MagicTheGatheringFinal.Controllers
             }
             else if (menu == 1)
             {
-                if (SelectedCard.Count() != 10)
+                if (ids.Count() != 10)
                 {
                     assistedDeck.ErrorMessage = "You need to select exactly 10 sources of ramp.";
                     return RedirectToAction("FindRamp", assistedDeck);
@@ -147,33 +162,31 @@ namespace MagicTheGatheringFinal.Controllers
             }
             else if (menu == 2)
             {
-                if (SelectedCard.Count() != 5)
+                if (ids.Count() != 5)
                 {
-                    assistedDeck.ErrorMessage = "You need to select exactly 5 single target removal.";
-                    return RedirectToAction("FindSingleRemoval", assistedDeck);
+                    return Json(false);
                 }
                 assistedDeck.DeckStatus = assistedDeck.DeckStatus.Substring(0, 2) + "t" + assistedDeck.DeckStatus.Substring(3);
             }
             else if (menu == 3)
             {
-                if (SelectedCard.Count() != 5)
+                if (ids.Count() != 5)
                 {
-                    assistedDeck.ErrorMessage = "You need to select exactly 5 Board Clears.";
-                    return RedirectToAction("FindMultiRemoval", assistedDeck);
+                    return Json(false);
                 }
                 assistedDeck.DeckStatus = assistedDeck.DeckStatus.Substring(0, 3) + "t" + assistedDeck.DeckStatus.Substring(4);
             }
 
-            foreach (string card in SelectedCard)
+            foreach (string card in ids)
             {
                 AddCardsToCardsTable(card);
                 AddCardsToDecksTable(card, 1);
             }
 
-            string assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
+            string assistedDeckJSON = System.Text.Json.JsonSerializer.Serialize(assistedDeck);
             HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
 
-            return View("Index", assistedDeck);
+            return Json(true);
         }
 
         public IActionResult CompleteAssistedDeck(List<string> SelectedCard)
@@ -247,14 +260,14 @@ namespace MagicTheGatheringFinal.Controllers
             if (assistedDeck.CurvePosition >= cardCurveData.Count())
             {
                 assistedDeck.DeckStatus = assistedDeck.DeckStatus.Substring(0, 4) + "t";
-                assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
+                assistedDeckJSON = System.Text.Json.JsonSerializer.Serialize(assistedDeck);
                 HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
                 return View("Index",assistedDeck);
             };
 
             assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+t:\"Creature\"+cmc={assistedDeck.CurvePosition+2}", FindPlayerBudget());
             assistedDeck.Creatures = cardCurveData[assistedDeck.CurvePosition];
-            assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
+            assistedDeckJSON = System.Text.Json.JsonSerializer.Serialize(assistedDeck);
             HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
 
             return View(assistedDeck);
@@ -266,7 +279,7 @@ namespace MagicTheGatheringFinal.Controllers
             ScryfallDAL dl = new ScryfallDAL();
             string identity = FindPlayerType();
             assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+o:\"destroy\"+t:\"instant\"ort:\"sorcery\"{RemoveDuplicatesFromEndpoint(session.DeckName)}", FindPlayerBudget());
-
+            assistedDeck.ErrorMessage = "You need to select exactly 5 single target removal.";
             return View(assistedDeck);
         }
 
@@ -277,6 +290,9 @@ namespace MagicTheGatheringFinal.Controllers
             ScryfallDAL dl = new ScryfallDAL(); 
             assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+o:\"destroy all\"+t:\"sorcery\"ort:\"instant\"{RemoveDuplicatesFromEndpoint(session.DeckName)}", FindPlayerBudget());
             //multitarget goes to ramp from the view
+
+            assistedDeck.ErrorMessage = "You need to select exactly 5 Board Clears.";
+
             return View(assistedDeck);
         }
 
@@ -409,7 +425,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             if (deckStatus != "EmptySession")
             {
-                assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
+                assistedDeck = System.Text.Json.JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
             }
             return (assistedDeck);
         }
@@ -423,7 +439,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             if (deckStatus != "EmptySession")
             {
-                assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
+                assistedDeck = System.Text.Json.JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
             }
             string assistedDeckName = "";
             DecksTable deckTable = new DecksTable();
@@ -436,7 +452,7 @@ namespace MagicTheGatheringFinal.Controllers
             assistedDeck.DeckName = assistedDeckName;
             assistedDeck.DeckStatus = "fffff";
             assistedDeck.Creatures = 5;
-            string assistedDeckJSON = JsonSerializer.Serialize(assistedDeck);
+            string assistedDeckJSON = System.Text.Json.JsonSerializer.Serialize(assistedDeck);
             HttpContext.Session.SetString("AssistedDeck", assistedDeckJSON);
 
 
@@ -479,7 +495,7 @@ namespace MagicTheGatheringFinal.Controllers
 
             if (deckStatus != "EmptySession")
             {
-                assistedDeck = JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
+                assistedDeck = System.Text.Json.JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
             }
             CardsTable cd = new CardsTable();
             string id = FindUserId();
@@ -500,8 +516,35 @@ namespace MagicTheGatheringFinal.Controllers
         }
         //instead of creating a deck name based off the commander, we're going to allow the user to create a deck name on their own
         //this page will also allow the user to set their deck name
-       
+
         #endregion
+
+        [HttpPost]
+        public async Task<IActionResult> SaveChanges()
+        {
+            var ids = new List<string>();
+            using (StreamReader reader = new StreamReader(Request.Body, Encoding.UTF8))
+            {
+                var x = await reader.ReadToEndAsync();
+                ids = JsonConvert.DeserializeObject<List<string>>(x);
+
+            }
+
+            AssistedDeckViewModel assistedDeck = new AssistedDeckViewModel();
+            var deckStatus = HttpContext.Session.GetString("AssistedDeck") ?? "EmptySession";
+
+            if (deckStatus != "EmptySession")
+            {
+                assistedDeck = System.Text.Json.JsonSerializer.Deserialize<AssistedDeckViewModel>(deckStatus);
+            }
+
+
+
+            return Json(false);
+        }
+
+
+
 
     }
 }

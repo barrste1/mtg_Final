@@ -1,0 +1,24 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model string
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+    </style>
+
+@if (Model != null)
+{
+    <p style="color:white;">@Model</p>
+}
+    <form action="../AssistedDeckBuilder/UpdateBudget" method="post" style="color:white;">
+        <p>What is the most you are willing to pay for a card? Please enter only numbers</p>
+        <input type="text" name="budget" placeholder="$0.00"/>
+        <input type="submit" value="Enter Amount" />
+
+    </form>

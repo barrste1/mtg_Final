@@ -1,78 +1,159 @@
 ﻿@model AssistedDeckViewModel
-    <div style="position:sticky; top:0px; background-color:white; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px">
-        <h1>Creatures</h1>
-        <br />
-        <p style="text-wrap:normal">
-            We have to build an army!! We need creatures to help take down our opponent while protecting ourselves!
-            To accomplish this, we want to be able to play creatures every turn. This requires having creatures at different mana values!
-            Let's put in @Model.Creatures creatures that cost @(Model.CurvePosition+2) mana to help with this!
-        </p>
-        <style>
-            body {
-                background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
-                background-size: cover;
-                background-attachment: fixed;
-            }
-        </style>
-        </div>
-
-        @if (Model.ErrorMessage != null)
-        {
-            <p style="color:red;">@Model.ErrorMessage</p>
+<head>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
         }
 
-        <form asp-action="FindCreatures" asp-controller="AssistedDeckBuilder">
-            <table class="table" style="color:white;">
-                <tr>
-                    <th>Number</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Mana</th>
-                    <th>Image</th>
-                    <th>Price</th>
-                    <th>Add Card</th>
-                </tr>
+        #target {
+            border: solid;
+            width: 350px;
+            height: auto;
+            background-color: rgba(0, 0, 255, 0.3);
+            text-align: left;
+            margin-right: -250px;
+            margin-left: auto;
+            padding-bottom: 40px;
+            padding-left: 40px;
+        }
 
-                @for (int i = 0, count = 1; i < Model.CardSearch.data.Count(); i++, count++)
-                {
-                    string image = "";
-                    if (Model.CardSearch.data[i].image_uris != null)
-                    {
-                        image = Model.CardSearch.data[i].image_uris.small;
-                    }
-                    else
-                    {
-                        image = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
-                    }
 
-                    <tr>
-                        <td>@count.</td>
-                        <td>@Model.CardSearch.data[i].name</td>
-                        @if (Model.CardSearch.data[i].oracle_text == null)
-                        {
-                            <td>Ah, ah, ah, you didn't say the <b>*magic*</b> word</td>
-                        }
-                        else
-                        {
-                            <td>@Model.CardSearch.data[i].oracle_text</td>
+        #top-container {
+            margin-right: auto;
+            margin-left: auto;
+            background-color: rgba(128, 128, 128, 0.21);
+            width: 30%;
+            padding: 30px;
+            text-align: right;
+            top: 0;
+            right: 500px;
+            image-resol
+        }
+        /*.header {
+            margin-right: auto;
+            margin-left: auto;
+            background: #808080;
+            color: #000000;
+            width:15%;
+            right: 500px;
+        }*/
+        .content {
+            margin-right: auto;
+            margin-left: auto;
+            padding: 10px;
+        }
 
-                        }
-                        <td>@Model.CardSearch.data[i].mana_cost</td>
-                        <td><img src="@image" /></td>
-                        @if (Model.CardSearch.data[i].prices.usd == null)
-                        {
-                            <td>Could Not Find Pricing Information.</td>
-                        }
-                        else
-                        {
-                            <td>$@Model.CardSearch.data[i].prices.usd</td>
-                        }
+        .sticky {
+            margin-right: auto;
+            margin-left: auto;
+            position: fixed;
+            top: 70px;
+            right: 397px;
+            width: 50%;
+        }
 
-                        <td><input name="SelectedCard" type="checkbox" style="width:50px; height:50px;" value="@Model.CardSearch.data[i].id" /></td>
-                    </tr>
+            .sticky + .content {
+                margin-right: auto;
+                margin-left: auto;
+                padding-top: 102px;
+            }
+    </style>
+</head>
+
+
+<div class="header" id="target" ondrop="drop_handler(event)" ondragover="dragover_handler(event)" style="float:right" ondragstart="dragstart_handler(event)">
+
+
+    <img style="width:100px;height:100px; float:right;" src="https://www.iconfinder.com/data/icons/glypho-generic-icons/64/garbage-can-recycle-bin-512.png" ondrop="trash_drop(event)" ondragover="dragover_handler(event)" />
+    <footer>
+        <input style="" onclick="loadProducts()" type="submit" value="submit">
+    </footer>
+</div>
+
+<form ondragstart="dragstart_handler(event)" style="float:left">
+    @for (int i = 0; i < Model.CardSearch.data.Count(); i++)
+    {
+        if (Model.CardSearch.data[i].image_uris != null)
+        {
+            <img id="@Model.CardSearch.data[i].id" style="width: 22%; height:auto" src="@Model.CardSearch.data[i].image_uris.normal" draggable="true" />
+        }
+        else
+        {
+            <p id="@Model.CardSearch.data[i].id">@Model.CardSearch.data[i].name</p>
+        }
+
+
+    }
+</form>
+
+<script>
+    var cards = [];
+    function dragover_handler(ev) {
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = "copy";
+    }
+
+    function drop_handler(ev) {
+        console.log(ev);
+        ev.preventDefault();
+        // Get the id of the target and add the moved element to the target's DOM
+        const data = ev.dataTransfer.getData("application/MagicTheGatheringFinal");
+        const view = document.getElementById(data).cloneNode(true);
+        view.id = data + "\\deck";
+        //resizing image after drag
+        view.style.width = "50px";
+        //only 1 card can be dragged in
+        if (cards.indexOf(data) == -1) {
+            ev.target.appendChild(view);
+            cards.push(data)
+        }
+
+    }
+    function dragstart_handler(ev) {
+        // Add the target element's id to the data transfer object
+        ev.dataTransfer.setData("application/MagicTheGatheringFinal", ev.target.id);
+        ev.dataTransfer.dropEffect = "copy";
+    }
+    function trash_drop(trash) {
+        trash.preventDefault();
+        const data = trash.dataTransfer.getData("application/MagicTheGatheringFinal");
+        console.log(document.getElementById(data));
+        //trashing cards inside the decklist only
+        if (data.endsWith("\\deck")) {
+            document.getElementById(data).remove();
+            let pos = cards.indexOf(data);
+            cards.splice(pos, 1);
+        }
+    }
+    window.onscroll = function () { myFunction() };
+    var header = document.getElementById("target");
+    var sticky = header.offsetTop;
+    function myFunction() {
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
+        }
+    }
+    function loadProducts() {
+        var items = "";
+        $.ajax({
+            url: "../Test/SaveChanges",
+            type: "POST",
+            crossDomain: true,
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(cards),
+            traditional: true,
+
+            success: function (response) {
+                if (response == true) {
+                    alert("Your Cards were added to the Deck!");
+                    window.location = "../AssistedDeckBuilder/Index";
+                } else {
+                    alert("@Model.ErrorMessage");
                 }
-
-                <input type="submit" />
-
-            </table>
-        </form>
+            }
+        });
+    }
+</script>

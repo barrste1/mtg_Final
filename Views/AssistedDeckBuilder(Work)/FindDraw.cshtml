@@ -1,0 +1,74 @@
+﻿@model AssistedDeckViewModel
+    <div style="position:sticky; top:0px; background-color:grey; padding-bottom:2px; margin-bottom: 15px; border-bottom: solid grey 3px;text-shadow: 1px 1px 2px white;">
+        <h1>Card Draw</h1>
+       <style>
+            body {
+                background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url("https://media.wizards.com/images/magic/daily/wallpapers/wp_solring_1280x960.jpg");
+                background-size: cover;
+                background-attachment: fixed;
+            }
+        </style> 
+        <br />
+        <p>If you want to win the game, you're going to have to draw more cards! <b>Choose 10 draw spells</b> so you can win your next game!</p>
+    </div>
+        <br />
+        @if (Model.ErrorMessage != null)
+        {
+            <p style="color:red;">@Model.ErrorMessage</p>
+        }
+    
+
+    <form asp-action="ValidateSelectedCards" asp-controller="AssistedDeckBuilder" style="color:white;">
+        <table class="table" style="color:white">
+            <tr>
+                <th>Number</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Mana</th>
+                <th>Image</th>
+                <th>Pricing</th>
+                <th>Add Card</th>
+            </tr>
+
+            @for (int i = 0, count = 1; i < Model.CardSearch.data.Count(); i++, count++)
+            {
+                string image = "";
+                if (Model.CardSearch.data[i].image_uris != null)
+                {
+                    image = Model.CardSearch.data[i].image_uris.small;
+                }
+                else
+                {
+                    image = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
+                }
+
+        <tr>
+            <td>@count.</td>
+            <td>@Model.CardSearch.data[i].name</td>
+            @if (Model.CardSearch.data[i].oracle_text == null)
+            {
+                <td>Ah, ah, ah, you didn't say the <b>*magic*</b> word</td>
+            }
+            else
+            {
+                <td>@Model.CardSearch.data[i].oracle_text</td>
+
+            }
+            <td>@Model.CardSearch.data[i].mana_cost</td>
+            <td><img src="@image" /></td>
+            @if (Model.CardSearch.data[i].prices.usd != null)
+            {
+                <td>$@Model.CardSearch.data[i].prices.usd</td>
+            }
+            else
+            {
+                <td>Could not find pricing information</td>
+            }
+            <td><input name="SelectedCard" type="checkbox" style="width:50px; height:50px;" value="@Model.CardSearch.data[i].id" /></td>
+        </tr>
+            }
+            <input name="menu" value="0" hidden />
+            <input type="submit" />
+
+        </table>
+    </form>
