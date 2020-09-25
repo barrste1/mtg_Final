@@ -254,6 +254,7 @@ namespace MagicTheGatheringFinal.Controllers
             CardsTable cardTable = new CardsTable();
             ScryfallDAL dl = new ScryfallDAL();
             List<CardsTable> cardList = new List<CardsTable>();
+            CombinedDeckViewModel combo = new CombinedDeckViewModel();
 
             var cardId = _context.CardsTable.Where(x => x.Name.Contains(cardName)).FirstOrDefault();
 
@@ -261,71 +262,79 @@ namespace MagicTheGatheringFinal.Controllers
             {
                 CardSearchObject cardItem = await dl.GetListOfCards($"{cardName}+{ RemoveDuplicatesFromEndpoint(dName.DeckName)}");
 
-                for (int i = 0; i < cardItem.data.Length; i++)
+                if (cardItem.data != null)
+                {
+                    for (int i = 0; i < cardItem.data.Length; i++)
+                    {
+
+                        if (cardItem.data[i].image_uris == null)
+                        {
+                            cardTable.CardArtUrl = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
+                        }
+                        else
+                        {
+                            cardTable.CardArtUrl = cardItem.data[i].image_uris.normal;
+                        }
+                        cardTable.CardId = cardItem.data[i].id;
+                        cardTable.Cmc = cardItem.data[i].cmc;
+                        cardTable.ManaCost = cardItem.data[i].mana_cost;
+                        cardTable.Name = cardItem.data[i].name;
+                        cardTable.OracleText = cardItem.data[i].oracle_text;
+                        cardTable.TypeLine = cardItem.data[i].type_line;
+                        cardTable.EdhrecRank = cardItem.data[i].edhrec_rank;
+                        if (cardItem.data[i].prices == null)
+                        {
+                            cardItem.data[i].prices.usd = "0.00";
+                            cardItem.data[i].prices.eur = "0.00";
+                            cardItem.data[i].prices.usd_foil = "0.00";
+                            cardItem.data[i].prices.tix = "0.00";
+                        }
+                        else if (cardItem.data[i].prices.usd == null)
+                        {
+                            cardItem.data[i].prices.usd = "0.00";
+                        }
+                        cardTable.CardPrice = decimal.Parse(cardItem.data[i].prices.usd);
+
+                        if (cardItem.data[i].color_identity.Contains("B"))
+                        {
+                            cardTable.Black = "B";
+                        }
+                        if (cardItem.data[i].color_identity.Contains("U"))
+                        {
+                            cardTable.Blue = "U";
+                        }
+                        if (cardItem.data[i].color_identity.Contains("W"))
+                        {
+                            cardTable.White = "W";
+                        }
+                        if (cardItem.data[i].color_identity.Contains("G"))
+                        {
+                            cardTable.Green = "G";
+                        }
+                        if (cardItem.data[i].color_identity.Contains("R"))
+                        {
+                            cardTable.Red = "R";
+                        }
+
+                        cardTable.Id = 0;
+
+                        _context.CardsTable.Add(cardTable);
+                        _context.SaveChanges();
+                    }
+                }
+                else
                 {
 
-                    if (cardItem.data[i].image_uris == null)
-                    {
-                        cardTable.CardArtUrl = "https://img4.wikia.nocookie.net/__cb20140414012548/villains/images/8/86/Dennis_Nedry.png";
-                    }
-                    else
-                    {
-                        cardTable.CardArtUrl = cardItem.data[i].image_uris.normal;
-                    }
-                    cardTable.CardId = cardItem.data[i].id;
-                    cardTable.Cmc = cardItem.data[i].cmc;
-                    cardTable.ManaCost = cardItem.data[i].mana_cost;
-                    cardTable.Name = cardItem.data[i].name;
-                    cardTable.OracleText = cardItem.data[i].oracle_text;
-                    cardTable.TypeLine = cardItem.data[i].type_line;
-                    cardTable.EdhrecRank = cardItem.data[i].edhrec_rank;
-                    if (cardItem.data[i].prices == null)
-                    {
-                        cardItem.data[i].prices.usd = "0.00";
-                        cardItem.data[i].prices.eur = "0.00";
-                        cardItem.data[i].prices.usd_foil = "0.00";
-                        cardItem.data[i].prices.tix = "0.00";
-                    }
-                    else if (cardItem.data[i].prices.usd == null)
-                    {
-                        cardItem.data[i].prices.usd = "0.00";
-                    }
-                    cardTable.CardPrice = decimal.Parse(cardItem.data[i].prices.usd);
-
-                    if (cardItem.data[i].color_identity.Contains("B"))
-                    {
-                        cardTable.Black = "B";
-                    }
-                    if (cardItem.data[i].color_identity.Contains("U"))
-                    {
-                        cardTable.Blue = "U";
-                    }
-                    if (cardItem.data[i].color_identity.Contains("W"))
-                    {
-                        cardTable.White = "W";
-                    }
-                    if (cardItem.data[i].color_identity.Contains("G"))
-                    {
-                        cardTable.Green = "G";
-                    }
-                    if (cardItem.data[i].color_identity.Contains("R"))
-                    {
-                        cardTable.Red = "R";
-                    }
-
-                    cardTable.Id = 0;
-
-                    _context.CardsTable.Add(cardTable);
-                    _context.SaveChanges();
-
+                    dName.errorMessage = "Unable to find the requested card";
+                    return RedirectToAction("DeckList", dName);
                 }
+                
             }
 
             //now that the card exists in the card table
             //we need to get the card from the cards table and save
             //first to the cardList then to the combo
 
-            CombinedDeckViewModel combo = new CombinedDeckViewModel();
 
             List<DecksTable> deckList = new List<DecksTable>();
 
@@ -688,7 +697,7 @@ namespace MagicTheGatheringFinal.Controllers
         #endregion
 
         #region DragNDrop CRUD
-
+        [Authorize]
         public void DragNDropAdd(string CardId)
         {
             DecksTable deckTable = new DecksTable();
