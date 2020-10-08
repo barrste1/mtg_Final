@@ -300,7 +300,7 @@ namespace MagicTheGatheringFinal.Controllers
             AssistedDeckViewModel session = OpenSession();
             string identity = FindPlayerType();
             ScryfallDAL dl = new ScryfallDAL();
-            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+produces:br+-t:\"Land\"{RemoveDuplicatesFromEndpoint(session.DeckName)}", FindPlayerBudget());
+            assistedDeck.CardSearch = await dl.GetSearch($"id:{identity.ToLower()}+produces<={FindPlayerType()}c+-t:\"Land\"{RemoveDuplicatesFromEndpoint(session.DeckName)}", FindPlayerBudget());
             assistedDeck.ErrorMessage = "You need to select exactly 10 sources of ramp.";
             //ramp goes to draw from the view
             return View(assistedDeck);
