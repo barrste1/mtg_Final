@@ -87,6 +87,10 @@
 <form action="/Card/ChooseDeck" method="get">
     <input type="submit" value="Go back to deck selection" />
 </form>
+<form action="/card/AddLand" method="post">
+    <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
+    <input type="submit" value="Add Basic Lands to Deck" />
+</form>
 <form action="/Card/CardList" method="get">
     <input type="text" name="cardName" placeholder="Search for card" />
     <input type="text" name="deckName" value="@Model.deckObject[0].DeckName" hidden />
@@ -279,11 +283,6 @@
 
 </form>
 
-
-<form action="/card/AddLand" method="post">
-    <input name="DeckName" value="@Model.deckObject[0].DeckName" hidden />
-    <input type="submit" value="Add Basic Lands to Deck" />
-</form>
 
 <script>
     var cards = [];

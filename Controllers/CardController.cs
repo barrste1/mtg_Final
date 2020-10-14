@@ -120,130 +120,39 @@ namespace MagicTheGatheringFinal.Controllers
             //this action will update the database with the selected quantity of lands
             List<DecksTable> landData = (from d in _context.DecksTable where d.AspUserId == FindUserId() && d.DeckName == DeckName && d.ColorIdentity == "L" select d).ToList();
             DecksTable landsToAdd = new DecksTable();
-            CombinedDeckViewModel combo = new CombinedDeckViewModel();
+            DecksTable deck = new DecksTable();
+
+            List<int> landCounts = new List<int> {numberOfForests,numberOfIslands,numberOfMountains,numberOfPlains,numberOfSwamps,numberOfWastes};
+
             List<DecksTable> deckname = new List<DecksTable>();
-            List<int> landPrimaryKey = (from c in _context.CardsTable where c.TypeLine.Contains("Basic Land") select c.Id).ToList();
+            List<CardsTable> landPrimaryKey = (from c in _context.CardsTable where c.TypeLine.Contains("Basic Land") select c).ToList();
 
-            //find if the deck table deck name has any lands
-            //update the quantity of lands
-            if (landData.Count!=0)
+            //Lands are pulled from the API in alphabetical order, therefore the CardsTable list will always pull from the table in alphabetical order
+            //By setting up the land add in this manner the add will be immune to database resets.
+            for (int i=0;i<landCounts.Count;i++)
             {
-                //if land is not null we need to update
-                for (int i = 0; i < landData.Count; i++)
+                if(landCounts[i] != 0)
                 {
-
-                    //landsData[i]: cardId, userid, deckname; CARDID==landcount brought in param
-                    if (landData[i].CardId == landPrimaryKey[0])
+                    for (int j = 0; j < landCounts[i]; j++)
                     {
-                        landData[i].Quantity = numberOfPlains;
+                        landsToAdd.DeckName = DeckName;
+                        landsToAdd.Quantity = 1;
+                        landsToAdd.ColorIdentity = "L";
+                        landsToAdd.CardId = landPrimaryKey[i].Id;
+                        landsToAdd.AspUserId = FindUserId();
+
+                        _context.DecksTable.Add(landsToAdd);
+                        _context.SaveChanges();
+                        landsToAdd.Id = 0;
                     }
-                    else if (landData[i].CardId == landPrimaryKey[1])
-                    {
-                        landData[i].Quantity = numberOfIslands;
-                    }
-                    else if (landData[i].CardId == landPrimaryKey[2])
-                    {
-                        landData[i].Quantity = numberOfSwamps;
-                    }
-                    else if (landData[i].CardId == landPrimaryKey[3])
-                    {
-                        landData[i].Quantity = numberOfMountains;
-                    }
-                    else if (landData[i].CardId == landPrimaryKey[4])
-                    {
-                        landData[i].Quantity = numberOfForests;
-                    }
-                    else if (landData[i].CardId == landPrimaryKey[5])
-                    {
-                        landData[i].Quantity = numberOfWastes;
-                    }
-
-
-                    _context.DecksTable.Update(landData[i]);
-                    _context.SaveChanges();
-                }
-            }
-            else
-            {
-                if (numberOfPlains != 0)
-                {
-                    landsToAdd.DeckName = DeckName;
-                    landsToAdd.Quantity = numberOfPlains;
-                    landsToAdd.ColorIdentity = "L";
-                    landsToAdd.CardId = landPrimaryKey[0];
-                    landsToAdd.AspUserId = FindUserId();
-
-                    _context.DecksTable.Add(landsToAdd);
-                    _context.SaveChanges();
-                    landsToAdd.Id = 0;
-                }
-                if (numberOfIslands != 0)
-                {
-                    landsToAdd.DeckName = DeckName;
-                    landsToAdd.Quantity = numberOfIslands;
-                    landsToAdd.ColorIdentity = "L";
-                    landsToAdd.CardId = landPrimaryKey[1];
-                    landsToAdd.AspUserId = FindUserId();
-
-                    _context.DecksTable.Add(landsToAdd);
-                    _context.SaveChanges();
-                    landsToAdd.Id = 0;
-                }
-                if (numberOfSwamps != 0)
-                {
-                    landsToAdd.DeckName = DeckName;
-                    landsToAdd.Quantity = numberOfSwamps;
-                    landsToAdd.ColorIdentity = "L";
-                    landsToAdd.CardId = landPrimaryKey[2];
-                    landsToAdd.AspUserId = FindUserId();
-
-                    _context.DecksTable.Add(landsToAdd);
-                    _context.SaveChanges();
-                    landsToAdd.Id = 0;
-                }
-                if (numberOfMountains != 0)
-                {
-                    landsToAdd.DeckName = DeckName;
-                    landsToAdd.Quantity = numberOfMountains;
-                    landsToAdd.ColorIdentity = "L";
-                    landsToAdd.CardId = landPrimaryKey[3];
-                    landsToAdd.AspUserId = FindUserId();
-
-                    _context.DecksTable.Add(landsToAdd);
-                    _context.SaveChanges();
-                    landsToAdd.Id = 0;
-                }
-                if (numberOfForests != 0)
-                {
-                    landsToAdd.DeckName = DeckName;
-                    landsToAdd.Quantity = numberOfForests;
-                    landsToAdd.ColorIdentity = "L";
-                    landsToAdd.CardId = landPrimaryKey[4];
-                    landsToAdd.AspUserId = FindUserId();
-
-                    _context.DecksTable.Add(landsToAdd);
-                    _context.SaveChanges();
-                    landsToAdd.Id = 0;
-                }
-                if (numberOfWastes != 0)
-                {
-                    landsToAdd.DeckName = DeckName;
-                    landsToAdd.Quantity = numberOfWastes;
-                    landsToAdd.ColorIdentity = "L";
-                    landsToAdd.CardId = landPrimaryKey[5];
-                    landsToAdd.AspUserId = FindUserId();
-
-                    _context.DecksTable.Add(landsToAdd);
-                    _context.SaveChanges();
-                    landsToAdd.Id = 0;
                 }
 
-
-            }
+            };
+               
             deckname.Add(landsToAdd);
-            combo.deckObject = deckname;
-            combo.deckObject[0].DeckName = DeckName;
-            return RedirectToAction("DeckList",combo);
+            deck.DeckName = DeckName;
+
+            return RedirectToAction("DeckList",deck);
         }
         #endregion
 
