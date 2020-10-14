@@ -494,6 +494,11 @@ namespace MagicTheGatheringFinal.Controllers
                 deckTable.AspUserId = userId;
                 deckTable.DeckName = assistedDeck.DeckName;
                 deckTable.Quantity = 1;
+                if (quantity>1)
+                {
+                    deckTable.ColorIdentity = "L";
+                }
+
 
                 _context.DecksTable.Add(deckTable);
                 _context.SaveChanges();
